@@ -1,0 +1,9 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "packagedastral:marked_relay"
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}

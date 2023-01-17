@@ -1,0 +1,18 @@
+itemGroup.packagedastral=PackagedAstral
+
+tile.packagedastral.discovery_crafter.name=Luminous Package Crafter
+tile.packagedastral.attunement_crafter.name=Starlight Package Crafter
+tile.packagedastral.constellation_crafter.name=Celestial Package Crafter
+tile.packagedastral.trait_crafter.name=Iridescent Package Crafter
+tile.packagedastral.marked_relay.name=Marked Spectral Relay
+
+item.packagedastral.constellation_focus.name=Constellation Focus
+
+recipe.packagedastral.discovery=Luminous Crafting Table
+recipe.packagedastral.discovery.short=Luminous
+recipe.packagedastral.attunement=Starlight Crafting Altar
+recipe.packagedastral.attunement.short=Starlight
+recipe.packagedastral.constellation=Celestial Altar
+recipe.packagedastral.constellation.short=Celestial
+recipe.packagedastral.trait=Iridescent Altar
+recipe.packagedastral.trait.short=Iridescent
