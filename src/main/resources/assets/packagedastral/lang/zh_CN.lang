@@ -6,7 +6,7 @@ tile.packagedastral.constellation_crafter.name=天辉祭坛封包合成器
 tile.packagedastral.trait_crafter.name=五彩祭坛封包合成器
 tile.packagedastral.marked_relay.name=标记光波增幅器
 
-item.packagedastral.constellation_focus.name=星座聚焦
+item.packagedastral.constellation_focus.name=星座核心
 
 recipe.packagedastral.discovery=星辉合成台
 recipe.packagedastral.discovery.short=星辉
