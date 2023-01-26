@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
 import thelm.packagedastral.tile.TileTraitCrafter;
 
 public class RendererTraitCrafter extends TileEntitySpecialRenderer<TileTraitCrafter> {
