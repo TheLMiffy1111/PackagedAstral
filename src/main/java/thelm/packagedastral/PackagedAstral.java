@@ -1,7 +1,6 @@
 package thelm.packagedastral;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -12,7 +11,15 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thelm.packagedastral.block.BlockAttunementCrafter;
+import thelm.packagedastral.block.BlockConstellationCrafter;
+import thelm.packagedastral.block.BlockDiscoveryCrafter;
+import thelm.packagedastral.block.BlockTraitCrafter;
 import thelm.packagedastral.proxy.CommonProxy;
+import thelm.packagedastral.tile.TileAttunementCrafter;
+import thelm.packagedastral.tile.TileConstellationCrafter;
+import thelm.packagedastral.tile.TileDiscoveryCrafter;
+import thelm.packagedastral.tile.TileTraitCrafter;
 
 @Mod(
 		modid = PackagedAstral.MOD_ID,
@@ -32,7 +39,19 @@ public class PackagedAstral {
 		@SideOnly(Side.CLIENT)
 		@Override
 		public ItemStack createIcon() {
-			return new ItemStack(Items.AIR);
+			if(TileTraitCrafter.enabled) {
+				return new ItemStack(BlockTraitCrafter.INSTANCE);
+			}
+			if(TileConstellationCrafter.enabled) {
+				return new ItemStack(BlockConstellationCrafter.INSTANCE);
+			}
+			if(TileAttunementCrafter.enabled) {
+				return new ItemStack(BlockAttunementCrafter.INSTANCE);
+			}
+			if(TileDiscoveryCrafter.enabled) {
+				return new ItemStack(BlockDiscoveryCrafter.INSTANCE);
+			}
+			return ItemStack.EMPTY;
 		}
 	};
 	@Instance

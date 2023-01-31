@@ -144,7 +144,6 @@ public class TileConstellationCrafter extends TileBase implements ITickable, IPa
 			if(isWorking) {
 				tickProcess();
 				if(remainingProgress <= 0) {
-					energyStorage.receiveEnergy(Math.abs(remainingProgress), false);
 					finishProcess();
 					if(hostHelper != null && hostHelper.isActive()) {
 						hostHelper.ejectItem();
@@ -239,7 +238,8 @@ public class TileConstellationCrafter extends TileBase implements ITickable, IPa
 		else if(starlight >= currentRecipe.getStarlightRequired()) {
 			progress++;
 			if(progress >= progressReq) {
-				int energy = energyStorage.extractEnergy(energyUsage, false);
+				progress = progressReq;
+				int energy = energyStorage.extractEnergy(Math.min(energyUsage, remainingProgress), false);
 				remainingProgress -= energy;
 			}
 		}

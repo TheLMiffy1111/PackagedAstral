@@ -108,12 +108,12 @@ public class RecipeInfoTrait implements IRecipeInfoAltar {
 
 	@Override
 	public List<ItemStack> getMatrix() {
-		return matrix;
+		return Collections.unmodifiableList(matrix);
 	}
 
 	@Override
 	public List<ItemStack> getRelayInputs() {
-		return inputRelay;
+		return Collections.unmodifiableList(inputRelay);
 	}
 
 	@Override

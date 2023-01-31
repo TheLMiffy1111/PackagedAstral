@@ -95,7 +95,7 @@ public class RecipeInfoDiscovery implements IRecipeInfoAltar {
 
 	@Override
 	public List<ItemStack> getMatrix() {
-		return matrix;
+		return Collections.unmodifiableList(matrix);
 	}
 
 	@Override

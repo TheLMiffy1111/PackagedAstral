@@ -95,7 +95,7 @@ public class RecipeInfoConstellation implements IRecipeInfoAltar {
 
 	@Override
 	public List<ItemStack> getMatrix() {
-		return matrix;
+		return Collections.unmodifiableList(matrix);
 	}
 
 	@Override
