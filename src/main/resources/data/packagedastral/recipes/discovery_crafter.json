@@ -1,0 +1,48 @@
+{
+    "conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+                "type": "forge:mod_loaded",
+                "modid": "appliedenergistics2"
+            }
+        }
+    ],
+    "type": "astralsorcery:altar",
+    "altar_type": 0,
+    "duration": 100,
+    "starlight": 600,
+    "pattern": [
+        "_____",
+        "_MWM_",
+        "_IAI_",
+        "_MCM_",
+        "_____"
+    ],
+    "key": {
+        "A": {
+            "item": "astralsorcery:altar_discovery"
+        },
+        "W": {
+            "item": "astralsorcery:wand"
+        },
+        "C": {
+            "item": "packagedauto:package_component"
+        },
+        "I": {
+            "item": "astralsorcery:infused_wood"
+        },
+        "M": {
+            "item": "astralsorcery:marble_chiseled"
+        }
+    },
+    "output": [
+        {
+            "item": "packagedastral:discovery_crafter",
+            "count": 1
+        }
+    ],
+    "effects": [
+        "astralsorcery:built_in_effect_discovery_central_beam"
+    ]
+}

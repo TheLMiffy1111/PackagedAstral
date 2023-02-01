@@ -1,0 +1,24 @@
+{
+    "itemGroup.packagedastral": "PackagedAstral",
+
+    "block.packagedastral.discovery_crafter": "Luminous Package Crafter",
+    "block.packagedastral.attunement_crafter": "Starlight Package Crafting Altar",
+    "block.packagedastral.constellation_crafter": "Celestial Package Crafting Altar",
+    "block.packagedastral.trait_crafter": "Iridescent Package Crafting Altar",
+    "block.packagedastral.marked_relay": "Marked Astral Relay",
+
+    "item.packagedastral.constellation_focus": "Constellation Focus",
+
+    "structure.packagedastral.attunement_crafter_pattern.name": "Starlight Package Crafting Altar",
+    "structure.packagedastral.constellation_crafter_pattern.name": "Celestial Package Crafting Altar",
+    "structure.packagedastral.trait_crafter_pattern.name": "Iridescent Package Crafting Altar",
+
+    "recipe.packagedastral.discovery": "Luminous Crafting Table",
+    "recipe.packagedastral.discovery.short": "Luminous",
+    "recipe.packagedastral.attunement": "Starlight Crafting Altar",
+    "recipe.packagedastral.attunement.short": "Starlight",
+    "recipe.packagedastral.constellation": "Celestial Altar",
+    "recipe.packagedastral.constellation.short": "Celestial",
+    "recipe.packagedastral.trait": "Iridescent Altar",
+    "recipe.packagedastral.trait.short": "Iridescent"
+}

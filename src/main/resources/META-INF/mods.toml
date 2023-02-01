@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="MIT"
+issueTrackerURL="https://github.com/TheLMiffy1111/PackagedAstral/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/packagedastral"
+authors="TheLMiffy1111"
+[[mods]]
+modId="packagedastral"
+version="${file.jarVersion}"
+displayName="PackagedAstral"
+description="A PackagedAuto addon that adds Astral Sorcery autocrafting."
+
+[[dependencies.packagedastral]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34.0.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.packagedastral]]
+    modId="astralsorcery"
+    mandatory=true
+    versionRange="[1.16,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.packagedastral]]
+    modId="packagedauto"
+    mandatory=true
+    versionRange="[2.0.0.0,)"
+    ordering="NONE"
+    side="BOTH"

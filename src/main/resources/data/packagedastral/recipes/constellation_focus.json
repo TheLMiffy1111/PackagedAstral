@@ -1,0 +1,140 @@
+{
+    "type": "astralsorcery:altar",
+    "altar_type": 3,
+    "duration": 600,
+    "starlight": 4800,
+    "focus_constellation": "astralsorcery:lucerna",
+    "pattern": [
+        "_5A1_",
+        "GPLPB",
+        "4LSL2",
+        "FPLPC",
+        "_E3D_"
+    ],
+    "key": {
+        "S": {
+            "item": "astralsorcery:shifting_star"
+        },
+        "P": {
+            "tag": "forge:glass_panes/colorless"
+        },
+        "L": {
+            "item": "astralsorcery:glass_lens"
+        },
+        "1": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:discidia"
+        },
+        "2": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:armara"
+        },
+        "3": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:vicio"
+        },
+        "4": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:aevitas"
+        },
+        "5": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:evorsio"
+        },
+        "A": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:octans"
+        },
+        "B": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:bootes"
+        },
+        "C": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:fornax"
+        },
+        "D": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:lucerna"
+        },
+        "E": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:horologium"
+        },
+        "F": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:mineralis"
+        },
+        "G": {
+            "type": "packagedastral:attuned_crystal",
+            "hasToBeCelestial": false,
+            "canBeCelestial": true,
+            "constellation": "astralsorcery:pelotrio"
+        }
+    },
+    "relay_inputs": [
+        {
+            "item": "astralsorcery:illumination_powder"
+        },
+        {
+            "tag": "astralsorcery:stardust"
+        },
+        {
+            "item": "astralsorcery:illumination_powder"
+        },
+        {
+            "item": "astralsorcery:nocturnal_powder"
+        },
+        {
+            "item": "astralsorcery:illumination_powder"
+        },
+        {
+            "tag": "astralsorcery:stardust"
+        },
+        {
+            "item": "astralsorcery:illumination_powder"
+        },
+        {
+            "item": "astralsorcery:nocturnal_powder"
+        }
+    ],
+    "output": [
+        {
+            "item": "packagedastral:constellation_focus",
+            "count": 1
+        }
+    ],
+    "effects": [
+        "astralsorcery:built_in_effect_discovery_central_beam",
+        "astralsorcery:built_in_effect_attunement_sparkle",
+        "astralsorcery:built_in_effect_constellation_lines",
+        "astralsorcery:built_in_effect_constellation_finish",
+        "astralsorcery:altar_default_sparkle",
+        "astralsorcery:built_in_effect_trait_relay_highlight",
+        "astralsorcery:built_in_effect_trait_focus_circle",
+        "astralsorcery:pillar_sparkle",
+        "astralsorcery:altar_default_lightbeams"
+    ]
+}

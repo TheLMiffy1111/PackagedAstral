@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "side": "packagedastral:blocks/discovery_crafter_side",
+        "top": "packagedastral:blocks/discovery_crafter_top",
+        "bottom": "packagedastral:blocks/discovery_crafter_bottom"
+    }
+}

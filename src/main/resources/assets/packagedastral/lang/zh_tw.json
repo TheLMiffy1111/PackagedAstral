@@ -1,0 +1,24 @@
+{
+    "itemGroup.packagedastral": "封包星輝魔法",
+
+    "block.packagedastral.discovery_crafter": "星輝封包合成器",
+    "block.packagedastral.attunement_crafter": "星輝封包合成祭壇",
+    "block.packagedastral.constellation_crafter": "天輝封包合成祭壇",
+    "block.packagedastral.trait_crafter": "五彩封包合成祭壇",
+    "block.packagedastral.marked_relay": "標記星輝轉繼器",
+
+    "item.packagedastral.constellation_focus": "星座核心",
+
+    "structure.packagedastral.attunement_crafter_pattern.name": "星輝封包合成祭壇",
+    "structure.packagedastral.constellation_crafter_pattern.name": "天輝封包合成祭壇",
+    "structure.packagedastral.trait_crafter_pattern.name": "五彩封包合成祭壇",
+
+    "recipe.packagedastral.discovery": "星輝合成台",
+    "recipe.packagedastral.discovery.short": "星合",
+    "recipe.packagedastral.attunement": "星輝祭壇",
+    "recipe.packagedastral.attunement.short": "星祭",
+    "recipe.packagedastral.constellation": "天輝祭壇",
+    "recipe.packagedastral.constellation.short": "天祭",
+    "recipe.packagedastral.trait": "五彩祭壇",
+    "recipe.packagedastral.trait.short": "彩祭"
+}
