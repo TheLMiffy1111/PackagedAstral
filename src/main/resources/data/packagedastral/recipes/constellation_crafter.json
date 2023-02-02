@@ -12,7 +12,7 @@
     ],
     "key": {
         "A": {
-            "item": "packagedastral:discovery_crafter"
+            "item": "packagedastral:attunement_crafter"
         },
         "C": {
             "type": "astralsorcery:crystal",
@@ -51,7 +51,7 @@
     },
     "output": [
         {
-            "item": "packagedastral:celestial_crafter",
+            "item": "packagedastral:constellation_crafter",
             "count": 1
         }
     ],
