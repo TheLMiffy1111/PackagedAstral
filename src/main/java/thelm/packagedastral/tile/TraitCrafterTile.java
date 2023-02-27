@@ -64,6 +64,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import thelm.packagedastral.block.TraitCrafterBlock;
 import thelm.packagedastral.container.TraitCrafterContainer;
 import thelm.packagedastral.integration.appeng.tile.AETraitCrafterTile;
@@ -220,7 +221,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 					}
 					for(int i = 0; i < relays.size(); ++i) {
 						((MarkedRelayTile)world.getTileEntity(relays.get(i))).getItemHandler().
-						setStackInSlot(0, relayInputs.get(i));
+						setStackInSlot(0, relayInputs.get(i).copy());
 					}
 					syncTile(false);
 					markDirty();
@@ -263,8 +264,8 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 			return;
 		}
 		for(BlockPos relayPos : relays) {
-			((MarkedRelayTile)world.getTileEntity(relayPos)).getItemHandler().
-			setStackInSlot(0, ItemStack.EMPTY);
+			ItemStackHandler relayInv = ((MarkedRelayTile)world.getTileEntity(relayPos)).getItemHandler();
+			relayInv.setStackInSlot(0, MiscHelper.INSTANCE.getContainerItem(relayInv.getStackInSlot(0)));
 		}
 		if(itemHandler.getStackInSlot(25).isEmpty()) {
 			itemHandler.setStackInSlot(25, currentRecipe.getOutput());
