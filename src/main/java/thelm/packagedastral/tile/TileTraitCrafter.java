@@ -41,6 +41,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -238,7 +239,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 					}
 					for(int i = 0; i < relays.size(); ++i) {
 						((TileMarkedRelay)world.getTileEntity(relays.get(i))).getInventory().
-						setInventorySlotContents(0, relayInputs.get(i));
+						setInventorySlotContents(0, relayInputs.get(i).copy());
 					}
 					syncTile(false);
 					markDirty();
@@ -282,8 +283,8 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		}
 		starlight -= starlightReq;
 		for(BlockPos relayPos : relays) {
-			((TileMarkedRelay)world.getTileEntity(relayPos)).getInventory().
-			setInventorySlotContents(0, ItemStack.EMPTY);
+			IInventory relayInv = ((TileMarkedRelay)world.getTileEntity(relayPos)).getInventory();
+			relayInv.setInventorySlotContents(0, MiscUtil.getContainerItem(relayInv.getStackInSlot(0)));
 		}
 		if(inventory.getStackInSlot(25).isEmpty()) {
 			inventory.setInventorySlotContents(25, currentRecipe.getOutput());
