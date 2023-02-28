@@ -61,7 +61,7 @@ public class AttunementCrafterItemHandler extends BaseItemHandler<AttunementCraf
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 5;
 	}
 }

@@ -83,7 +83,7 @@ import thelm.packagedauto.util.MiscHelper;
 public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, IPackageCraftingMachine, IStarlightReceiverLinkableTile, TileRequiresMultiblock, IHasFakeAltar {
 
 	public static final TileEntityType<TraitCrafterTile> TYPE_INSTANCE = (TileEntityType<TraitCrafterTile>)TileEntityType.Builder.
-			create(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
+			of(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
 					()->AETraitCrafterTile::new, ()->TraitCrafterTile::new), TraitCrafterBlock.INSTANCE).
 			build(null).setRegistryName("packagedastral:trait_crafter");
 
@@ -126,26 +126,26 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	@Override
-	public void setWorldAndPos(World world, BlockPos pos) {
-		super.setWorldAndPos(world, pos);
-		fakeAltar.setWorldAndPos(world, pos);
+	public void setLevelAndPosition(World world, BlockPos pos) {
+		super.setLevelAndPosition(world, pos);
+		fakeAltar.setLevelAndPosition(world, pos);
 	}
 
 	@Override
-	public void setPos(BlockPos pos) {
-		super.setPos(pos);
-		fakeAltar.setPos(pos);
+	public void setPosition(BlockPos pos) {
+		super.setPosition(pos);
+		fakeAltar.setPosition(pos);
 	}
 
 	@Override
 	public void tick() {
-		if(!world.isRemote) {
-			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(world).getTransmissionNode(pos) == null) {
-				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
+		if(!level.isClientSide) {
+			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(level).getTransmissionNode(worldPosition) == null) {
+				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(level);
 				handler.addTransmissionTile(this);
-				IPrismTransmissionNode node = handler.getTransmissionNode(pos);
+				IPrismTransmissionNode node = handler.getTransmissionNode(worldPosition);
 				if(node != null && node.needsUpdate()) {
-					StarlightUpdateHandler.getInstance().addNode(world, node);
+					StarlightUpdateHandler.getInstance().addNode(level, node);
 				}
 				isNetworkInformed = true;
 			}
@@ -157,13 +157,13 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 					ejectItems();
 				}
 			}
-			if(world.getGameTime() % 16 == 0) {
-				doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
+			if(level.getGameTime() % 16 == 0) {
+				doesSeeSky = MiscUtils.canSeeSky(level, worldPosition.above(), true, doesSeeSky);
 			}
 			gatherStarlight();
 			chargeEnergy();
 			matchStructure();
-			if(world.getGameTime() % 8 == 0) {
+			if(level.getGameTime() % 8 == 0) {
 				ejectItems();
 			}
 			energyStorage.updateIfChanged();
@@ -184,7 +184,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 					catch(Exception e) {}
 				});
 			}
-			if(Minecraft.getInstance().gameSettings.getSoundLevel(SoundCategory.BLOCKS) > 0) {
+			if(Minecraft.getInstance().options.getSoundSourceVolume(SoundCategory.BLOCKS) > 0) {
 				if(clientCraftSound == null || ((PositionedLoopSound)clientCraftSound).hasStoppedPlaying()) {
 					clientCraftSound = SoundHelper.playSoundLoopFadeInClient(
 							SoundsAS.ALTAR_CRAFT_LOOP_T4, new Vector3(this).add(0.5, 0.5, 0.5), 0.6F, 1F, false,
@@ -207,7 +207,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 			if(recipe.getLevel() == 3 && structureValid && emptyRelays.size() >= relayInputs.size() && starlight >= recipe.getStarlightRequired()) {
 				ItemStack slotStack = itemHandler.getStackInSlot(25);
 				ItemStack outputStack = recipe.getOutput();
-				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.areItemStackTagsEqual(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
+				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.tagMatches(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
 					relays.clear();
 					relays.addAll(emptyRelays.subList(0, relayInputs.size()));
 					currentRecipe = recipe;
@@ -220,11 +220,11 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 						itemHandler.setStackInSlot(i, recipe.getMatrix().get(i).copy());
 					}
 					for(int i = 0; i < relays.size(); ++i) {
-						((MarkedRelayTile)world.getTileEntity(relays.get(i))).getItemHandler().
+						((MarkedRelayTile)level.getBlockEntity(relays.get(i))).getItemHandler().
 						setStackInSlot(0, relayInputs.get(i).copy());
 					}
 					syncTile(false);
-					markDirty();
+					setChanged();
 					return true;
 				}
 			}
@@ -238,9 +238,9 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	protected void tickProcess() {
-		if(relays.stream().map(world::getTileEntity).
+		if(relays.stream().map(level::getBlockEntity).
 				anyMatch(tile->!(tile instanceof MarkedRelayTile) || tile.isRemoved()) ||
-				world.getGameTime() % 8 == 0 && !structureValid) {
+				level.getGameTime() % 8 == 0 && !structureValid) {
 			endProcess();
 		}
 		else if(starlight >= starlightReq) {
@@ -258,13 +258,13 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 			endProcess();
 			return;
 		}
-		if(relays.stream().map(world::getTileEntity).
+		if(relays.stream().map(level::getBlockEntity).
 				anyMatch(tile->!(tile instanceof MarkedRelayTile) || tile.isRemoved())) {
 			endProcess();
 			return;
 		}
 		for(BlockPos relayPos : relays) {
-			ItemStackHandler relayInv = ((MarkedRelayTile)world.getTileEntity(relayPos)).getItemHandler();
+			ItemStackHandler relayInv = ((MarkedRelayTile)level.getBlockEntity(relayPos)).getItemHandler();
 			relayInv.setStackInSlot(0, MiscHelper.INSTANCE.getContainerItem(relayInv.getStackInSlot(0)));
 		}
 		if(itemHandler.getStackInSlot(25).isEmpty()) {
@@ -277,9 +277,9 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		for(int i = 0; i < 25; ++i) {
 			itemHandler.setStackInSlot(i, remainingItems.get(i));
 		}
-		FinishCraftEffectPacket.finishCraft(pos, effectRecipe, requiresStructure, world.getDimensionKey(), 32);
-		EntityFlare.spawnAmbientFlare(world, pos.add(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
-		EntityFlare.spawnAmbientFlare(world, pos.add(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
+		FinishCraftEffectPacket.finishCraft(worldPosition, effectRecipe, requiresStructure, level.dimension(), 32);
+		EntityFlare.spawnAmbientFlare(level, worldPosition.offset(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
+		EntityFlare.spawnAmbientFlare(level, worldPosition.offset(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
 		endProcess();
 	}
 
@@ -288,7 +288,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		progress = 0;
 		remainingProgress = 0;
 		starlightReq = 0;
-		relays.stream().map(world::getTileEntity).
+		relays.stream().map(level::getBlockEntity).
 		filter(tile->tile instanceof MarkedRelayTile && !tile.isRemoved()).
 		forEach(tile->((MarkedRelayTile)tile).spawnItem());
 		relays.clear();
@@ -296,15 +296,15 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		effectRecipe = null;
 		currentRecipe = null;
 		syncTile(false);
-		markDirty();
+		setChanged();
 	}
 
 	protected List<BlockPos> getEmptyRelays() {
-		return BlockPos.getAllInBox(pos.add(-3, 0, -3), pos.add(3, 0, 3)).map(pos->{
-			TileEntity tile = world.getTileEntity(pos);
+		return BlockPos.betweenClosedStream(worldPosition.offset(-3, 0, -3), worldPosition.offset(3, 0, 3)).map(pos->{
+			TileEntity tile = level.getBlockEntity(pos);
 			if(tile instanceof MarkedRelayTile) {
 				if(((MarkedRelayTile)tile).getItemHandler().getStackInSlot(0).isEmpty()) {
-					return pos.toImmutable();
+					return pos.immutable();
 				}
 			}
 			return null;
@@ -314,7 +314,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	protected void ejectItems() {
 		int endIndex = isWorking ? 25 : 0;
 		for(Direction direction : Direction.values()) {
-			TileEntity tile = world.getTileEntity(pos.offset(direction));
+			TileEntity tile = level.getBlockEntity(worldPosition.relative(direction));
 			if(tile != null && !(tile instanceof UnpackagerTile) && tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).isPresent()) {
 				IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).resolve().get();
 				boolean flag = true;
@@ -362,20 +362,20 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	protected void gatherStarlight() {
 		tickStarlightCollectionMap.clear();
 		starlight *= 0.9F;
-		if(doesSeeSky && SkyHandler.getContext(world) != null) {
-			float heightAmount = MathHelper.clamp((float)Math.pow(pos.getY()/7F, 1.5F)/65F, 0F, 1F);
-			heightAmount *= DayTimeHelper.getCurrentDaytimeDistribution(getWorld());
+		if(doesSeeSky && SkyHandler.getContext(level) != null) {
+			float heightAmount = MathHelper.clamp((float)Math.pow(worldPosition.getY()/7F, 1.5F)/65F, 0F, 1F);
+			heightAmount *= DayTimeHelper.getCurrentDaytimeDistribution(level);
 			collectStarlight(heightAmount*4*60, AltarCollectionCategory.HEIGHT);
 			if(posDistribution == -1) {
-				if(world instanceof ISeedReader) {
-					posDistribution = SkyCollectionHelper.getSkyNoiseDistribution((ISeedReader)world, pos);
+				if(level instanceof ISeedReader) {
+					posDistribution = SkyCollectionHelper.getSkyNoiseDistribution((ISeedReader)level, worldPosition);
 				}
 				else {
 					posDistribution = 0.3F;
 				}
 			}
 			float fieldAmount = MathHelper.sqrt(posDistribution);
-			fieldAmount *= DayTimeHelper.getCurrentDaytimeDistribution(getWorld());
+			fieldAmount *= DayTimeHelper.getCurrentDaytimeDistribution(level);
 			collectStarlight(fieldAmount*4*65, AltarCollectionCategory.FOSIC_FIELD);
 		}
 	}
@@ -392,7 +392,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		int collectable = MathHelper.floor(Math.min(percent, getRemainingCollectionCapacity(category)));
 		starlight = MathHelper.clamp(starlight+collectable, 0, starlightCapacity);
 		tickStarlightCollectionMap.computeIfPresent(category, (cat, remaining)->Math.max(remaining-collectable, 0));
-		markDirty();
+		setChanged();
 	}
 
 	@Override
@@ -402,14 +402,14 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 
 	protected void matchStructure() {
 		if(requiresStructure && structureMatch == null) {
-			structureMatch = getRequiredStructureType().observe(world, pos);
+			structureMatch = getRequiredStructureType().observe(level, worldPosition);
 		}
-		boolean matches = !requiresStructure || structureMatch.isValid(world);
+		boolean matches = !requiresStructure || structureMatch.isValid(level);
 		if(matches != structureValid) {
-			LogCategory.STRUCTURE_MATCH.info(()->"Structure match updated: "+getClass().getName()+" at "+pos+" ("+structureValid+" -> "+matches+")");
+			LogCategory.STRUCTURE_MATCH.info(()->"Structure match updated: "+getClass().getName()+" at "+worldPosition+" ("+structureValid+" -> "+matches+")");
 			structureValid = matches;
 			syncTile(false);
-			markDirty();
+			setChanged();
 		}
 	}
 
@@ -419,8 +419,8 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	@Override
-	public void read(BlockState blockState, CompoundNBT nbt) {
-		super.read(blockState, nbt);
+	public void load(BlockState blockState, CompoundNBT nbt) {
+		super.load(blockState, nbt);
 		if(nbt.contains("Recipe")) {
 			CompoundNBT tag = nbt.getCompound("Recipe");
 			IPackageRecipeInfo recipe = MiscHelper.INSTANCE.readRecipe(tag);
@@ -438,8 +438,8 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		if(currentRecipe != null) {
 			CompoundNBT tag = MiscHelper.INSTANCE.writeRecipe(new CompoundNBT(), currentRecipe);
 			nbt.put("Recipe", tag);
@@ -463,7 +463,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		starlightReq = nbt.getInt("StarlightReq");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
-			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().getRecipe(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
+			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
 			if(recipe instanceof SimpleAltarRecipe) {
 				effectRecipe = (SimpleAltarRecipe)recipe;
 			}
@@ -517,7 +517,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().expand(0, 5, 0).grow(3, 0, 3);
+		return super.getRenderBoundingBox().expandTowards(0, 5, 0).inflate(3, 0, 3);
 	}
 
 	@Override

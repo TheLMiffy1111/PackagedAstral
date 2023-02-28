@@ -61,7 +61,7 @@ public class TraitCrafterItemHandler extends BaseItemHandler<TraitCrafterTile> {
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 5;
 	}
 }

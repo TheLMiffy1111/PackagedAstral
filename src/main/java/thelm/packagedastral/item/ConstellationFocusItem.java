@@ -17,7 +17,7 @@ public class ConstellationFocusItem extends Item {
 	public static final ConstellationFocusItem INSTANCE = new ConstellationFocusItem();
 
 	protected ConstellationFocusItem() {
-		super(new Item.Properties().group(PackagedAstral.ITEM_GROUP));
+		super(new Item.Properties().tab(PackagedAstral.ITEM_GROUP));
 		setRegistryName("packagedastral:constellation_focus");
 	}
 
@@ -28,8 +28,8 @@ public class ConstellationFocusItem extends Item {
 
 	@Override
 	public Entity createEntity(World world, Entity location, ItemStack stack) {
-		EntityItemHighlighted entity = new EntityItemHighlighted(EntityTypesAS.ITEM_HIGHLIGHT, world, location.getPosX(), location.getPosY(), location.getPosZ(), stack);
-		entity.read(location.writeWithoutTypeId(new CompoundNBT()));
+		EntityItemHighlighted entity = new EntityItemHighlighted(EntityTypesAS.ITEM_HIGHLIGHT, world, location.getX(), location.getY(), location.getZ(), stack);
+		entity.load(location.saveWithoutId(new CompoundNBT()));
 		entity.applyColor(Color.WHITE);
 		if(location instanceof ItemEntity) {
 			entity.setReplacedEntity((ItemEntity)location);

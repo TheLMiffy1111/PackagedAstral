@@ -19,10 +19,10 @@ public class MarkedRelayRenderer extends TileEntityRenderer<MarkedRelayTile> {
 	public void render(MarkedRelayTile tile, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		ItemStack stack = tile.getItemHandler().getStackInSlot(0);
 		if(!stack.isEmpty()) {
-			matrixStack.push();
+			matrixStack.pushPose();
 			matrixStack.translate(0.5, 0.1, 0.5);
-			RenderingUtils.renderItemAsEntity(stack, matrixStack, buffer, 0, 0, 0, combinedLight, partialTicks, (int)tile.getWorld().getGameTime());
-			matrixStack.pop();
+			RenderingUtils.renderItemAsEntity(stack, matrixStack, buffer, 0, 0, 0, combinedLight, partialTicks, (int)tile.getLevel().getGameTime());
+			matrixStack.popPose();
 		}
 	}
 }

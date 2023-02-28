@@ -1,6 +1,7 @@
 package thelm.packagedastral.recipe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,10 +42,10 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 	public void read(CompoundNBT nbt) {
 		input.clear();
 		patterns.clear();
-		IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().getRecipe(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
+		IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("Matrix", 10), matrix);
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("InputRelay", 10), inputRelay);
-		output = ItemStack.read(nbt.getCompound("Output"));
+		output = ItemStack.of(nbt.getCompound("Output"));
 		if(recipe instanceof SimpleAltarRecipe) {
 			this.recipe = (SimpleAltarRecipe)recipe;
 			List<ItemStack> toCondense = new ArrayList<>(matrix);
@@ -65,7 +66,7 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		ListNBT inputRelayTag = MiscHelper.INSTANCE.saveAllItems(new ListNBT(), inputRelay);
 		nbt.put("Matrix", matrixTag);
 		nbt.put("InputRelay", inputRelayTag);
-		nbt.put("Output", output.write(new CompoundNBT()));
+		nbt.put("Output", output.save(new CompoundNBT()));
 		return nbt;
 	}
 
@@ -157,7 +158,7 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 					inputRelay.add(toSet.copy());
 				}
 			}
-			for(SimpleAltarRecipe recipe : MiscHelper.INSTANCE.getRecipeManager().getRecipesForType(RecipeTypesAS.TYPE_ALTAR.getType())) {
+			for(SimpleAltarRecipe recipe : MiscHelper.INSTANCE.getRecipeManager().getAllRecipesFor(RecipeTypesAS.TYPE_ALTAR.getType())) {
 				if(recipe.getInputs().containsInputs(handler, true)) {
 					List<Ingredient> matchers = Lists.transform(recipe.getRelayInputs(), WrappedIngredient::getIngredient);
 					if(inputRelay.isEmpty() && matchers.isEmpty() || RecipeMatcher.findMatches(inputRelay, matchers) != null) {
@@ -195,5 +196,35 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 			map.put(slotArray[i+25], inputRelay.get(i));
 		}
 		return map;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof TraitPackageRecipeInfo) {
+			TraitPackageRecipeInfo other = (TraitPackageRecipeInfo)obj;
+			if(input.size() != other.input.size()) {
+				return false;
+			}
+			for(int i = 0; i < input.size(); ++i) {
+				if(!ItemStack.matches(input.get(i), other.input.get(i))) {
+					return false;
+				}
+			}
+			return recipe.equals(other.recipe);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		Object[] toHash = new Object[2];
+		Object[] inputArray = new Object[input.size()];
+		for(int i = 0; i < input.size(); ++i) {
+			ItemStack stack = input.get(i);
+			inputArray[i] = new Object[] {stack.getItem(), stack.getCount(), stack.getTag()};
+		}
+		toHash[0] = recipe;
+		toHash[1] = inputArray;
+		return Arrays.deepHashCode(toHash);
 	}
 }

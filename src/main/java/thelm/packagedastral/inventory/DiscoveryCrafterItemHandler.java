@@ -60,7 +60,7 @@ public class DiscoveryCrafterItemHandler extends BaseItemHandler<DiscoveryCrafte
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 5;
 	}
 }

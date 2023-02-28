@@ -35,7 +35,7 @@ public class FinishCraftEffectPacket {
 
 	public FinishCraftEffectPacket(BlockPos pos, ResourceLocation recipe, boolean doEffect) {
 		this.pos = pos;
-		this.recipe = MiscHelper.INSTANCE.getRecipeManager().getRecipe(recipe).map(r->(SimpleAltarRecipe)r).get();
+		this.recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(recipe).map(r->(SimpleAltarRecipe)r).get();
 		this.doEffect = doEffect;
 	}
 
@@ -51,9 +51,9 @@ public class FinishCraftEffectPacket {
 
 	public static void handle(FinishCraftEffectPacket pkt, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
-			ClientWorld world = Minecraft.getInstance().world;
-			if(world.isBlockLoaded(pkt.pos)) {
-				TileEntity te = world.getTileEntity(pkt.pos);
+			ClientWorld world = Minecraft.getInstance().level;
+			if(world.isLoaded(pkt.pos)) {
+				TileEntity te = world.getBlockEntity(pkt.pos);
 				if(te instanceof IHasFakeAltar) {
 					TileAltar fakeAltar = ((IHasFakeAltar)te).getFakeAltar();
 					pkt.recipe.getCraftingEffects().forEach(effect->{

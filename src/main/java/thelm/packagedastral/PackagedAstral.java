@@ -17,7 +17,7 @@ public class PackagedAstral {
 	public static final ItemGroup ITEM_GROUP = new ItemGroup("packagedastral") {
 		@OnlyIn(Dist.CLIENT)
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(TraitCrafterBlock.INSTANCE);
 		}
 	};

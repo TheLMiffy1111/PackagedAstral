@@ -18,9 +18,9 @@ public class TraitCrafterPatternStructure extends PatternBlockArray {
 	}
 
 	private void load() {
-		BlockState bricks = BlocksAS.MARBLE_BRICKS.getDefaultState();
+		BlockState bricks = BlocksAS.MARBLE_BRICKS.defaultBlockState();
 		addAll(ConstellationCrafterPatternStructure.INSTANCE);
-		addBlock(TraitCrafterBlock.INSTANCE.getDefaultState(), 0, 0, 0);
+		addBlock(TraitCrafterBlock.INSTANCE.defaultBlockState(), 0, 0, 0);
 		addBlock(bricks, 4, 3, 3);
 		addBlock(bricks, 4, 3, -3);
 		addBlock(bricks, -4, 3, 3);

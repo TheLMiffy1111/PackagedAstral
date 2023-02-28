@@ -70,7 +70,7 @@ public class AttunedCrystalIngredient extends Ingredient {
 	}
 
 	@Override
-	public JsonElement serialize() {
+	public JsonElement toJson() {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", ID.toString());
 		json.addProperty("hasToBeCelestial", hasToBeCelestial);
@@ -88,9 +88,9 @@ public class AttunedCrystalIngredient extends Ingredient {
 
 		@Override
 		public AttunedCrystalIngredient parse(JsonObject json) {
-			boolean hasToBeCelestial = JSONUtils.getBoolean(json, "hasToBeCelestial", false);
-			boolean canBeCelestial = JSONUtils.getBoolean(json, "canBeCelestial", true);
-			ResourceLocation constellationName = new ResourceLocation(JSONUtils.getString(json, "constellation"));
+			boolean hasToBeCelestial = JSONUtils.getAsBoolean(json, "hasToBeCelestial", false);
+			boolean canBeCelestial = JSONUtils.getAsBoolean(json, "canBeCelestial", true);
+			ResourceLocation constellationName = new ResourceLocation(JSONUtils.getAsString(json, "constellation"));
 			IConstellation constellation = ConstellationRegistry.getConstellation(constellationName);
 			if(constellation instanceof IWeakConstellation) {
 				return new AttunedCrystalIngredient(hasToBeCelestial, canBeCelestial, (IWeakConstellation)constellation);

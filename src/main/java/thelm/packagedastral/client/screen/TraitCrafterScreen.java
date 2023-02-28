@@ -27,8 +27,8 @@ public class TraitCrafterScreen extends BaseScreen<TraitCrafterContainer> {
 
 	public TraitCrafterScreen(TraitCrafterContainer container, PlayerInventory playerInventory, ITextComponent title) {
 		super(container, playerInventory, title);
-		xSize = 198;
-		ySize = 217;
+		imageWidth = 198;
+		imageHeight = 217;
 	}
 
 	@Override
@@ -37,49 +37,49 @@ public class TraitCrafterScreen extends BaseScreen<TraitCrafterContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		int scaledStarlight;
-		if(container.tile.structureValid) {
-			scaledStarlight = container.tile.getScaledStarlight(174);
+		if(menu.tile.structureValid) {
+			scaledStarlight = menu.tile.getScaledStarlight(174);
 			RenderSystem.color4f(1, 1, 1, 1);
 		}
 		else {
 			scaledStarlight = 174;
 			RenderSystem.color4f(1, 0, 0, 1);
 		}
-		minecraft.getTextureManager().bindTexture(BLACK);
-		blit(matrixStack, guiLeft+11, guiTop+110, 174, 10, 0F, 0F, 1F, 1F);
+		minecraft.getTextureManager().bind(BLACK);
+		blit(matrixStack, leftPos+11, topPos+110, 174, 10, 0F, 0F, 1F, 1F);
 		SpriteSheetResource spriteStarlight = SpritesAS.SPR_STARLIGHT_STORE;
 		spriteStarlight.getResource().bindTexture();
-		Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(container.tile.getWorld().getGameTime());
-		blit(matrixStack, guiLeft+11, guiTop+110, scaledStarlight, 10, uvOffset.getA(), uvOffset.getB(), spriteStarlight.getUWidth()*scaledStarlight/174, spriteStarlight.getVLength());
-		super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
-		blit(matrixStack, guiLeft+138, guiTop+53, 198, 0, container.tile.getScaledProgress(22), 16);
-		int scaledEnergy = container.tile.getScaledEnergy(40);
-		blit(matrixStack, guiLeft+10, guiTop+28+40-scaledEnergy, 198, 16+40-scaledEnergy, 12, scaledEnergy);
+		Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(menu.tile.getLevel().getGameTime());
+		blit(matrixStack, leftPos+11, topPos+110, scaledStarlight, 10, uvOffset.getA(), uvOffset.getB(), spriteStarlight.getUWidth()*scaledStarlight/174, spriteStarlight.getVLength());
+		super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
+		blit(matrixStack, leftPos+138, topPos+53, 198, 0, menu.tile.getScaledProgress(22), 16);
+		int scaledEnergy = menu.tile.getScaledEnergy(40);
+		blit(matrixStack, leftPos+10, topPos+28+40-scaledEnergy, 198, 16+40-scaledEnergy, 12, scaledEnergy);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-		String s = container.tile.getDisplayName().getString();
-		font.drawString(matrixStack, s, xSize/2 - font.getStringWidth(s)/2, 6, 0x404040);
-		font.drawString(matrixStack, container.playerInventory.getDisplayName().getString(), container.getPlayerInvX(), container.getPlayerInvY()-11, 0x404040);
-		if(mouseX-guiLeft >= 10 && mouseY-guiTop >= 28 && mouseX-guiLeft <= 21 && mouseY-guiTop <= 67) {
-			renderTooltip(matrixStack, new StringTextComponent(container.tile.getEnergyStorage().getEnergyStored()+" / "+container.tile.getEnergyStorage().getMaxEnergyStored()+" FE"), mouseX-guiLeft, mouseY-guiTop);
+	protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+		String s = menu.tile.getDisplayName().getString();
+		font.draw(matrixStack, s, imageWidth/2 - font.width(s)/2, 6, 0x404040);
+		font.draw(matrixStack, menu.playerInventory.getDisplayName().getString(), menu.getPlayerInvX(), menu.getPlayerInvY()-11, 0x404040);
+		if(mouseX-leftPos >= 10 && mouseY-topPos >= 28 && mouseX-leftPos <= 21 && mouseY-topPos <= 67) {
+			renderTooltip(matrixStack, new StringTextComponent(menu.tile.getEnergyStorage().getEnergyStored()+" / "+menu.tile.getEnergyStorage().getMaxEnergyStored()+" FE"), mouseX-leftPos, mouseY-topPos);
 		}
 	}
 
 	protected void blit(MatrixStack matrixStack, int x, int y, int width, int height, float textureX, float textureY, float textureWidth, float textureHeight) {
-		Matrix4f matrix = matrixStack.getLast().getMatrix();
+		Matrix4f matrix = matrixStack.last().pose();
 		int blitOffset = getBlitOffset();
-		BufferBuilder vb = Tessellator.getInstance().getBuffer();
+		BufferBuilder vb = Tessellator.getInstance().getBuilder();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(matrix, x, y+height, blitOffset).tex(textureX, textureY+textureHeight).endVertex();
-		vb.pos(matrix, x+width, y+height, blitOffset).tex(textureX+textureWidth, textureY+textureHeight).endVertex();
-		vb.pos(matrix, x+width, y, blitOffset).tex(textureX+textureWidth, textureY).endVertex();
-		vb.pos(matrix, x, y, blitOffset).tex(textureX, textureY).endVertex();
-		vb.finishDrawing();
+		vb.vertex(matrix, x, y+height, blitOffset).uv(textureX, textureY+textureHeight).endVertex();
+		vb.vertex(matrix, x+width, y+height, blitOffset).uv(textureX+textureWidth, textureY+textureHeight).endVertex();
+		vb.vertex(matrix, x+width, y, blitOffset).uv(textureX+textureWidth, textureY).endVertex();
+		vb.vertex(matrix, x, y, blitOffset).uv(textureX, textureY).endVertex();
+		vb.end();
 		RenderSystem.enableAlphaTest();
-		WorldVertexBufferUploader.draw(vb);
+		WorldVertexBufferUploader.end(vb);
 	}
 }

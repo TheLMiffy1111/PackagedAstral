@@ -61,7 +61,7 @@ public class ConstellationCrafterItemHandler extends BaseItemHandler<Constellati
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 5;
 	}
 }

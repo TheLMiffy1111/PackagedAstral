@@ -21,11 +21,11 @@ public class AttunementCrafterPatternStructure extends PatternBlockArray {
 	}
 
 	private void load() {
-		BlockState chiseled = BlocksAS.MARBLE_CHISELED.getDefaultState();
-		BlockState bricks = BlocksAS.MARBLE_BRICKS.getDefaultState();
-		BlockState arch = BlocksAS.MARBLE_ARCH.getDefaultState();
-		BlockState sootyRaw = BlocksAS.BLACK_MARBLE_RAW.getDefaultState();
-		addBlock(AttunementCrafterBlock.INSTANCE.getDefaultState(), 0, 0, 0);
+		BlockState chiseled = BlocksAS.MARBLE_CHISELED.defaultBlockState();
+		BlockState bricks = BlocksAS.MARBLE_BRICKS.defaultBlockState();
+		BlockState arch = BlocksAS.MARBLE_ARCH.defaultBlockState();
+		BlockState sootyRaw = BlocksAS.BLACK_MARBLE_RAW.defaultBlockState();
+		addBlock(AttunementCrafterBlock.INSTANCE.defaultBlockState(), 0, 0, 0);
 		for(int i = -3; i <= 3; ++i) {
 			for(int j = -3; j <= 3; ++j) {
 				if(i != 0 || j != 0) {
@@ -69,7 +69,7 @@ public class AttunementCrafterPatternStructure extends PatternBlockArray {
 		return new SimpleMatchableBlock(BlocksAS.MARBLE_PILLAR) {
 			@Override
 			public BlockState getDescriptiveState(long tick) {
-				return BlocksAS.MARBLE_PILLAR.getDefaultState().with(BlockMarblePillar.PILLAR_TYPE, type);
+				return BlocksAS.MARBLE_PILLAR.defaultBlockState().setValue(BlockMarblePillar.PILLAR_TYPE, type);
 			}
 		};
 	}

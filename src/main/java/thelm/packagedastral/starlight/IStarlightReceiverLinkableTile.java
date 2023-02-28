@@ -19,12 +19,12 @@ public interface IStarlightReceiverLinkableTile extends IStarlightReceiver<ITran
 
 	@Override
 	default World getTrWorld() {
-		return ((TileEntity)this).getWorld();
+		return ((TileEntity)this).getLevel();
 	}
 
 	@Override
 	default BlockPos getTrPos() {
-		return ((TileEntity)this).getPos();
+		return ((TileEntity)this).getBlockPos();
 	}
 
 	@Override

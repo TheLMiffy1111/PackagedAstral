@@ -16,7 +16,7 @@ import thelm.packagedauto.tile.BaseTile;
 public class MarkedRelayTile extends BaseTile {
 
 	public static final TileEntityType<MarkedRelayTile> TYPE_INSTANCE = (TileEntityType<MarkedRelayTile>)TileEntityType.Builder.
-			create(MarkedRelayTile::new, MarkedRelayBlock.INSTANCE).
+			of(MarkedRelayTile::new, MarkedRelayBlock.INSTANCE).
 			build(null).setRegistryName("packagedastral:marked_pedestal");
 
 	public MarkedRelayTile() {
@@ -32,13 +32,13 @@ public class MarkedRelayTile extends BaseTile {
 	public void spawnItem() {
 		ItemStack stack = itemHandler.getStackInSlot(0);
 		itemHandler.setStackInSlot(0, ItemStack.EMPTY);
-		if(!world.isRemote && !stack.isEmpty()) {
-			double dx = world.rand.nextFloat()/2+0.25;
-			double dy = world.rand.nextFloat()/2+0.25;
-			double dz = world.rand.nextFloat()/2+0.25;
-			ItemEntity itemEntity = new ItemEntity(world, pos.getX()+dx, pos.getY()+dy, pos.getZ()+dz, stack);
-			itemEntity.setDefaultPickupDelay();
-			world.addEntity(itemEntity);
+		if(!level.isClientSide && !stack.isEmpty()) {
+			double dx = level.random.nextFloat()/2+0.25;
+			double dy = level.random.nextFloat()/2+0.25;
+			double dz = level.random.nextFloat()/2+0.25;
+			ItemEntity itemEntity = new ItemEntity(level, worldPosition.getX()+dx, worldPosition.getY()+dy, worldPosition.getZ()+dz, stack);
+			itemEntity.setDefaultPickUpDelay();
+			level.addFreshEntity(itemEntity);
 		}
 	}
 

@@ -29,12 +29,12 @@ public class TraitCrafterRenderer extends TileEntityRenderer<TraitCrafterTile> {
 	@Override
 	public void render(TraitCrafterTile tile, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		if(TraitCrafterTile.requiresStructure && tile.structureValid) {
-			long worldTime = tile.getWorld().getGameTime();
+			long worldTime = tile.getLevel().getGameTime();
 			SimpleAltarRecipe recipe = tile.effectRecipe;
 			if(recipe != null) {
 				IConstellation c = recipe.getFocusConstellation();
 				if(c != null) {
-					float dayAlpha = DayTimeHelper.getCurrentDaytimeDistribution(tile.getWorld())*0.6F;
+					float dayAlpha = DayTimeHelper.getCurrentDaytimeDistribution(tile.getLevel())*0.6F;
 					int max = 3000;
 					int t = (int)(worldTime % max);
 					float halfAge = max/2;
@@ -43,9 +43,9 @@ public class TraitCrafterRenderer extends TileEntityRenderer<TraitCrafterTile> {
 					RenderingConstellationUtils.renderConstellationIntoWorldFlat(c, matrixStack, buffer, new Vector3(0.5, 0.03, 0.5), 5.5+tr, 2, 0.1F+dayAlpha);
 				}
 			}
-			matrixStack.push();
+			matrixStack.pushPose();
 			matrixStack.translate(0.5, 4.5, 0.5);
-			long id = tile.getPos().toLong();
+			long id = tile.getBlockPos().asLong();
 			if(recipe != null) {
 				List<WrappedIngredient> traitInputs = recipe.getRelayInputs();
 				if(!traitInputs.isEmpty()) {
@@ -67,7 +67,7 @@ public class TraitCrafterRenderer extends TileEntityRenderer<TraitCrafterTile> {
 				RenderingDrawUtils.renderLightRayFan(matrixStack, buffer, Color.WHITE, id*31L, 15, 1.5F, 35);
 				RenderingDrawUtils.renderLightRayFan(matrixStack, buffer, ColorsAS.CELESTIAL_CRYSTAL, id*16L, 10, 1F, 25);
 			}
-			matrixStack.pop();
+			matrixStack.popPose();
 		}
 	}
 }

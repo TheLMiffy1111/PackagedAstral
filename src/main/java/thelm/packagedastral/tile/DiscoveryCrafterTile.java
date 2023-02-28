@@ -69,7 +69,7 @@ import thelm.packagedauto.util.MiscHelper;
 public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntity, IPackageCraftingMachine, IStarlightReceiverLinkableTile, IHasFakeAltar {
 
 	public static final TileEntityType<DiscoveryCrafterTile> TYPE_INSTANCE = (TileEntityType<DiscoveryCrafterTile>)TileEntityType.Builder.
-			create(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
+			of(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
 					()->AEDiscoveryCrafterTile::new, ()->DiscoveryCrafterTile::new), DiscoveryCrafterBlock.INSTANCE).
 			build(null).setRegistryName("packagedastral:discovery_crafter");
 
@@ -109,26 +109,26 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	}
 
 	@Override
-	public void setWorldAndPos(World world, BlockPos pos) {
-		super.setWorldAndPos(world, pos);
-		fakeAltar.setWorldAndPos(world, pos);
+	public void setLevelAndPosition(World world, BlockPos pos) {
+		super.setLevelAndPosition(world, pos);
+		fakeAltar.setLevelAndPosition(world, pos);
 	}
 
 	@Override
-	public void setPos(BlockPos pos) {
-		super.setPos(pos);
-		fakeAltar.setPos(pos);
+	public void setPosition(BlockPos pos) {
+		super.setPosition(pos);
+		fakeAltar.setPosition(pos);
 	}
 
 	@Override
 	public void tick() {
-		if(!world.isRemote) {
-			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(world).getTransmissionNode(pos) == null) {
-				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
+		if(!level.isClientSide) {
+			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(level).getTransmissionNode(worldPosition) == null) {
+				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(level);
 				handler.addTransmissionTile(this);
-				IPrismTransmissionNode node = handler.getTransmissionNode(pos);
+				IPrismTransmissionNode node = handler.getTransmissionNode(worldPosition);
 				if(node != null && node.needsUpdate()) {
-					StarlightUpdateHandler.getInstance().addNode(world, node);
+					StarlightUpdateHandler.getInstance().addNode(level, node);
 				}
 				isNetworkInformed = true;
 			}
@@ -140,12 +140,12 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 					ejectItems();
 				}
 			}
-			if(world.getGameTime() % 16 == 0) {
-				doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
+			if(level.getGameTime() % 16 == 0) {
+				doesSeeSky = MiscUtils.canSeeSky(level, worldPosition.above(), true, doesSeeSky);
 			}
 			gatherStarlight();
 			chargeEnergy();
-			if(world.getGameTime() % 8 == 0) {
+			if(level.getGameTime() % 8 == 0) {
 				ejectItems();
 			}
 			energyStorage.updateIfChanged();
@@ -166,7 +166,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 					catch(Exception e) {}
 				});
 			}
-			if(Minecraft.getInstance().gameSettings.getSoundLevel(SoundCategory.BLOCKS) > 0) {
+			if(Minecraft.getInstance().options.getSoundSourceVolume(SoundCategory.BLOCKS) > 0) {
 				if(clientCraftSound == null || ((PositionedLoopSound)clientCraftSound).hasStoppedPlaying()) {
 					clientCraftSound = SoundHelper.playSoundLoopFadeInClient(
 							SoundsAS.ALTAR_CRAFT_LOOP_T1, new Vector3(this).add(0.5, 0.5, 0.5), 0.6F, 1F, false,
@@ -181,12 +181,12 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	}
 
 	@Override
-	public void remove() {
-		if(world != null && !world.isRemote) {
-			WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
-			IPrismTransmissionNode node = handler.getTransmissionNode(pos);
+	public void setRemoved() {
+		if(level != null && !level.isClientSide) {
+			WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(level);
+			IPrismTransmissionNode node = handler.getTransmissionNode(worldPosition);
 			if(node != null) {
-				StarlightUpdateHandler.getInstance().removeNode(world, node);
+				StarlightUpdateHandler.getInstance().removeNode(level, node);
 			}
 			handler.removeTransmission(this);
 			isNetworkInformed = false;
@@ -200,7 +200,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 			if(recipe.getLevel() == 0 && starlight >= recipe.getStarlightRequired()) {
 				ItemStack slotStack = itemHandler.getStackInSlot(9);
 				ItemStack outputStack = recipe.getOutput();
-				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.areItemStackTagsEqual(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
+				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.tagMatches(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
 					currentRecipe = recipe;
 					effectRecipe = recipe.getRecipe();
 					isWorking = true;
@@ -210,9 +210,9 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 					for(int i = 0; i < 9; ++i) {
 						itemHandler.setStackInSlot(i, recipe.getMatrix().get(i).copy());
 					}
-					SoundHelper.playSoundAround(SoundsAS.ALTAR_CRAFT_START, SoundCategory.BLOCKS, world, new Vector3(this).add(0.5, 0.5, 0.5), 0.6F, 1F);
+					SoundHelper.playSoundAround(SoundsAS.ALTAR_CRAFT_START, SoundCategory.BLOCKS, level, new Vector3(this).add(0.5, 0.5, 0.5), 0.6F, 1F);
 					syncTile(false);
-					markDirty();
+					setChanged();
 					return true;
 				}
 			}
@@ -251,9 +251,9 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 		for(int i = 0; i < 9; ++i) {
 			itemHandler.setStackInSlot(i, remainingItems.get(i));
 		}
-		FinishCraftEffectPacket.finishCraft(pos, effectRecipe, craftingEffects, world.getDimensionKey(), 32);
-		EntityFlare.spawnAmbientFlare(world, pos.add(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
-		EntityFlare.spawnAmbientFlare(world, pos.add(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
+		FinishCraftEffectPacket.finishCraft(worldPosition, effectRecipe, craftingEffects, level.dimension(), 32);
+		EntityFlare.spawnAmbientFlare(level, worldPosition.offset(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
+		EntityFlare.spawnAmbientFlare(level, worldPosition.offset(-3+RANDOM.nextInt(7), 1+RANDOM.nextInt(3), -3+RANDOM.nextInt(7)));
 		endProcess();
 	}
 
@@ -266,13 +266,13 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 		effectRecipe = null;
 		currentRecipe = null;
 		syncTile(false);
-		markDirty();
+		setChanged();
 	}
 
 	protected void ejectItems() {
 		int endIndex = isWorking ? 9 : 0;
 		for(Direction direction : Direction.values()) {
-			TileEntity tile = world.getTileEntity(pos.offset(direction));
+			TileEntity tile = level.getBlockEntity(worldPosition.relative(direction));
 			if(tile != null && !(tile instanceof UnpackagerTile) && tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).isPresent()) {
 				IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).resolve().get();
 				boolean flag = true;
@@ -320,20 +320,20 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	protected void gatherStarlight() {
 		tickStarlightCollectionMap.clear();
 		starlight *= 0.9F;
-		if(doesSeeSky && SkyHandler.getContext(world) != null) {
-			float heightAmount = MathHelper.clamp((float)Math.pow(pos.getY()/7F, 1.5F)/65F, 0F, 1F);
-			heightAmount *= DayTimeHelper.getCurrentDaytimeDistribution(getWorld());
+		if(doesSeeSky && SkyHandler.getContext(level) != null) {
+			float heightAmount = MathHelper.clamp((float)Math.pow(worldPosition.getY()/7F, 1.5F)/65F, 0F, 1F);
+			heightAmount *= DayTimeHelper.getCurrentDaytimeDistribution(level);
 			collectStarlight(heightAmount*60, AltarCollectionCategory.HEIGHT);
 			if(posDistribution == -1) {
-				if(world instanceof ISeedReader) {
-					posDistribution = SkyCollectionHelper.getSkyNoiseDistribution((ISeedReader)world, pos);
+				if(level instanceof ISeedReader) {
+					posDistribution = SkyCollectionHelper.getSkyNoiseDistribution((ISeedReader)level, worldPosition);
 				}
 				else {
 					posDistribution = 0.3F;
 				}
 			}
 			float fieldAmount = MathHelper.sqrt(posDistribution);
-			fieldAmount *= DayTimeHelper.getCurrentDaytimeDistribution(getWorld());
+			fieldAmount *= DayTimeHelper.getCurrentDaytimeDistribution(level);
 			collectStarlight(fieldAmount*65, AltarCollectionCategory.FOSIC_FIELD);
 		}
 	}
@@ -342,7 +342,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 		int collectable = MathHelper.floor(Math.min(percent, getRemainingCollectionCapacity(category)));
 		starlight = MathHelper.clamp(starlight+collectable, 0, starlightCapacity);
 		tickStarlightCollectionMap.computeIfPresent(category, (cat, remaining)->Math.max(remaining-collectable, 0));
-		markDirty();
+		setChanged();
 	}
 
 	public float getRemainingCollectionCapacity(AltarCollectionCategory category) {
@@ -359,8 +359,8 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	}
 
 	@Override
-	public void read(BlockState blockState, CompoundNBT nbt) {
-		super.read(blockState, nbt);
+	public void load(BlockState blockState, CompoundNBT nbt) {
+		super.load(blockState, nbt);
 		currentRecipe = null;
 		if(nbt.contains("Recipe")) {
 			CompoundNBT tag = nbt.getCompound("Recipe");
@@ -372,8 +372,8 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		if(currentRecipe != null) {
 			CompoundNBT tag = MiscHelper.INSTANCE.writeRecipe(new CompoundNBT(), currentRecipe);
 			nbt.put("Recipe", tag);
@@ -392,7 +392,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 		starlightReq = nbt.getInt("StarlightReq");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
-			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().getRecipe(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
+			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
 			if(recipe instanceof SimpleAltarRecipe) {
 				effectRecipe = (SimpleAltarRecipe)recipe;
 			}

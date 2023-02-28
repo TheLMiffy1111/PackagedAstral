@@ -28,7 +28,7 @@ public class TransmissionReceiverLinkableTile implements ITransmissionReceiver {
 
 	@Override
 	public void onStarlightReceive(World world, IWeakConstellation type, double amount) {
-		TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getBlockEntity(pos);
 		if(tile instanceof IStarlightReceiverLinkableTile) {
 			((IStarlightReceiverLinkableTile)tile).receiveStarlight(type, amount);
 		}

@@ -14,10 +14,10 @@ import thelm.packagedauto.block.BaseBlock;
 public class DiscoveryCrafterBlock extends BaseBlock {
 
 	public static final DiscoveryCrafterBlock INSTANCE = new DiscoveryCrafterBlock();
-	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().group(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:discovery_crafter");
+	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:discovery_crafter");
 
 	public DiscoveryCrafterBlock() {
-		super(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(15F, 25F).notSolid().sound(SoundType.STONE));
+		super(AbstractBlock.Properties.of(Material.STONE).strength(15F, 25F).noOcclusion().sound(SoundType.STONE));
 		setRegistryName("packagedastral:discovery_crafter");
 	}
 

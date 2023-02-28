@@ -37,12 +37,12 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(MarkedRelayBlock.INSTANCE, RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(MarkedRelayBlock.INSTANCE, RenderType.translucent());
 
-		ScreenManager.registerFactory(DiscoveryCrafterContainer.TYPE_INSTANCE, DiscoveryCrafterScreen::new);
-		ScreenManager.registerFactory(AttunementCrafterContainer.TYPE_INSTANCE, AttunementCrafterScreen::new);
-		ScreenManager.registerFactory(ConstellationCrafterContainer.TYPE_INSTANCE, ConstellationCrafterScreen::new);
-		ScreenManager.registerFactory(TraitCrafterContainer.TYPE_INSTANCE, TraitCrafterScreen::new);
+		ScreenManager.register(DiscoveryCrafterContainer.TYPE_INSTANCE, DiscoveryCrafterScreen::new);
+		ScreenManager.register(AttunementCrafterContainer.TYPE_INSTANCE, AttunementCrafterScreen::new);
+		ScreenManager.register(ConstellationCrafterContainer.TYPE_INSTANCE, ConstellationCrafterScreen::new);
+		ScreenManager.register(TraitCrafterContainer.TYPE_INSTANCE, TraitCrafterScreen::new);
 
 		ClientRegistry.bindTileEntityRenderer(TraitCrafterTile.TYPE_INSTANCE, TraitCrafterRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(MarkedRelayTile.TYPE_INSTANCE, MarkedRelayRenderer::new);
