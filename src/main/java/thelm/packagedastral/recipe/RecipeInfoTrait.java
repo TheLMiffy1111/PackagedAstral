@@ -1,6 +1,7 @@
 package thelm.packagedastral.recipe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -233,5 +234,32 @@ public class RecipeInfoTrait implements IRecipeInfoAltar {
 			map.put(slotArray[i+25], inputRelay.get(i));
 		}
 		return map;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof RecipeInfoTrait) {
+			RecipeInfoTrait other = (RecipeInfoTrait)obj;
+			for(int i = 0; i < input.size(); ++i) {
+				if(!ItemStack.areItemStacksEqualUsingNBTShareTag(input.get(i), other.input.get(i))) {
+					return false;
+				}
+			}
+			return recipe.equals(other.recipe);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		Object[] toHash = new Object[2];
+		Object[] inputArray = new Object[input.size()];
+		for(int i = 0; i < input.size(); ++i) {
+			ItemStack stack = input.get(i);
+			inputArray[i] = new Object[] {stack.getItem(), stack.getItemDamage(), stack.getCount(), stack.getTagCompound()};
+		}
+		toHash[0] = recipe;
+		toHash[1] = inputArray;
+		return Arrays.deepHashCode(toHash);
 	}
 }
