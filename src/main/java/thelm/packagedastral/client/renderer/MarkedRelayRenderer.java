@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import thelm.packagedastral.tile.MarkedRelayTile;
+import thelm.packagedauto.client.RenderTimer;
 
 public class MarkedRelayRenderer extends TileEntityRenderer<MarkedRelayTile> {
 
@@ -21,7 +22,7 @@ public class MarkedRelayRenderer extends TileEntityRenderer<MarkedRelayTile> {
 		if(!stack.isEmpty()) {
 			matrixStack.pushPose();
 			matrixStack.translate(0.5, 0.1, 0.5);
-			RenderingUtils.renderItemAsEntity(stack, matrixStack, buffer, 0, 0, 0, combinedLight, partialTicks, (int)tile.getLevel().getGameTime());
+			RenderingUtils.renderItemAsEntity(stack, matrixStack, buffer, 0, 0, 0, combinedLight, partialTicks, RenderTimer.INSTANCE.getTicks());
 			matrixStack.popPose();
 		}
 	}

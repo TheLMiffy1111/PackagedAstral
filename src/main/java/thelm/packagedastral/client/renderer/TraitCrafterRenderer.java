@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import thelm.packagedastral.tile.TraitCrafterTile;
+import thelm.packagedauto.client.RenderTimer;
 
 public class TraitCrafterRenderer extends TileEntityRenderer<TraitCrafterTile> {
 
@@ -29,14 +30,14 @@ public class TraitCrafterRenderer extends TileEntityRenderer<TraitCrafterTile> {
 	@Override
 	public void render(TraitCrafterTile tile, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		if(TraitCrafterTile.requiresStructure && tile.structureValid) {
-			long worldTime = tile.getLevel().getGameTime();
+			int time = RenderTimer.INSTANCE.getTicks();
 			SimpleAltarRecipe recipe = tile.effectRecipe;
 			if(recipe != null) {
 				IConstellation c = recipe.getFocusConstellation();
 				if(c != null) {
 					float dayAlpha = DayTimeHelper.getCurrentDaytimeDistribution(tile.getLevel())*0.6F;
 					int max = 3000;
-					int t = (int)(worldTime % max);
+					int t = (int)(time % max);
 					float halfAge = max/2;
 					float tr = 1F-(Math.abs(halfAge-t)/halfAge);
 					tr *= 1.3;
@@ -52,7 +53,7 @@ public class TraitCrafterRenderer extends TileEntityRenderer<TraitCrafterTile> {
 					int amount = 60/traitInputs.size();
 					for(int i = 0; i < traitInputs.size(); i++) {
 						WrappedIngredient ingredient = traitInputs.get(i);
-						ItemStack traitInput = ingredient.getRandomMatchingStack(worldTime);
+						ItemStack traitInput = ingredient.getRandomMatchingStack(time);
 						Color color = ColorizationHelper.getColor(traitInput).orElse(ColorsAS.CELESTIAL_CRYSTAL);
 						RenderingDrawUtils.renderLightRayFan(matrixStack, buffer, color, 0x1231943167156902L | id | (i*0x5151L), 20, 2F, amount);
 					}

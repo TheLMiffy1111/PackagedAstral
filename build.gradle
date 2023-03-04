@@ -67,7 +67,7 @@ sourceSets {
     main
 }
 
-version = "2.0.0.2"
+version = "2.0.0.3"
 group = "thelm.packagedastral"
 archivesBaseName = "PackagedAstral-1.16.5"
 
@@ -117,7 +117,7 @@ dependencies {
     //JitPack
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:packagedauto-308380:4400460")
+    implementation fg.deobf("curse.maven:packagedauto-308380:4420213")
     implementation fg.deobf("curse.maven:ato-405593:3405905")
 }
 
