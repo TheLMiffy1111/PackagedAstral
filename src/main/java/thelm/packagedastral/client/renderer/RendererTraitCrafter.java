@@ -19,13 +19,14 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import thelm.packagedastral.tile.TileTraitCrafter;
+import thelm.packagedauto.client.RenderTimer;
 
 public class RendererTraitCrafter extends TileEntitySpecialRenderer<TileTraitCrafter> {
 
 	@Override
 	public void render(TileTraitCrafter te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(TileTraitCrafter.requiresStructure && te.structureValid) {
-			long worldTime = te.getWorld().getTotalWorldTime();
+			int time = RenderTimer.INSTANCE.getTicks();
 			AbstractAltarRecipe recipe = te.effectRecipe;
 			if(recipe instanceof TraitRecipe) {
 				IConstellation c = ((TraitRecipe)recipe).getRequiredConstellation();
@@ -33,7 +34,7 @@ public class RendererTraitCrafter extends TileEntitySpecialRenderer<TileTraitCra
 					GlStateManager.pushMatrix();
 					float alphaDaytime = ConstellationSkyHandler.getInstance().getCurrentDaytimeDistribution(te.getWorld())*0.8F;
 					int max = 5000;
-					int t = (int)(worldTime % max);
+					int t = (int)(time % max);
 					float halfAge = max/2;
 					float tr = 1-Math.abs(halfAge-t)/halfAge;
 					tr *= 2;
@@ -51,19 +52,19 @@ public class RendererTraitCrafter extends TileEntitySpecialRenderer<TileTraitCra
 					int amt = 60/requiredHandles.size();
 					for(ItemHandle outer : requiredHandles) {
 						NonNullList<ItemStack> stacksApplicable = outer.getApplicableItemsForRender();
-						ItemStack element = stacksApplicable.get((int)((worldTime/60) % stacksApplicable.size()));
+						ItemStack element = stacksApplicable.get((int)((time/60) % stacksApplicable.size()));
 						Color col = ItemColorizationHelper.getDominantColorFromItemStack(element);
 						if(col == null) {
 							col = BlockCollectorCrystalBase.CollectorCrystalType.CELESTIAL_CRYSTAL.displayColor;
 						}
-						RenderingUtils.renderLightRayEffects(0, 0.5, 0, col, 0x12315L | outer.hashCode(), worldTime, 20, 2F, amt, amt/2);
+						RenderingUtils.renderLightRayEffects(0, 0.5, 0, col, 0x12315L | outer.hashCode(), time, 20, 2F, amt, amt/2);
 					}
 				}
-				RenderingUtils.renderLightRayEffects(0, 0.5, 0, Color.WHITE, 0, worldTime, 15, 2F, 40, 25);
+				RenderingUtils.renderLightRayEffects(0, 0.5, 0, Color.WHITE, 0, time, 15, 2F, 40, 25);
 			}
 			else {
-				RenderingUtils.renderLightRayEffects(0, 0.5, 0, Color.WHITE, 305223265L, worldTime, 20, 2F, 50, 25);
-				RenderingUtils.renderLightRayEffects(0, 0.5, 0, Color.BLUE, 0, worldTime, 10, 1F, 40, 25);
+				RenderingUtils.renderLightRayEffects(0, 0.5, 0, Color.WHITE, 305223265L, time, 20, 2F, 50, 25);
+				RenderingUtils.renderLightRayEffects(0, 0.5, 0, Color.BLUE, 0, time, 10, 1F, 40, 25);
 			}
 			GlStateManager.translate(0, 0.15, 0);
 			GlStateManager.scale(0.7, 0.7, 0.7);
