@@ -1,5 +1,8 @@
 package thelm.packagedastral.integration.appeng.tile;
 
+import com.mojang.authlib.GameProfile;
+
+import appeng.api.IAppEngApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.GridFlags;
@@ -17,7 +20,6 @@ import appeng.api.util.AEPartLocation;
 import appeng.core.Api;
 import appeng.me.helpers.MachineSource;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import thelm.packagedastral.tile.ConstellationCrafterTile;
@@ -53,8 +55,11 @@ public class AEConstellationCrafterTile extends ConstellationCrafterTile impleme
 	}
 
 	@Override
-	public void setPlacer(PlayerEntity placer) {
-		placerID = Api.instance().registries().players().getID(placer);
+	public void onChunkUnloaded() {
+		super.onChunkUnloaded();
+		if(gridNode != null) {
+			gridNode.destroy();
+		}
 	}
 
 	@Override
@@ -75,8 +80,11 @@ public class AEConstellationCrafterTile extends ConstellationCrafterTile impleme
 	@Override
 	public IGridNode getActionableNode() {
 		if(gridNode == null && level != null && !level.isClientSide) {
-			gridNode = Api.instance().grid().createGridNode(gridBlock);
-			gridNode.setPlayerID(placerID);
+			IAppEngApi api = Api.instance();
+			gridNode = api.grid().createGridNode(gridBlock);
+			if(ownerUUID != null) {
+				gridNode.setPlayerID(api.registries().players().getID(new GameProfile(this.ownerUUID, "[UNKNOWN]")));
+			}
 			gridNode.updateState();
 		}
 		return gridNode;

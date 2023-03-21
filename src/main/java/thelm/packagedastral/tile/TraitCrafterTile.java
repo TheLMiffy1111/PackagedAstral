@@ -199,6 +199,19 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	@Override
+	public void setRemoved() {
+		if(level != null && !level.isClientSide) {
+			WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(level);
+			IPrismTransmissionNode node = handler.getTransmissionNode(worldPosition);
+			if(node != null) {
+				StarlightUpdateHandler.getInstance().removeNode(level, node);
+			}
+			handler.removeTransmission(this);
+			isNetworkInformed = false;
+		}
+	}
+
+	@Override
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
 		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
