@@ -32,8 +32,8 @@ public class PackagedAstral {
 
 	public static final String MOD_ID = "packagedastral";
 	public static final String NAME = "PackagedAstral";
-	public static final String VERSION = "1.12.2-1.0.0.4";
-	public static final String DEPENDENCIES = "required-after:packagedauto@[1.12.2-1.0.6.27,);required-after:astralsorcery;";
+	public static final String VERSION = "1.12.2-1.0.0.5";
+	public static final String DEPENDENCIES = "required-after:packagedauto@[1.12.2-1.0.7,);required-after:astralsorcery;";
 	public static final String GUI_FACTORY = "thelm.packagedastral.client.gui.GuiPackagedAstralConfigFactory";
 	public static final CreativeTabs CREATIVE_TAB = new CreativeTabs("packagedastral") {
 		@SideOnly(Side.CLIENT)

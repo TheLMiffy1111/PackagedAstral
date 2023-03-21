@@ -3,7 +3,6 @@ package thelm.packagedastral.tile;
 import java.util.List;
 import java.util.Random;
 
-import appeng.api.AEApi;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
@@ -365,10 +364,12 @@ public class TileDiscoveryCrafter extends TileBase implements ITickable, IPackag
 		}
 	}
 
-	@Optional.Method(modid="appliedenergistics2")
 	@Override
-	public void setPlacer(EntityPlayer placer) {
-		placerID = AEApi.instance().registries().players().getID(placer);
+	public void onChunkUnload() {
+		super.onChunkUnload();
+		if(hostHelper != null) {
+			hostHelper.invalidate();
+		}
 	}
 
 	@Optional.Method(modid="appliedenergistics2")

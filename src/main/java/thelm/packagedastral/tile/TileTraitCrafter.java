@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
 
-import appeng.api.AEApi;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
@@ -434,6 +433,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 			handler.removeTransmission(this);
 			isNetworkInformed = false;
 		}
+		endProcess();
 	}
 
 	public HostHelperTileTraitCrafter hostHelper;
@@ -446,10 +446,12 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		}
 	}
 
-	@Optional.Method(modid="appliedenergistics2")
 	@Override
-	public void setPlacer(EntityPlayer placer) {
-		placerID = AEApi.instance().registries().players().getID(placer);
+	public void onChunkUnload() {
+		super.onChunkUnload();
+		if(hostHelper != null) {
+			hostHelper.invalidate();
+		}
 	}
 
 	@Optional.Method(modid="appliedenergistics2")
