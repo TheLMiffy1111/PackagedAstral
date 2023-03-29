@@ -197,7 +197,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
 		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
-			if(recipe.getLevel() == 0 && starlight >= recipe.getStarlightRequired()) {
+			if(recipe.getLevel() == 0) {
 				ItemStack slotStack = itemHandler.getStackInSlot(9);
 				ItemStack outputStack = recipe.getOutput();
 				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.tagMatches(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
@@ -350,7 +350,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	}
 
 	public float getCollectionCap(AltarCollectionCategory category) {
-		return starlightCapacity/6F;
+		return starlightCapacity/8.5F;
 	}
 
 	@Override
@@ -433,6 +433,13 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 			return 0;
 		}
 		return scale * starlight / starlightCapacity;
+	}
+
+	public int getScaledStarlightReq(int scale) {
+		if(starlightCapacity <= 0 || starlight >= starlightReq) {
+			return 0;
+		}
+		return scale * starlightReq / starlightCapacity - getScaledStarlight(scale);
 	}
 
 	public int getScaledProgress(int scale) {

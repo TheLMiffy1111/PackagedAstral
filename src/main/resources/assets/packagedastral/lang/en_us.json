@@ -5,6 +5,8 @@
     "block.packagedastral.attunement_crafter": "Starlight Package Crafting Altar",
     "block.packagedastral.constellation_crafter": "Celestial Package Crafting Altar",
     "block.packagedastral.trait_crafter": "Iridescent Package Crafting Altar",
+    "block.packagedastral.trait_crafter.relays.available": "Available Marked Astral Relays: %s",
+    "block.packagedastral.trait_crafter.relays.required": "Required Marked Astral Relays: %s",
     "block.packagedastral.marked_relay": "Marked Astral Relay",
 
     "item.packagedastral.constellation_focus": "Constellation Focus",

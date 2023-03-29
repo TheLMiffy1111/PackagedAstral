@@ -5,6 +5,8 @@
     "block.packagedastral.attunement_crafter": "星辉封包合成祭坛",
     "block.packagedastral.constellation_crafter": "天辉封包合成祭坛",
     "block.packagedastral.trait_crafter": "五彩封包合成祭坛",
+    "block.packagedastral.trait_crafter.relays.available": "可用标记星辉转继器: %s",
+    "block.packagedastral.trait_crafter.relays.required": "所需标记星辉转继器: %s",
     "block.packagedastral.marked_relay": "标记星辉转继器",
 
     "item.packagedastral.constellation_focus": "星座核心",

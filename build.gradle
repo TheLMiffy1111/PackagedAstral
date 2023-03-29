@@ -67,7 +67,7 @@ sourceSets {
     main
 }
 
-version = "2.0.0.4"
+version = "2.0.1.5"
 group = "thelm.packagedastral"
 archivesBaseName = "PackagedAstral-1.16.5"
 

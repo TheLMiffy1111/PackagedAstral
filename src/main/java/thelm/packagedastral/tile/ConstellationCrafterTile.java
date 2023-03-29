@@ -206,7 +206,7 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
 		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
-			if(recipe.getLevel() == 2 && structureValid && starlight >= recipe.getStarlightRequired()) {
+			if(recipe.getLevel() == 2 && structureValid) {
 				ItemStack slotStack = itemHandler.getStackInSlot(21);
 				ItemStack outputStack = recipe.getOutput();
 				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.tagMatches(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
@@ -354,7 +354,7 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	}
 
 	public float getCollectionCap(AltarCollectionCategory category) {
-		return starlightCapacity/6F/3;
+		return starlightCapacity/8.5F/2;
 	}
 
 	public void collectStarlight(float percent, AltarCollectionCategory category) {
@@ -464,6 +464,13 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 			return 0;
 		}
 		return scale * starlight / starlightCapacity;
+	}
+
+	public int getScaledStarlightReq(int scale) {
+		if(starlightCapacity <= 0 || !structureValid || starlight >= starlightReq) {
+			return 0;
+		}
+		return scale * starlightReq / starlightCapacity - getScaledStarlight(scale);
 	}
 
 	public int getScaledProgress(int scale) {

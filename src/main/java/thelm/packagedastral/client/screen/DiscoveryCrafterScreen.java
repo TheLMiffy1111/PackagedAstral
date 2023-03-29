@@ -18,6 +18,7 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import thelm.packagedastral.container.DiscoveryCrafterContainer;
+import thelm.packagedauto.client.RenderTimer;
 import thelm.packagedauto.client.screen.BaseScreen;
 
 public class DiscoveryCrafterScreen extends BaseScreen<DiscoveryCrafterContainer> {
@@ -44,8 +45,13 @@ public class DiscoveryCrafterScreen extends BaseScreen<DiscoveryCrafterContainer
 		blit(matrixStack, leftPos+11, topPos+74, 152, 10, 0F, 0F, 1F, 1F);
 		SpriteSheetResource spriteStarlight = SpritesAS.SPR_STARLIGHT_STORE;
 		spriteStarlight.getResource().bindTexture();
-		Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(menu.tile.getLevel().getGameTime());
+		Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(RenderTimer.INSTANCE.getTicks());
 		blit(matrixStack, leftPos+11, topPos+74, scaledStarlight, 10, uvOffset.getA(), uvOffset.getB(), spriteStarlight.getUWidth()*scaledStarlight/152, spriteStarlight.getVLength());
+		int scaledStarlightReq = menu.tile.getScaledStarlightReq(152);
+		if(scaledStarlightReq > 0) {
+			RenderSystem.color4f(0.2F, 0.5F, 1.0F, 0.4F);
+			blit(matrixStack, leftPos+11+scaledStarlight, topPos+74, scaledStarlightReq, 10, uvOffset.getA()+spriteStarlight.getUWidth()*scaledStarlight/152, uvOffset.getB(), spriteStarlight.getUWidth()*scaledStarlightReq/152, spriteStarlight.getVLength());
+		}
 		super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
 		blit(matrixStack, leftPos+102, topPos+35, 176, 0, menu.tile.getScaledProgress(22), 16);
 		int scaledEnergy = menu.tile.getScaledEnergy(40);

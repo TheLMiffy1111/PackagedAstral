@@ -18,6 +18,7 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import thelm.packagedastral.container.AttunementCrafterContainer;
+import thelm.packagedauto.client.RenderTimer;
 import thelm.packagedauto.client.screen.BaseScreen;
 
 public class AttunementCrafterScreen extends BaseScreen<AttunementCrafterContainer> {
@@ -51,8 +52,13 @@ public class AttunementCrafterScreen extends BaseScreen<AttunementCrafterContain
 		blit(matrixStack, leftPos+11, topPos+110, 174, 10, 0F, 0F, 1F, 1F);
 		SpriteSheetResource spriteStarlight = SpritesAS.SPR_STARLIGHT_STORE;
 		spriteStarlight.getResource().bindTexture();
-		Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(menu.tile.getLevel().getGameTime());
+		Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(RenderTimer.INSTANCE.getTicks());
 		blit(matrixStack, leftPos+11, topPos+110, scaledStarlight, 10, uvOffset.getA(), uvOffset.getB(), spriteStarlight.getUWidth()*scaledStarlight/174, spriteStarlight.getVLength());
+		int scaledStarlightReq = menu.tile.getScaledStarlightReq(174);
+		if(scaledStarlightReq > 0) {
+			RenderSystem.color4f(0.2F, 0.5F, 1.0F, 0.4F);
+			blit(matrixStack, leftPos+11+scaledStarlight, topPos+110, scaledStarlightReq, 10, uvOffset.getA()+spriteStarlight.getUWidth()*scaledStarlight/174, uvOffset.getB(), spriteStarlight.getUWidth()*scaledStarlightReq/174, spriteStarlight.getVLength());
+		}
 		super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
 		blit(matrixStack, leftPos+138, topPos+53, 198, 0, menu.tile.getScaledProgress(22), 16);
 		int scaledEnergy = menu.tile.getScaledEnergy(40);

@@ -54,7 +54,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
@@ -104,6 +106,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	public TileAltar fakeAltar = new TileAltar().updateType(AltarType.RADIANCE, true);
 	public SimpleAltarRecipe effectRecipe = null;
 	public Object clientCraftSound = null;
+	public int requiredRelays = -1;
 	public int starlight = 0;
 	public Object2FloatMap<AltarCollectionCategory> tickStarlightCollectionMap = new Object2FloatOpenHashMap<>();
 	public boolean isWorking = false;
@@ -123,6 +126,19 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	@Override
 	protected ITextComponent getDefaultName() {
 		return new TranslationTextComponent("block.packagedastral.trait_crafter");
+	}
+
+	public ITextComponent getMessage() {
+		if(isWorking) {
+			return null;
+		}
+		int availableRelays = getEmptyRelays().size();
+		IFormattableTextComponent message = new TranslationTextComponent("block.packagedastral.trait_crafter.relays.available", availableRelays);
+		if(requiredRelays >= 0) {
+			message.append("\n");
+			message.append(new TranslationTextComponent("block.packagedastral.trait_crafter.relays.required", requiredRelays));
+		}
+		return message;
 	}
 
 	@Override
@@ -215,30 +231,33 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
 		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
-			List<ItemStack> relayInputs = recipe.getRelayInputs();
-			List<BlockPos> emptyRelays = getEmptyRelays();
-			if(recipe.getLevel() == 3 && structureValid && emptyRelays.size() >= relayInputs.size() && starlight >= recipe.getStarlightRequired()) {
-				ItemStack slotStack = itemHandler.getStackInSlot(25);
-				ItemStack outputStack = recipe.getOutput();
-				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.tagMatches(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
-					relays.clear();
-					relays.addAll(emptyRelays.subList(0, relayInputs.size()));
-					currentRecipe = recipe;
-					effectRecipe = recipe.getRecipe();
-					isWorking = true;
-					progressReq = recipe.getTimeRequired() / (int)Math.round(2*Math.pow(2, Math.max(0, 3-recipe.getLevelRequired())));
-					remainingProgress = energyReq;
-					starlightReq = recipe.getStarlightRequired();
-					for(int i = 0; i < 25; ++i) {
-						itemHandler.setStackInSlot(i, recipe.getMatrix().get(i).copy());
+			if(recipe.getLevel() == 3 && structureValid) {
+				List<ItemStack> relayInputs = recipe.getRelayInputs();
+				List<BlockPos> emptyRelays = getEmptyRelays();
+				requiredRelays = Math.max(requiredRelays, relayInputs.size());
+				if(emptyRelays.size() >= relayInputs.size()) {
+					ItemStack slotStack = itemHandler.getStackInSlot(25);
+					ItemStack outputStack = recipe.getOutput();
+					if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && ItemStack.tagMatches(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
+						relays.clear();
+						relays.addAll(emptyRelays.subList(0, relayInputs.size()));
+						currentRecipe = recipe;
+						effectRecipe = recipe.getRecipe();
+						isWorking = true;
+						progressReq = recipe.getTimeRequired() / (int)Math.round(2*Math.pow(2, Math.max(0, 3-recipe.getLevelRequired())));
+						remainingProgress = energyReq;
+						starlightReq = recipe.getStarlightRequired();
+						for(int i = 0; i < 25; ++i) {
+							itemHandler.setStackInSlot(i, recipe.getMatrix().get(i).copy());
+						}
+						for(int i = 0; i < relays.size(); ++i) {
+							((MarkedRelayTile)level.getBlockEntity(relays.get(i))).getItemHandler().
+							setStackInSlot(0, relayInputs.get(i).copy());
+						}
+						syncTile(false);
+						setChanged();
+						return true;
 					}
-					for(int i = 0; i < relays.size(); ++i) {
-						((MarkedRelayTile)level.getBlockEntity(relays.get(i))).getItemHandler().
-						setStackInSlot(0, relayInputs.get(i).copy());
-					}
-					syncTile(false);
-					setChanged();
-					return true;
 				}
 			}
 		}
@@ -398,7 +417,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	public float getCollectionCap(AltarCollectionCategory category) {
-		return starlightCapacity/6F/4;
+		return starlightCapacity/8.5F/2;
 	}
 
 	public void collectStarlight(float percent, AltarCollectionCategory category) {
@@ -518,6 +537,13 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 			return 0;
 		}
 		return scale * starlight / starlightCapacity;
+	}
+
+	public int getScaledStarlightReq(int scale) {
+		if(starlightCapacity <= 0 || !structureValid || starlight >= starlightReq) {
+			return 0;
+		}
+		return scale * starlightReq / starlightCapacity - getScaledStarlight(scale);
 	}
 
 	public int getScaledProgress(int scale) {
