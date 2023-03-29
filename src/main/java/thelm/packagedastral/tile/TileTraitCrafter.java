@@ -104,7 +104,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	public AbstractAltarRecipe effectRecipe = null;
 	public Object clientCraftSound = null;
 	public int starlight = 0;
-	public int requiredRelays = -1;
+	public int requiredRelays = 0;
 	public boolean isWorking = false;
 	public int progress = 0;
 	public int progressReq = 0;
@@ -137,7 +137,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		}
 		int availableRelays = getEmptyRelays().size();
 		ITextComponent message = new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.available", availableRelays);
-		if(requiredRelays >= 0) {
+		if(requiredRelays > 0) {
 			message.appendText("\n");
 			message.appendSibling(new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.required", requiredRelays));
 		}
