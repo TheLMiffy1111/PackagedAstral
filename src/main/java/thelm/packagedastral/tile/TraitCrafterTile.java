@@ -106,7 +106,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	public TileAltar fakeAltar = new TileAltar().updateType(AltarType.RADIANCE, true);
 	public SimpleAltarRecipe effectRecipe = null;
 	public Object clientCraftSound = null;
-	public int requiredRelays = -1;
+	public int requiredRelays = 0;
 	public int starlight = 0;
 	public Object2FloatMap<AltarCollectionCategory> tickStarlightCollectionMap = new Object2FloatOpenHashMap<>();
 	public boolean isWorking = false;
@@ -134,7 +134,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		}
 		int availableRelays = getEmptyRelays().size();
 		IFormattableTextComponent message = new TranslationTextComponent("block.packagedastral.trait_crafter.relays.available", availableRelays);
-		if(requiredRelays >= 0) {
+		if(requiredRelays > 0) {
 			message.append("\n");
 			message.append(new TranslationTextComponent("block.packagedastral.trait_crafter.relays.required", requiredRelays));
 		}
