@@ -51,6 +51,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -101,6 +104,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	public AbstractAltarRecipe effectRecipe = null;
 	public Object clientCraftSound = null;
 	public int starlight = 0;
+	public int requiredRelays = -1;
 	public boolean isWorking = false;
 	public int progress = 0;
 	public int progressReq = 0;
@@ -125,6 +129,19 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	@Override
 	protected String getLocalizedName() {
 		return I18n.translateToLocal("tile.packagedastral.trait_crafter.name");
+	}
+
+	public ITextComponent getMessage() {
+		if(isWorking) {
+			return null;
+		}
+		int availableRelays = getEmptyRelays().size();
+		ITextComponent message = new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.available", availableRelays);
+		if(requiredRelays >= 0) {
+			message.appendText("\n");
+			message.appendSibling(new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.required", requiredRelays));
+		}
+		return message;
 	}
 
 	@Override
@@ -219,30 +236,33 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	public boolean acceptPackage(IRecipeInfo recipeInfo, List<ItemStack> stacks, EnumFacing facing) {
 		if(!isBusy() && recipeInfo instanceof IRecipeInfoAltar) {
 			IRecipeInfoAltar recipe = (IRecipeInfoAltar)recipeInfo;
-			List<ItemStack> relayInputs = recipe.getRelayInputs();
-			List<BlockPos> emptyRelays = getEmptyRelays();
-			if(recipe.getLevel() == 3 && structureValid && emptyRelays.size() >= relayInputs.size() && starlight >= recipe.getStarlightRequired() && (!requiresNight || !recipe.requiresNight() || ConstellationSkyHandler.getInstance().isNight(world))) {
-				ItemStack slotStack = inventory.getStackInSlot(25);
-				ItemStack outputStack = recipe.getOutput();
-				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && slotStack.getItemDamage() == outputStack.getItemDamage() && ItemStack.areItemStackShareTagsEqual(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
-					relays.clear();
-					relays.addAll(emptyRelays.subList(0, relayInputs.size()));
-					currentRecipe = recipe;
-					effectRecipe = recipe.getRecipe();
-					isWorking = true;
-					progressReq = recipe.getTimeRequired() / (int)Math.round(2*Math.pow(2, Math.max(0, 3-recipe.getLevelRequired())));
-					remainingProgress = energyReq;
-					starlightReq = recipe.getStarlightRequired();
-					for(int i = 0; i < 25; ++i) {
-						inventory.setInventorySlotContents(i, recipe.getMatrix().get(i).copy());
+			if(recipe.getLevel() == 3 && structureValid) {
+				List<ItemStack> relayInputs = recipe.getRelayInputs();
+				List<BlockPos> emptyRelays = getEmptyRelays();
+				requiredRelays = Math.max(requiredRelays, relayInputs.size());
+				if(emptyRelays.size() >= relayInputs.size() && (!requiresNight || !recipe.requiresNight() || ConstellationSkyHandler.getInstance().isNight(world))) {
+					ItemStack slotStack = inventory.getStackInSlot(25);
+					ItemStack outputStack = recipe.getOutput();
+					if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && slotStack.getItemDamage() == outputStack.getItemDamage() && ItemStack.areItemStackShareTagsEqual(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
+						relays.clear();
+						relays.addAll(emptyRelays.subList(0, relayInputs.size()));
+						currentRecipe = recipe;
+						effectRecipe = recipe.getRecipe();
+						isWorking = true;
+						progressReq = recipe.getTimeRequired() / (int)Math.round(2*Math.pow(2, Math.max(0, 3-recipe.getLevelRequired())));
+						remainingProgress = energyReq;
+						starlightReq = recipe.getStarlightRequired();
+						for(int i = 0; i < 25; ++i) {
+							inventory.setInventorySlotContents(i, recipe.getMatrix().get(i).copy());
+						}
+						for(int i = 0; i < relays.size(); ++i) {
+							((TileMarkedRelay)world.getTileEntity(relays.get(i))).getInventory().
+							setInventorySlotContents(0, relayInputs.get(i).copy());
+						}
+						syncTile(false);
+						markDirty();
+						return true;
 					}
-					for(int i = 0; i < relays.size(); ++i) {
-						((TileMarkedRelay)world.getTileEntity(relays.get(i))).getInventory().
-						setInventorySlotContents(0, relayInputs.get(i).copy());
-					}
-					syncTile(false);
-					markDirty();
-					return true;
 				}
 			}
 		}
@@ -433,7 +453,9 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 			handler.removeTransmission(this);
 			isNetworkInformed = false;
 		}
-		endProcess();
+		if(isWorking) {
+			endProcess();
+		}
 	}
 
 	public HostHelperTileTraitCrafter hostHelper;
@@ -562,6 +584,13 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 			return 0;
 		}
 		return scale * starlight / starlightCapacity;
+	}
+
+	public int getScaledStarlightReq(int scale) {
+		if(starlightCapacity <= 0 || !structureValid || starlight >= starlightReq) {
+			return 0;
+		}
+		return scale * starlightReq / starlightCapacity - getScaledStarlight(scale);
 	}
 
 	public int getScaledProgress(int scale) {

@@ -201,7 +201,7 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 	public boolean acceptPackage(IRecipeInfo recipeInfo, List<ItemStack> stacks, EnumFacing facing) {
 		if(!isBusy() && recipeInfo instanceof IRecipeInfoAltar) {
 			IRecipeInfoAltar recipe = (IRecipeInfoAltar)recipeInfo;
-			if(recipe.getLevel() == 1 && structureValid && starlight >= recipe.getStarlightRequired() && (!requiresNight || !recipe.requiresNight() || ConstellationSkyHandler.getInstance().isNight(world))) {
+			if(recipe.getLevel() == 1 && structureValid && (!requiresNight || !recipe.requiresNight() || ConstellationSkyHandler.getInstance().isNight(world))) {
 				ItemStack slotStack = inventory.getStackInSlot(13);
 				ItemStack outputStack = recipe.getOutput();
 				if(slotStack.isEmpty() || slotStack.getItem() == outputStack.getItem() && slotStack.getItemDamage() == outputStack.getItemDamage() && ItemStack.areItemStackShareTagsEqual(slotStack, outputStack) && slotStack.getCount()+outputStack.getCount() <= outputStack.getMaxStackSize()) {
@@ -495,6 +495,13 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 			return 0;
 		}
 		return scale * starlight / starlightCapacity;
+	}
+
+	public int getScaledStarlightReq(int scale) {
+		if(starlightCapacity <= 0 || !structureValid || starlight >= starlightReq) {
+			return 0;
+		}
+		return scale * starlightReq / starlightCapacity - getScaledStarlight(scale);
 	}
 
 	public int getScaledProgress(int scale) {

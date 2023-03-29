@@ -28,10 +28,11 @@ public class InventoryConstellationCrafter extends InventoryTileBase {
 	public int getField(int id) {
 		switch(id) {
 		case 0: return tile.starlight;
-		case 1: return tile.progress;
-		case 2: return tile.progressReq;
-		case 3: return tile.remainingProgress;
-		case 4: return tile.isWorking ? 1 : 0;
+		case 1: return tile.starlightReq;
+		case 2: return tile.progress;
+		case 3: return tile.progressReq;
+		case 4: return tile.remainingProgress;
+		case 5: return tile.isWorking ? 1 : 0;
 		default: return 0;
 		}
 	}
@@ -43,15 +44,18 @@ public class InventoryConstellationCrafter extends InventoryTileBase {
 			tile.starlight = value;
 			break;
 		case 1:
-			tile.progress = value;
+			tile.starlightReq = value;
 			break;
 		case 2:
-			tile.progressReq = value;
+			tile.progress = value;
 			break;
 		case 3:
-			tile.remainingProgress = value;
+			tile.progressReq = value;
 			break;
 		case 4:
+			tile.remainingProgress = value;
+			break;
+		case 5:
 			tile.isWorking = value != 0;
 			break;
 		}
@@ -59,7 +63,7 @@ public class InventoryConstellationCrafter extends InventoryTileBase {
 
 	@Override
 	public int getFieldCount() {
-		return 5;
+		return 6;
 	}
 
 	@Override

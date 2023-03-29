@@ -5,10 +5,14 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,6 +41,26 @@ public class BlockTraitCrafter extends BlockBase {
 	@Override
 	public TileBase createNewTileEntity(World world, int meta) {
 		return new TileTraitCrafter();
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(player.isSneaking()) {
+			TileEntity tileentity = world.getTileEntity(pos);
+			if(tileentity instanceof TileTraitCrafter) {
+				TileTraitCrafter crafter = (TileTraitCrafter)tileentity;
+				if(!crafter.isWorking) {
+					if(!world.isRemote) {
+						ITextComponent message = crafter.getMessage();
+						if(message != null) {
+							player.sendMessage(message);
+						}
+					}
+					return true;
+				}
+			}
+		}
+		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import thelm.packagedastral.container.ContainerDiscoveryCrafter;
+import thelm.packagedauto.client.RenderTimer;
 import thelm.packagedauto.client.gui.GuiContainerTileBase;
 
 public class GuiDiscoveryCrafter extends GuiContainerTileBase<ContainerDiscoveryCrafter> {
@@ -37,8 +38,13 @@ public class GuiDiscoveryCrafter extends GuiContainerTileBase<ContainerDiscovery
 		drawRect(guiLeft+11, guiTop+74, 152, 10, 0, 0, 1, 1);
 		SpriteSheetResource spriteStarlight = SpriteLibrary.spriteStarlight;
 		spriteStarlight.getResource().bindTexture();
-		Tuple<Double, Double> uvOffset = spriteStarlight.getUVOffset(container.tile.getWorld().getTotalWorldTime());
+		Tuple<Double, Double> uvOffset = spriteStarlight.getUVOffset(RenderTimer.INSTANCE.getTicks());
 		drawRect(guiLeft+11, guiTop+74, scaledStarlight, 10, uvOffset.key, uvOffset.value, spriteStarlight.getUWidth()*scaledStarlight/152, spriteStarlight.getVLength());
+		int scaledStarlightReq = container.tile.getScaledStarlightReq(152);
+		if(scaledStarlightReq > 0) {
+			GlStateManager.color(0.2F, 0.5F, 1.0F, 0.4F);
+			drawRect(guiLeft+11+scaledStarlight, guiTop+74, scaledStarlightReq, 10, uvOffset.key+spriteStarlight.getUWidth()*scaledStarlight/152, uvOffset.value, spriteStarlight.getUWidth()*scaledStarlightReq/152, spriteStarlight.getVLength());
+		}
 		super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 		drawTexturedModalRect(guiLeft+102, guiTop+35, 176, 0, container.tile.getScaledProgress(22), 16);
 		int scaledEnergy = container.tile.getScaledEnergy(40);

@@ -4,6 +4,8 @@ tile.packagedastral.discovery_crafter.name=星辉封包合成器
 tile.packagedastral.attunement_crafter.name=星辉封包合成祭坛
 tile.packagedastral.constellation_crafter.name=天辉封包合成祭坛
 tile.packagedastral.trait_crafter.name=五彩封包合成祭坛
+tile.packagedastral.trait_crafter.relays.available=可用标记光波增幅器: %s
+tile.packagedastral.trait_crafter.relays.required=所需标记光波增幅器: %s
 tile.packagedastral.marked_relay.name=标记光波增幅器
 
 item.packagedastral.constellation_focus.name=星座核心
