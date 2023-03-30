@@ -132,8 +132,8 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		if(isWorking) {
 			return null;
 		}
-		int availableRelays = getEmptyRelays().size();
-		IFormattableTextComponent message = new TranslationTextComponent("block.packagedastral.trait_crafter.relays.available", availableRelays);
+		int usableRelays = getEmptyRelays().size();
+		IFormattableTextComponent message = new TranslationTextComponent("block.packagedastral.trait_crafter.relays.usable", usableRelays);
 		if(requiredRelays > 0) {
 			message.append("\n");
 			message.append(new TranslationTextComponent("block.packagedastral.trait_crafter.relays.required", requiredRelays));

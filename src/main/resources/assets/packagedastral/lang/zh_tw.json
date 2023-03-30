@@ -5,8 +5,8 @@
     "block.packagedastral.attunement_crafter": "星輝封包合成祭壇",
     "block.packagedastral.constellation_crafter": "天輝封包合成祭壇",
     "block.packagedastral.trait_crafter": "五彩封包合成祭壇",
-    "block.packagedastral.trait_crafter.relays.available": "可用標記星輝轉繼器: %s",
-    "block.packagedastral.trait_crafter.relays.required": "所需標記星輝轉繼器: %s",
+    "block.packagedastral.trait_crafter.relays.usable": "目前可用標記星輝轉繼器: %s",
+    "block.packagedastral.trait_crafter.relays.required": "最低所需標記星輝轉繼器: %s",
     "block.packagedastral.marked_relay": "標記星輝轉繼器",
 
     "item.packagedastral.constellation_focus": "星座核心",
