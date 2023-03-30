@@ -135,8 +135,8 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		if(isWorking) {
 			return null;
 		}
-		int availableRelays = getEmptyRelays().size();
-		ITextComponent message = new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.available", availableRelays);
+		int usableRelays = getEmptyRelays().size();
+		ITextComponent message = new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.usable", usableRelays);
 		if(requiredRelays > 0) {
 			message.appendText("\n");
 			message.appendSibling(new TextComponentTranslation("tile.packagedastral.trait_crafter.relays.required", requiredRelays));
