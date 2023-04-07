@@ -56,7 +56,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
@@ -448,6 +447,17 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	@Override
 	public TileAltar getFakeAltar() {
 		return fakeAltar;
+	}
+
+	@Override
+	public int getComparatorSignal() {
+		if(isWorking) {
+			return 1;
+		}
+		if(!itemHandler.getStacks().subList(0, 26).stream().allMatch(ItemStack::isEmpty)) {
+			return 15;
+		}
+		return 0;
 	}
 
 	@Override

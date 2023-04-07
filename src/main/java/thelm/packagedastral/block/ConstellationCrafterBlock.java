@@ -6,12 +6,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 import thelm.packagedastral.PackagedAstral;
-import thelm.packagedastral.tile.AttunementCrafterTile;
 import thelm.packagedastral.tile.ConstellationCrafterTile;
 import thelm.packagedauto.block.BaseBlock;
 

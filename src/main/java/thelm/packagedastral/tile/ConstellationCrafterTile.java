@@ -401,6 +401,17 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	}
 
 	@Override
+	public int getComparatorSignal() {
+		if(isWorking) {
+			return 1;
+		}
+		if(!itemHandler.getStacks().subList(0, 22).stream().allMatch(ItemStack::isEmpty)) {
+			return 15;
+		}
+		return 0;
+	}
+
+	@Override
 	public CompoundNBT save(CompoundNBT nbt) {
 		super.save(nbt);
 		if(currentRecipe != null) {

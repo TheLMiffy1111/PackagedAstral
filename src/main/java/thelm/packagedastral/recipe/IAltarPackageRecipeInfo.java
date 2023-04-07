@@ -5,7 +5,6 @@ import java.util.List;
 
 import hellfirepvp.astralsorcery.common.crafting.recipe.SimpleAltarRecipe;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 import thelm.packagedauto.api.IPackageRecipeInfo;
 
 public interface IAltarPackageRecipeInfo extends IPackageRecipeInfo {
