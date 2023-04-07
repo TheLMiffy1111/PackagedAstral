@@ -52,7 +52,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -456,6 +455,17 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		if(isWorking) {
 			endProcess();
 		}
+	}
+
+	@Override
+	public int getComparatorSignal() {
+		if(isWorking) {
+			return 1;
+		}
+		if(!inventory.stacks.subList(0, 26).stream().allMatch(ItemStack::isEmpty)) {
+			return 15;
+		}
+		return 0;
 	}
 
 	public HostHelperTileTraitCrafter hostHelper;
