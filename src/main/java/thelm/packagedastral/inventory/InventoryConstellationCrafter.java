@@ -1,6 +1,8 @@
 
 package thelm.packagedastral.inventory;
 
+import java.util.stream.IntStream;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -14,6 +16,7 @@ public class InventoryConstellationCrafter extends InventoryTileBase {
 	public InventoryConstellationCrafter(TileConstellationCrafter tile) {
 		super(tile, 23);
 		this.tile = tile;
+		slots = IntStream.rangeClosed(0, 21).toArray();
 	}
 
 	@Override

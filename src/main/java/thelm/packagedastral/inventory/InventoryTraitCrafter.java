@@ -1,6 +1,8 @@
 
 package thelm.packagedastral.inventory;
 
+import java.util.stream.IntStream;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -14,6 +16,7 @@ public class InventoryTraitCrafter extends InventoryTileBase {
 	public InventoryTraitCrafter(TileTraitCrafter tile) {
 		super(tile, 27);
 		this.tile = tile;
+		slots = IntStream.rangeClosed(0, 25).toArray();
 	}
 
 	@Override
