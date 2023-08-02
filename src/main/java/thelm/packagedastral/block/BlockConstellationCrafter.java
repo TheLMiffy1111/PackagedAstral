@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.astralsorcery.common.structure.BlockStructureObserver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,7 @@ import thelm.packagedastral.tile.TileConstellationCrafter;
 import thelm.packagedauto.block.BlockBase;
 import thelm.packagedauto.tile.TileBase;
 
-public class BlockConstellationCrafter extends BlockBase {
+public class BlockConstellationCrafter extends BlockBase implements BlockStructureObserver {
 
 	public static final BlockConstellationCrafter INSTANCE = new BlockConstellationCrafter();
 	public static final Item ITEM_INSTANCE = new ItemBlock(INSTANCE).setRegistryName("packagedastral:constellation_crafter");

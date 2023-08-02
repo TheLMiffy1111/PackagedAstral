@@ -23,8 +23,8 @@ public class StructureAttunementCrafter extends PatternBlockArray {
 		IBlockState arch = marble.withProperty(BlockMarble.MARBLE_TYPE, BlockMarble.MarbleBlockType.ARCH);
 		IBlockState pillar = marble.withProperty(BlockMarble.MARBLE_TYPE, BlockMarble.MarbleBlockType.PILLAR);
 		IBlockState black = BlocksAS.blockBlackMarble.getDefaultState();
-		for(int i = -3; i <= 3; ++i) {
-			for(int j = -3; j <= 3; ++j) {
+		for(int i = -2; i <= 2; ++i) {
+			for(int j = -2; j <= 2; ++j) {
 				if(i != 0 || j != 0) {
 					addBlock(i, -1, j, black);
 				}

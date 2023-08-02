@@ -12,7 +12,7 @@ public class StructureConstellationCrafter extends PatternBlockArray {
 	public static final StructureConstellationCrafter INSTANCE = new StructureConstellationCrafter();
 
 	protected StructureConstellationCrafter() {
-		super(new ResourceLocation("packagedastral:pattern_attunement_crafter"));
+		super(new ResourceLocation("packagedastral:pattern_constellation_crafter"));
 		load();
 	}
 

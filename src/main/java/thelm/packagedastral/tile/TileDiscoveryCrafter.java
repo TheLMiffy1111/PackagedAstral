@@ -158,7 +158,6 @@ public class TileDiscoveryCrafter extends TileBase implements ITickable, IPackag
 					ejectItems();
 				}
 			}
-			energyStorage.updateIfChanged();
 		}
 		else {
 			clientTick();

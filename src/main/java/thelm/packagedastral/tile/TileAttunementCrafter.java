@@ -167,7 +167,6 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 					ejectItems();
 				}
 			}
-			energyStorage.updateIfChanged();
 		}
 		else {
 			clientTick();
@@ -436,6 +435,12 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
+		starlight = nbt.getInteger("Starlight");
+		isWorking = nbt.getBoolean("Working");
+		progressReq = nbt.getInteger("ProgressReq");
+		progress = nbt.getInteger("Progress");
+		remainingProgress = nbt.getInteger("EnergyProgress");
+		starlightReq = nbt.getInteger("StarlightReq");
 		currentRecipe = null;
 		if(nbt.hasKey("Recipe")) {
 			NBTTagCompound tag = nbt.getCompoundTag("Recipe");
@@ -452,6 +457,12 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
+		nbt.setInteger("Starlight", starlight);
+		nbt.setBoolean("Working", isWorking);
+		nbt.setInteger("ProgressReq", progressReq);
+		nbt.setInteger("Progress", progress);
+		nbt.setInteger("EnergyProgress", remainingProgress);
+		nbt.setInteger("StarlightReq", starlightReq);
 		if(currentRecipe != null) {
 			NBTTagCompound tag = MiscUtil.writeRecipeToNBT(new NBTTagCompound(), currentRecipe);
 			nbt.setTag("Recipe", tag);
@@ -465,13 +476,7 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 	@Override
 	public void readSyncNBT(NBTTagCompound nbt) {
 		super.readSyncNBT(nbt);
-		starlight = nbt.getInteger("Starlight");
 		structureValid = nbt.getBoolean("MultiblockValid");
-		isWorking = nbt.getBoolean("Working");
-		progressReq = nbt.getInteger("ProgressReq");
-		progress = nbt.getInteger("Progress");
-		remainingProgress = nbt.getInteger("EnergyProgress");
-		starlightReq = nbt.getInteger("StarlightReq");
 		effectRecipe = null;
 		if(nbt.hasKey("EffectRecipe")) {
 			effectRecipe = AltarRecipeRegistry.getRecipe(nbt.getInteger("EffectRecipe"));
@@ -481,13 +486,7 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 	@Override
 	public NBTTagCompound writeSyncNBT(NBTTagCompound nbt) {
 		super.writeSyncNBT(nbt);
-		nbt.setInteger("Starlight", starlight);
 		nbt.setBoolean("MultiblockValid", structureValid);
-		nbt.setBoolean("Working", isWorking);
-		nbt.setInteger("ProgressReq", progressReq);
-		nbt.setInteger("Progress", progress);
-		nbt.setInteger("EnergyProgress", remainingProgress);
-		nbt.setInteger("StarlightReq", starlightReq);
 		if(effectRecipe != null) {
 			nbt.setInteger("EffectRecipe", effectRecipe.getUniqueRecipeId());
 		}

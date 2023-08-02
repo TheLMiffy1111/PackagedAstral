@@ -35,6 +35,7 @@ public class InventoryDiscoveryCrafter extends InventoryTileBase {
 		case 3: return tile.progressReq;
 		case 4: return tile.remainingProgress;
 		case 5: return tile.isWorking ? 1 : 0;
+		case 6: return tile.getEnergyStorage().getEnergyStored();
 		default: return 0;
 		}
 	}
@@ -60,12 +61,15 @@ public class InventoryDiscoveryCrafter extends InventoryTileBase {
 		case 5:
 			tile.isWorking = value != 0;
 			break;
+		case 6:
+			tile.getEnergyStorage().setEnergyStored(value);
+			break;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 6;
+		return 7;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.astralsorcery.common.structure.BlockStructureObserver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,7 @@ import thelm.packagedastral.tile.TileAttunementCrafter;
 import thelm.packagedauto.block.BlockBase;
 import thelm.packagedauto.tile.TileBase;
 
-public class BlockAttunementCrafter extends BlockBase {
+public class BlockAttunementCrafter extends BlockBase implements BlockStructureObserver {
 
 	public static final BlockAttunementCrafter INSTANCE = new BlockAttunementCrafter();
 	public static final Item ITEM_INSTANCE = new ItemBlock(INSTANCE).setRegistryName("packagedastral:attunement_crafter");

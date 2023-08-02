@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.astralsorcery.common.structure.BlockStructureObserver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -22,7 +23,7 @@ import thelm.packagedastral.tile.TileTraitCrafter;
 import thelm.packagedauto.block.BlockBase;
 import thelm.packagedauto.tile.TileBase;
 
-public class BlockTraitCrafter extends BlockBase {
+public class BlockTraitCrafter extends BlockBase implements BlockStructureObserver {
 
 	public static final BlockTraitCrafter INSTANCE = new BlockTraitCrafter();
 	public static final Item ITEM_INSTANCE = new ItemBlock(INSTANCE).setRegistryName("packagedastral:trait_crafter");
