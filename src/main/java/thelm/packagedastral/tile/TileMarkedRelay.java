@@ -3,6 +3,7 @@ package thelm.packagedastral.tile;
 import java.awt.Color;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
@@ -37,6 +38,8 @@ import thelm.packagedauto.tile.TileBase;
 
 public class TileMarkedRelay extends TileBase implements ITickable {
 
+	public static final Random RANDOM = new Random();
+	
 	public boolean doesSeeSky = false;
 	public ChangeSubscriber<StructureMatcherPatternArray> structureMatch = null;
 	public boolean structureValid = false;
@@ -76,27 +79,27 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 	@SideOnly(Side.CLIENT)
 	public void clientTick() {
 		if(structureValid) {
-			if(world.rand.nextInt(3) == 0) {
+			if(RANDOM.nextInt(3) == 0) {
 				Vector3 at = new Vector3(pos);
-				at.add(world.rand.nextFloat()*2.6-0.8, 0, world.rand.nextFloat()*2.6-0.8);
+				at.add(RANDOM.nextFloat()*2.6-0.8, 0, RANDOM.nextFloat()*2.6-0.8);
 				EntityFXFacingParticle p = EffectHelper.genericFlareParticle(at);
 				p.setAlphaMultiplier(0.7F);
-				p.setMaxAge((int)(30+world.rand.nextFloat()*50));
-				p.gravity(0.01).scale(0.3F+world.rand.nextFloat()*0.1F);
-				if(world.rand.nextBoolean()) {
+				p.setMaxAge((int)(30+RANDOM.nextFloat()*50));
+				p.gravity(0.01).scale(0.3F+RANDOM.nextFloat()*0.1F);
+				if(RANDOM.nextBoolean()) {
 					p.setColor(Color.WHITE);
 				}
 			}
-			if(altarPos != null && doesSeeSky && world.rand.nextInt(4) == 0) {
+			if(altarPos != null && doesSeeSky && RANDOM.nextInt(4) == 0) {
 				Vector3 at = new Vector3(pos);
 				Vector3 dir = new Vector3(altarPos).subtract(at).normalize().multiply(0.05);
-				at.add(world.rand.nextFloat()*0.4+0.3, world.rand.nextFloat()*0.3+0.1, world.rand.nextFloat()*0.4+0.3);
+				at.add(RANDOM.nextFloat()*0.4+0.3, RANDOM.nextFloat()*0.3+0.1, RANDOM.nextFloat()*0.4+0.3);
 				EntityFXFacingParticle p = EffectHelper.genericFlareParticle(at);
 				p.setAlphaMultiplier(0.7F);
 				p.motion(dir.getX(), dir.getY(), dir.getZ());
-				p.setMaxAge((int)(15+world.rand.nextFloat()*30));
-				p.gravity(0.015).scale(0.2F+world.rand.nextFloat()*0.04F);
-				if(world.rand.nextBoolean()) {
+				p.setMaxAge((int)(15+RANDOM.nextFloat()*30));
+				p.gravity(0.015).scale(0.2F+RANDOM.nextFloat()*0.04F);
+				if(RANDOM.nextBoolean()) {
 					p.setColor(Color.WHITE);
 				}
 			}
