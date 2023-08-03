@@ -84,8 +84,8 @@ public class CommonProxy {
 
 	protected void registerBlocks() {
 		if(TileDiscoveryCrafter.enabled) {
-			registerBlock(BlockDiscoveryCrafter.INSTANCE);
 			registerBlock(BlockMarkedRelay.INSTANCE);
+			registerBlock(BlockDiscoveryCrafter.INSTANCE);
 		}
 		if(TileAttunementCrafter.enabled) {
 			registerBlock(BlockAttunementCrafter.INSTANCE);
@@ -100,8 +100,8 @@ public class CommonProxy {
 
 	protected void registerItems() {
 		if(TileDiscoveryCrafter.enabled) {
-			registerItem(BlockDiscoveryCrafter.ITEM_INSTANCE);
 			registerItem(BlockMarkedRelay.ITEM_INSTANCE);
+			registerItem(BlockDiscoveryCrafter.ITEM_INSTANCE);
 		}
 		if(TileAttunementCrafter.enabled) {
 			registerItem(BlockAttunementCrafter.ITEM_INSTANCE);
@@ -119,8 +119,8 @@ public class CommonProxy {
 
 	protected void registerTileEntities() {
 		if(TileDiscoveryCrafter.enabled) {
-			GameRegistry.registerTileEntity(TileDiscoveryCrafter.class, new ResourceLocation("packagedastral:discovery_crafter"));
 			GameRegistry.registerTileEntity(TileMarkedRelay.class, new ResourceLocation("packagedastral:marked_relay"));
+			GameRegistry.registerTileEntity(TileDiscoveryCrafter.class, new ResourceLocation("packagedastral:discovery_crafter"));
 		}
 		if(TileAttunementCrafter.enabled) {
 			GameRegistry.registerTileEntity(TileAttunementCrafter.class, new ResourceLocation("packagedastral:attunement_crafter"));
@@ -165,6 +165,12 @@ public class CommonProxy {
 
 	protected void registerRecipes() {
 		if(TileDiscoveryCrafter.enabled) {
+			AltarRecipeRegistry.registerDiscoveryRecipe(
+					ShapedRecipe.Builder.newShapedRecipe("packagedastral/marked_relay", BlockMarkedRelay.ITEM_INSTANCE).
+					addPart(BlocksAS.attunementRelay, ShapedRecipeSlot.CENTER).
+					addPart(ItemCraftingComponent.MetaType.GLASS_LENS.asStack(), ShapedRecipeSlot.UPPER_CENTER).
+					addPart(ItemUsableDust.DustType.ILLUMINATION.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT, ShapedRecipeSlot.LOWER_CENTER).
+					unregisteredAccessibleShapedRecipe());
 			Item component = Loader.isModLoaded("appliedenergistics2") ? ItemMisc.ME_PACKAGE_COMPONENT : ItemMisc.PACKAGE_COMPONENT;
 			AltarRecipeRegistry.registerDiscoveryRecipe(
 					ShapedRecipe.Builder.newShapedRecipe("packagedastral/discovery_crafter", BlockDiscoveryCrafter.INSTANCE).
@@ -173,12 +179,6 @@ public class CommonProxy {
 					addPart(component, ShapedRecipeSlot.LOWER_CENTER).
 					addPart(BlockInfusedWood.WoodType.RAW.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT).
 					addPart(BlockMarble.MarbleBlockType.CHISELED.asStack(), ShapedRecipeSlot.UPPER_LEFT, ShapedRecipeSlot.UPPER_RIGHT, ShapedRecipeSlot.LOWER_LEFT, ShapedRecipeSlot.LOWER_RIGHT).
-					unregisteredAccessibleShapedRecipe());
-			AltarRecipeRegistry.registerDiscoveryRecipe(
-					ShapedRecipe.Builder.newShapedRecipe("packagedastral/marked_relay", BlockMarkedRelay.ITEM_INSTANCE).
-					addPart(BlocksAS.attunementRelay, ShapedRecipeSlot.CENTER).
-					addPart(ItemCraftingComponent.MetaType.GLASS_LENS.asStack(), ShapedRecipeSlot.UPPER_CENTER).
-					addPart(ItemUsableDust.DustType.ILLUMINATION.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT, ShapedRecipeSlot.LOWER_CENTER).
 					unregisteredAccessibleShapedRecipe());
 		}
 		if(TileAttunementCrafter.enabled) {
