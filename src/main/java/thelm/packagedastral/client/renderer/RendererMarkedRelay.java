@@ -1,6 +1,7 @@
 package thelm.packagedastral.client.renderer;
 
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
+import hellfirepvp.astralsorcery.common.item.ItemCraftingComponent;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import thelm.packagedastral.tile.TileMarkedRelay;
@@ -13,6 +14,9 @@ public class RendererMarkedRelay extends TileEntitySpecialRenderer<TileMarkedRel
 		ItemStack stack = te.getInventory().getStackInSlot(0);
 		if(!stack.isEmpty()) {
 			RenderingUtils.renderItemAsEntity(stack, x, y-0.5, z, partialTicks, RenderTimer.INSTANCE.getTicks());
+		}
+		else if(te.structureValid) {
+			RenderingUtils.renderItemAsEntity(ItemCraftingComponent.MetaType.GLASS_LENS.asStack(), x, y-0.5, z, partialTicks, RenderTimer.INSTANCE.getTicks());
 		}
 	}
 }

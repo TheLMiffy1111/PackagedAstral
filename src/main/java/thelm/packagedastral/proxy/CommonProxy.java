@@ -5,6 +5,7 @@ import hellfirepvp.astralsorcery.common.block.BlockMarble;
 import hellfirepvp.astralsorcery.common.crafting.altar.AltarRecipeRegistry;
 import hellfirepvp.astralsorcery.common.crafting.helper.ShapedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.helper.ShapedRecipeSlot;
+import hellfirepvp.astralsorcery.common.item.ItemCraftingComponent;
 import hellfirepvp.astralsorcery.common.item.useables.ItemUsableDust;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
@@ -38,6 +39,7 @@ import thelm.packagedastral.recipe.RecipeTypeDiscovery;
 import thelm.packagedastral.recipe.RecipeTypeTrait;
 import thelm.packagedastral.structure.StructureAttunementCrafter;
 import thelm.packagedastral.structure.StructureConstellationCrafter;
+import thelm.packagedastral.structure.StructureMarkedRelay;
 import thelm.packagedastral.structure.StructureTraitCrafter;
 import thelm.packagedastral.tile.TileAttunementCrafter;
 import thelm.packagedastral.tile.TileConstellationCrafter;
@@ -83,6 +85,7 @@ public class CommonProxy {
 	protected void registerBlocks() {
 		if(TileDiscoveryCrafter.enabled) {
 			registerBlock(BlockDiscoveryCrafter.INSTANCE);
+			registerBlock(BlockMarkedRelay.INSTANCE);
 		}
 		if(TileAttunementCrafter.enabled) {
 			registerBlock(BlockAttunementCrafter.INSTANCE);
@@ -92,13 +95,13 @@ public class CommonProxy {
 		}
 		if(TileTraitCrafter.enabled) {
 			registerBlock(BlockTraitCrafter.INSTANCE);
-			registerBlock(BlockMarkedRelay.INSTANCE);
 		}
 	}
 
 	protected void registerItems() {
 		if(TileDiscoveryCrafter.enabled) {
 			registerItem(BlockDiscoveryCrafter.ITEM_INSTANCE);
+			registerItem(BlockMarkedRelay.ITEM_INSTANCE);
 		}
 		if(TileAttunementCrafter.enabled) {
 			registerItem(BlockAttunementCrafter.ITEM_INSTANCE);
@@ -108,7 +111,6 @@ public class CommonProxy {
 		}
 		if(TileTraitCrafter.enabled) {
 			registerItem(BlockTraitCrafter.ITEM_INSTANCE);
-			registerItem(BlockMarkedRelay.ITEM_INSTANCE);
 			registerItem(ItemConstellationFocus.INSTANCE);
 		}
 	}
@@ -118,6 +120,7 @@ public class CommonProxy {
 	protected void registerTileEntities() {
 		if(TileDiscoveryCrafter.enabled) {
 			GameRegistry.registerTileEntity(TileDiscoveryCrafter.class, new ResourceLocation("packagedastral:discovery_crafter"));
+			GameRegistry.registerTileEntity(TileMarkedRelay.class, new ResourceLocation("packagedastral:marked_relay"));
 		}
 		if(TileAttunementCrafter.enabled) {
 			GameRegistry.registerTileEntity(TileAttunementCrafter.class, new ResourceLocation("packagedastral:attunement_crafter"));
@@ -127,7 +130,6 @@ public class CommonProxy {
 		}
 		if(TileTraitCrafter.enabled) {
 			GameRegistry.registerTileEntity(TileTraitCrafter.class, new ResourceLocation("packagedastral:trait_crafter"));
-			GameRegistry.registerTileEntity(TileMarkedRelay.class, new ResourceLocation("packagedastral:marked_relay"));
 		}
 	}
 
@@ -147,6 +149,9 @@ public class CommonProxy {
 	}
 
 	protected void registerStructures() {
+		if(TileDiscoveryCrafter.enabled) {
+			registerStructure(StructureMarkedRelay.INSTANCE);
+		}
 		if(TileAttunementCrafter.enabled) {
 			registerStructure(StructureAttunementCrafter.INSTANCE);
 		}
@@ -169,6 +174,12 @@ public class CommonProxy {
 					addPart(BlockInfusedWood.WoodType.RAW.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT).
 					addPart(BlockMarble.MarbleBlockType.CHISELED.asStack(), ShapedRecipeSlot.UPPER_LEFT, ShapedRecipeSlot.UPPER_RIGHT, ShapedRecipeSlot.LOWER_LEFT, ShapedRecipeSlot.LOWER_RIGHT).
 					unregisteredAccessibleShapedRecipe());
+			AltarRecipeRegistry.registerDiscoveryRecipe(
+					ShapedRecipe.Builder.newShapedRecipe("packagedastral/marked_relay", BlockMarkedRelay.ITEM_INSTANCE).
+					addPart(BlocksAS.attunementRelay, ShapedRecipeSlot.CENTER).
+					addPart(ItemCraftingComponent.MetaType.GLASS_LENS.asStack(), ShapedRecipeSlot.UPPER_CENTER).
+					addPart(ItemUsableDust.DustType.ILLUMINATION.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT, ShapedRecipeSlot.LOWER_CENTER).
+					unregisteredAccessibleShapedRecipe());
 		}
 		if(TileAttunementCrafter.enabled) {
 			AltarRecipeRegistry.registerAltarRecipe(RecipeAttunementCrafter.INSTANCE);
@@ -178,11 +189,6 @@ public class CommonProxy {
 		}
 		if(TileTraitCrafter.enabled) {
 			AltarRecipeRegistry.registerAltarRecipe(RecipeTraitCrafter.INSTANCE);
-			AltarRecipeRegistry.registerDiscoveryRecipe(
-					ShapedRecipe.Builder.newShapedRecipe("packagedastral/marked_relay", BlockMarkedRelay.ITEM_INSTANCE).
-					addPart(BlocksAS.attunementRelay, ShapedRecipeSlot.CENTER).
-					addPart(ItemUsableDust.DustType.ILLUMINATION.asStack(), ShapedRecipeSlot.UPPER_CENTER, ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT, ShapedRecipeSlot.LOWER_CENTER).
-					unregisteredAccessibleShapedRecipe());
 			AltarRecipeRegistry.registerAltarRecipe(RecipeConstellationFocus.INSTANCE);
 		}
 	}

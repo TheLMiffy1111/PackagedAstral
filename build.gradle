@@ -40,7 +40,7 @@ repositories {
 	}
 }
 
-version = "1.0.1.8"
+version = "1.0.2.8"
 group = "thelm.packagedastral"
 archivesBaseName = "PackagedAstral-1.12.2"
 

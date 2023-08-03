@@ -53,7 +53,6 @@ import thelm.packagedastral.container.ContainerAttunementCrafter;
 import thelm.packagedastral.integration.appeng.networking.HostHelperTileAttunementCrafter;
 import thelm.packagedastral.inventory.InventoryAttunementCrafter;
 import thelm.packagedastral.recipe.IRecipeInfoAltar;
-import thelm.packagedastral.starlight.IStarlightReceiverLinkableTile;
 import thelm.packagedastral.structure.StructureAttunementCrafter;
 import thelm.packagedauto.api.IPackageCraftingMachine;
 import thelm.packagedauto.api.IRecipeInfo;
@@ -66,7 +65,7 @@ import thelm.packagedauto.tile.TileUnpackager;
 	@Optional.Interface(iface="appeng.api.networking.IGridHost", modid="appliedenergistics2"),
 	@Optional.Interface(iface="appeng.api.networking.security.IActionHost", modid="appliedenergistics2"),
 })
-public class TileAttunementCrafter extends TileBase implements ITickable, IPackageCraftingMachine, IStarlightReceiverLinkableTile, IGridHost, IActionHost {
+public class TileAttunementCrafter extends TileBase implements ITickable, IPackageCraftingMachine, IAltarCrafter, IGridHost, IActionHost {
 
 	public static final Random RANDOM = new Random();
 
@@ -80,7 +79,7 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 	public static boolean requiresNight = true;
 	public static boolean drawMEEnergy = true;
 
-	public boolean isNetworkInformed = false;
+	public boolean firstTick = true;
 	public boolean doesSeeSky = false;
 	public ChangeSubscriber<StructureMatcherPatternArray> structureMatch = null;
 	public boolean structureValid = false;
@@ -128,16 +127,22 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 
 	@Override
 	public void update() {
-		if(!world.isRemote) {
-			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(world).getTransmissionNode(pos) == null) {
+		if(firstTick) {
+			firstTick = false;
+			if(!world.isRemote) {
 				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
 				handler.addTransmissionTile(this);
 				IPrismTransmissionNode node = handler.getTransmissionNode(pos);
 				if(node != null && node.needsUpdate()) {
 					StarlightUpdateHandler.getInstance().addNode(world, node);
 				}
-				isNetworkInformed = true;
+				TileMarkedRelay.updateNearbyAltarPos(world, pos);
 			}
+		}
+		if(world.getTotalWorldTime() % 16 == 0) {
+			doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
+		}
+		if(!world.isRemote) {
 			if(isWorking) {
 				tickProcess();
 				if(remainingProgress <= 0) {
@@ -149,9 +154,6 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 						ejectItems();
 					}
 				}
-			}
-			if(world.getTotalWorldTime() % 16 == 0) {
-				doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
 			}
 			starlightPassive();
 			chargeEnergy();
@@ -375,7 +377,6 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 				StarlightUpdateHandler.getInstance().removeNode(world, node);
 			}
 			handler.removeTransmission(this);
-			isNetworkInformed = false;
 		}
 	}
 

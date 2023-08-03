@@ -67,7 +67,6 @@ import thelm.packagedastral.container.ContainerTraitCrafter;
 import thelm.packagedastral.integration.appeng.networking.HostHelperTileTraitCrafter;
 import thelm.packagedastral.inventory.InventoryTraitCrafter;
 import thelm.packagedastral.recipe.IRecipeInfoAltar;
-import thelm.packagedastral.starlight.IStarlightReceiverLinkableTile;
 import thelm.packagedastral.structure.StructureTraitCrafter;
 import thelm.packagedauto.api.IPackageCraftingMachine;
 import thelm.packagedauto.api.IRecipeInfo;
@@ -80,7 +79,7 @@ import thelm.packagedauto.tile.TileUnpackager;
 	@Optional.Interface(iface="appeng.api.networking.IGridHost", modid="appliedenergistics2"),
 	@Optional.Interface(iface="appeng.api.networking.security.IActionHost", modid="appliedenergistics2"),
 })
-public class TileTraitCrafter extends TileBase implements ITickable, IPackageCraftingMachine, IStarlightReceiverLinkableTile, IGridHost, IActionHost {
+public class TileTraitCrafter extends TileBase implements ITickable, IPackageCraftingMachine, IAltarCrafter, IGridHost, IActionHost {
 
 	public static final Random RANDOM = new Random();
 
@@ -94,7 +93,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	public static boolean requiresNight = true;
 	public static boolean drawMEEnergy = true;
 
-	public boolean isNetworkInformed = false;
+	public boolean firstTick = true;
 	public boolean doesSeeSky = false;
 	public ChangeSubscriber<StructureMatcherPatternArray> structureMatch = null;
 	public boolean structureValid = false;
@@ -157,16 +156,22 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 
 	@Override
 	public void update() {
-		if(!world.isRemote) {
-			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(world).getTransmissionNode(pos) == null) {
+		if(firstTick) {
+			firstTick = false;
+			if(!world.isRemote) {
 				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
 				handler.addTransmissionTile(this);
 				IPrismTransmissionNode node = handler.getTransmissionNode(pos);
 				if(node != null && node.needsUpdate()) {
 					StarlightUpdateHandler.getInstance().addNode(world, node);
 				}
-				isNetworkInformed = true;
+				TileMarkedRelay.updateNearbyAltarPos(world, pos);
 			}
+		}
+		if(world.getTotalWorldTime() % 16 == 0) {
+			doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
+		}
+		if(!world.isRemote) {
 			if(isWorking) {
 				tickProcess();
 				if(remainingProgress <= 0) {
@@ -178,9 +183,6 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 						ejectItems();
 					}
 				}
-			}
-			if(world.getTotalWorldTime() % 16 == 0) {
-				doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
 			}
 			starlightPassive();
 			chargeEnergy();
@@ -341,7 +343,8 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		return Streams.stream(BlockPos.getAllInBox(pos.add(-3, 0, -3), pos.add(3, 0, 3))).filter(pos->{
 			TileEntity tile = world.getTileEntity(pos);
 			if(tile instanceof TileMarkedRelay) {
-				return ((TileMarkedRelay)tile).getInventory().isEmpty();
+				TileMarkedRelay relay = ((TileMarkedRelay)tile);
+				return !relay.structureValid && relay.getInventory().isEmpty();
 			}
 			return false;
 		}).collect(Collectors.toList());
@@ -449,7 +452,6 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 				StarlightUpdateHandler.getInstance().removeNode(world, node);
 			}
 			handler.removeTransmission(this);
-			isNetworkInformed = false;
 		}
 		if(isWorking) {
 			endProcess();
@@ -513,7 +515,6 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		starlight = nbt.getInteger("Starlight");
-		isWorking = nbt.getBoolean("Working");
 		progressReq = nbt.getInteger("ProgressReq");
 		progress = nbt.getInteger("Progress");
 		remainingProgress = nbt.getInteger("EnergyProgress");
@@ -542,7 +543,6 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("Starlight", starlight);
-		nbt.setBoolean("Working", isWorking);
 		nbt.setInteger("ProgressReq", progressReq);
 		nbt.setInteger("Progress", progress);
 		nbt.setInteger("EnergyProgress", remainingProgress);
@@ -564,6 +564,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	@Override
 	public void readSyncNBT(NBTTagCompound nbt) {
 		super.readSyncNBT(nbt);
+		isWorking = nbt.getBoolean("Working");
 		structureValid = nbt.getBoolean("MultiblockValid");
 		effectRecipe = null;
 		if(nbt.hasKey("EffectRecipe")) {
@@ -574,6 +575,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	@Override
 	public NBTTagCompound writeSyncNBT(NBTTagCompound nbt) {
 		super.writeSyncNBT(nbt);
+		nbt.setBoolean("Working", isWorking);
 		nbt.setBoolean("MultiblockValid", structureValid);
 		if(effectRecipe != null) {
 			nbt.setInteger("EffectRecipe", effectRecipe.getUniqueRecipeId());

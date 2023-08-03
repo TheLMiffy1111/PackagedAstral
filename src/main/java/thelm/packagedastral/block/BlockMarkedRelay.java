@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.astralsorcery.common.structure.BlockStructureObserver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -23,7 +24,7 @@ import thelm.packagedastral.tile.TileMarkedRelay;
 import thelm.packagedauto.block.BlockBase;
 import thelm.packagedauto.tile.TileBase;
 
-public class BlockMarkedRelay extends BlockBase {
+public class BlockMarkedRelay extends BlockBase implements BlockStructureObserver {
 
 	public static final BlockMarkedRelay INSTANCE = new BlockMarkedRelay();
 	public static final Item ITEM_INSTANCE = new ItemBlock(INSTANCE).setRegistryName("packagedastral:marked_relay");
