@@ -26,8 +26,8 @@ public class ConstellationCrafterPatternStructure extends PatternBlockArray {
 		BlockState bricks = BlocksAS.MARBLE_BRICKS.defaultBlockState();
 		BlockState sootyRaw = BlocksAS.BLACK_MARBLE_RAW.defaultBlockState();
 		addBlock(BlocksAS.ALTAR_CONSTELLATION.defaultBlockState(), 0, 0, 0);
-		for(int i = -3; i <= 3; ++i) {
-			for(int j = -3; j <= 3; ++j) {
+		for(int i = -2; i <= 2; ++i) {
+			for(int j = -2; j <= 2; ++j) {
 				if(i != 0 || j != 0) {
 					addBlock(sootyRaw, i, -1, j);
 				}

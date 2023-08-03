@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.observerlib.api.block.BlockStructureObserver;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -11,7 +12,7 @@ import thelm.packagedastral.PackagedAstral;
 import thelm.packagedastral.tile.DiscoveryCrafterTile;
 import thelm.packagedauto.block.BaseBlock;
 
-public class DiscoveryCrafterBlock extends BaseBlock {
+public class DiscoveryCrafterBlock extends BaseBlock implements BlockStructureObserver {
 
 	public static final DiscoveryCrafterBlock INSTANCE = new DiscoveryCrafterBlock();
 	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:discovery_crafter");

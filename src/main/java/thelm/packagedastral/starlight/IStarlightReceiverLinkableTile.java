@@ -34,7 +34,7 @@ public interface IStarlightReceiverLinkableTile extends IStarlightReceiver<ITran
 
 	@Override
 	default void onEntityLinkCreate(PlayerEntity player, LivingEntity linked) {
-		
+
 	}
 
 	@Override

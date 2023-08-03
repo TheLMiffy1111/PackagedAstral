@@ -58,7 +58,6 @@ import thelm.packagedastral.integration.appeng.tile.AEDiscoveryCrafterTile;
 import thelm.packagedastral.inventory.DiscoveryCrafterItemHandler;
 import thelm.packagedastral.network.packet.FinishCraftEffectPacket;
 import thelm.packagedastral.recipe.IAltarPackageRecipeInfo;
-import thelm.packagedastral.starlight.IStarlightReceiverLinkableTile;
 import thelm.packagedauto.api.IPackageCraftingMachine;
 import thelm.packagedauto.api.IPackageRecipeInfo;
 import thelm.packagedauto.energy.EnergyStorage;
@@ -66,7 +65,7 @@ import thelm.packagedauto.tile.BaseTile;
 import thelm.packagedauto.tile.UnpackagerTile;
 import thelm.packagedauto.util.MiscHelper;
 
-public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntity, IPackageCraftingMachine, IStarlightReceiverLinkableTile, IHasFakeAltar {
+public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntity, IPackageCraftingMachine, IAltarCrafter {
 
 	public static final TileEntityType<DiscoveryCrafterTile> TYPE_INSTANCE = (TileEntityType<DiscoveryCrafterTile>)TileEntityType.Builder.
 			of(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
@@ -82,7 +81,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	public static boolean craftingEffects = true;
 	public static boolean drawMEEnergy = true;
 
-	public boolean isNetworkInformed = false;
+	public boolean firstTick = true;
 	public boolean doesSeeSky = false;
 	public float posDistribution = -1F;
 	public TileAltar fakeAltar = new TileAltar().updateType(AltarType.DISCOVERY, true);
@@ -122,16 +121,22 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 
 	@Override
 	public void tick() {
-		if(!level.isClientSide) {
-			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(level).getTransmissionNode(worldPosition) == null) {
+		if(firstTick) {
+			firstTick = false;
+			if(!level.isClientSide) {
 				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(level);
 				handler.addTransmissionTile(this);
 				IPrismTransmissionNode node = handler.getTransmissionNode(worldPosition);
 				if(node != null && node.needsUpdate()) {
 					StarlightUpdateHandler.getInstance().addNode(level, node);
 				}
-				isNetworkInformed = true;
+				MarkedRelayTile.updateNearbyAltarPos(level, worldPosition);
 			}
+		}
+		if(level.getGameTime() % 16 == 0) {
+			doesSeeSky = MiscUtils.canSeeSky(level, worldPosition.above(), true, doesSeeSky);
+		}
+		if(!level.isClientSide) {
 			if(isWorking) {
 				tickProcess();
 				if(remainingProgress <= 0) {
@@ -140,15 +145,11 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 					ejectItems();
 				}
 			}
-			if(level.getGameTime() % 16 == 0) {
-				doesSeeSky = MiscUtils.canSeeSky(level, worldPosition.above(), true, doesSeeSky);
-			}
 			gatherStarlight();
 			chargeEnergy();
 			if(level.getGameTime() % 8 == 0) {
 				ejectItems();
 			}
-			energyStorage.updateIfChanged();
 		}
 		else {
 			clientTick();
@@ -189,7 +190,6 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 				StarlightUpdateHandler.getInstance().removeNode(level, node);
 			}
 			handler.removeTransmission(this);
-			isNetworkInformed = false;
 		}
 	}
 
@@ -338,6 +338,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 		}
 	}
 
+	@Override
 	public void collectStarlight(float percent, AltarCollectionCategory category) {
 		int collectable = MathHelper.floor(Math.min(percent, getRemainingCollectionCapacity(category)));
 		starlight = MathHelper.clamp(starlight+collectable, 0, starlightCapacity);
@@ -372,6 +373,11 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	@Override
 	public void load(BlockState blockState, CompoundNBT nbt) {
 		super.load(blockState, nbt);
+		starlight = nbt.getInt("Starlight");
+		progressReq = nbt.getInt("ProgressReq");
+		progress = nbt.getInt("Progress");
+		remainingProgress = nbt.getInt("EnergyProgress");
+		starlightReq = nbt.getInt("StarlightReq");
 		currentRecipe = null;
 		if(nbt.contains("Recipe")) {
 			CompoundNBT tag = nbt.getCompound("Recipe");
@@ -385,6 +391,11 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	@Override
 	public CompoundNBT save(CompoundNBT nbt) {
 		super.save(nbt);
+		nbt.putInt("Starlight", starlight);
+		nbt.putInt("ProgressReq", progressReq);
+		nbt.putInt("Progress", progress);
+		nbt.putInt("EnergyProgress", remainingProgress);
+		nbt.putInt("StarlightReq", starlightReq);
 		if(currentRecipe != null) {
 			CompoundNBT tag = MiscHelper.INSTANCE.writeRecipe(new CompoundNBT(), currentRecipe);
 			nbt.put("Recipe", tag);
@@ -395,12 +406,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	@Override
 	public void readSync(CompoundNBT nbt) {
 		super.readSync(nbt);
-		starlight = nbt.getInt("Starlight");
 		isWorking = nbt.getBoolean("Working");
-		progressReq = nbt.getInt("ProgressReq");
-		progress = nbt.getInt("Progress");
-		remainingProgress = nbt.getInt("EnergyProgress");
-		starlightReq = nbt.getInt("StarlightReq");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
 			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
@@ -420,12 +426,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	@Override
 	public CompoundNBT writeSync(CompoundNBT nbt) {
 		super.writeSync(nbt);
-		nbt.putInt("Starlight", starlight);
 		nbt.putBoolean("Working", isWorking);
-		nbt.putInt("ProgressReq", progressReq);
-		nbt.putInt("Progress", progress);
-		nbt.putInt("EnergyProgress", remainingProgress);
-		nbt.putInt("StarlightReq", starlightReq);
 		if(effectRecipe != null) {
 			nbt.putString("EffectRecipe", effectRecipe.getId().toString());
 		}

@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.observerlib.api.block.BlockStructureObserver;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -20,7 +21,7 @@ import thelm.packagedastral.PackagedAstral;
 import thelm.packagedastral.tile.TraitCrafterTile;
 import thelm.packagedauto.block.BaseBlock;
 
-public class TraitCrafterBlock extends BaseBlock {
+public class TraitCrafterBlock extends BaseBlock implements BlockStructureObserver {
 
 	public static final TraitCrafterBlock INSTANCE = new TraitCrafterBlock();
 	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:trait_crafter");

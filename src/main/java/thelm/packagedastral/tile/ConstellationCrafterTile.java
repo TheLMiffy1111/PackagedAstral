@@ -63,7 +63,6 @@ import thelm.packagedastral.integration.appeng.tile.AEConstellationCrafterTile;
 import thelm.packagedastral.inventory.ConstellationCrafterItemHandler;
 import thelm.packagedastral.network.packet.FinishCraftEffectPacket;
 import thelm.packagedastral.recipe.IAltarPackageRecipeInfo;
-import thelm.packagedastral.starlight.IStarlightReceiverLinkableTile;
 import thelm.packagedastral.structure.ConstellationCrafterPatternStructure;
 import thelm.packagedauto.api.IPackageCraftingMachine;
 import thelm.packagedauto.api.IPackageRecipeInfo;
@@ -72,7 +71,7 @@ import thelm.packagedauto.tile.BaseTile;
 import thelm.packagedauto.tile.UnpackagerTile;
 import thelm.packagedauto.util.MiscHelper;
 
-public class ConstellationCrafterTile extends BaseTile implements ITickableTileEntity, IPackageCraftingMachine, IStarlightReceiverLinkableTile, TileRequiresMultiblock, IHasFakeAltar {
+public class ConstellationCrafterTile extends BaseTile implements ITickableTileEntity, IPackageCraftingMachine, IAltarCrafter, TileRequiresMultiblock {
 
 	public static final TileEntityType<ConstellationCrafterTile> TYPE_INSTANCE = (TileEntityType<ConstellationCrafterTile>)TileEntityType.Builder.
 			of(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
@@ -88,7 +87,7 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	public static boolean requiresStructure = true;
 	public static boolean drawMEEnergy = true;
 
-	public boolean isNetworkInformed = false;
+	public boolean firstTick = true;
 	public boolean doesSeeSky = false;
 	public ChangeSubscriber<ChangeObserverStructure> structureMatch = null;
 	public boolean structureValid = false;
@@ -130,16 +129,22 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 
 	@Override
 	public void tick() {
-		if(!level.isClientSide) {
-			if(!isNetworkInformed && WorldNetworkHandler.getNetworkHandler(level).getTransmissionNode(worldPosition) == null) {
+		if(firstTick) {
+			firstTick = false;
+			if(!level.isClientSide) {
 				WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(level);
 				handler.addTransmissionTile(this);
 				IPrismTransmissionNode node = handler.getTransmissionNode(worldPosition);
 				if(node != null && node.needsUpdate()) {
 					StarlightUpdateHandler.getInstance().addNode(level, node);
 				}
-				isNetworkInformed = true;
+				MarkedRelayTile.updateNearbyAltarPos(level, worldPosition);
 			}
+		}
+		if(level.getGameTime() % 16 == 0) {
+			doesSeeSky = MiscUtils.canSeeSky(level, worldPosition.above(), true, doesSeeSky);
+		}
+		if(!level.isClientSide) {
 			if(isWorking) {
 				tickProcess();
 				if(remainingProgress <= 0) {
@@ -148,16 +153,12 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 					ejectItems();
 				}
 			}
-			if(level.getGameTime() % 16 == 0) {
-				doesSeeSky = MiscUtils.canSeeSky(level, worldPosition.above(), true, doesSeeSky);
-			}
 			gatherStarlight();
 			chargeEnergy();
 			matchStructure();
 			if(level.getGameTime() % 8 == 0) {
 				ejectItems();
 			}
-			energyStorage.updateIfChanged();
 		}
 		else {
 			clientTick();
@@ -198,7 +199,6 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 				StarlightUpdateHandler.getInstance().removeNode(level, node);
 			}
 			handler.removeTransmission(this);
-			isNetworkInformed = false;
 		}
 	}
 
@@ -357,6 +357,7 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 		return starlightCapacity/8.5F/2;
 	}
 
+	@Override
 	public void collectStarlight(float percent, AltarCollectionCategory category) {
 		int collectable = MathHelper.floor(Math.min(percent, getRemainingCollectionCapacity(category)));
 		starlight = MathHelper.clamp(starlight+collectable, 0, starlightCapacity);
@@ -388,19 +389,6 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	}
 
 	@Override
-	public void load(BlockState blockState, CompoundNBT nbt) {
-		super.load(blockState, nbt);
-		currentRecipe = null;
-		if(nbt.contains("Recipe")) {
-			CompoundNBT tag = nbt.getCompound("Recipe");
-			IPackageRecipeInfo recipe = MiscHelper.INSTANCE.readRecipe(tag);
-			if(recipe instanceof IAltarPackageRecipeInfo && ((IAltarPackageRecipeInfo)recipe).getLevel() == 2) {
-				currentRecipe = (IAltarPackageRecipeInfo)recipe;
-			}
-		}
-	}
-
-	@Override
 	public int getComparatorSignal() {
 		if(isWorking) {
 			return 1;
@@ -412,8 +400,31 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	}
 
 	@Override
+	public void load(BlockState blockState, CompoundNBT nbt) {
+		super.load(blockState, nbt);
+		starlight = nbt.getInt("Starlight");
+		progressReq = nbt.getInt("ProgressReq");
+		progress = nbt.getInt("Progress");
+		remainingProgress = nbt.getInt("EnergyProgress");
+		starlightReq = nbt.getInt("StarlightReq");
+		currentRecipe = null;
+		if(nbt.contains("Recipe")) {
+			CompoundNBT tag = nbt.getCompound("Recipe");
+			IPackageRecipeInfo recipe = MiscHelper.INSTANCE.readRecipe(tag);
+			if(recipe instanceof IAltarPackageRecipeInfo && ((IAltarPackageRecipeInfo)recipe).getLevel() == 2) {
+				currentRecipe = (IAltarPackageRecipeInfo)recipe;
+			}
+		}
+	}
+
+	@Override
 	public CompoundNBT save(CompoundNBT nbt) {
 		super.save(nbt);
+		nbt.putInt("Starlight", starlight);
+		nbt.putInt("ProgressReq", progressReq);
+		nbt.putInt("Progress", progress);
+		nbt.putInt("EnergyProgress", remainingProgress);
+		nbt.putInt("StarlightReq", starlightReq);
 		if(currentRecipe != null) {
 			CompoundNBT tag = MiscHelper.INSTANCE.writeRecipe(new CompoundNBT(), currentRecipe);
 			nbt.put("Recipe", tag);
@@ -424,13 +435,8 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	@Override
 	public void readSync(CompoundNBT nbt) {
 		super.readSync(nbt);
-		starlight = nbt.getInt("Starlight");
-		structureValid = nbt.getBoolean("MultiblockValid");
 		isWorking = nbt.getBoolean("Working");
-		progressReq = nbt.getInt("ProgressReq");
-		progress = nbt.getInt("Progress");
-		remainingProgress = nbt.getInt("EnergyProgress");
-		starlightReq = nbt.getInt("StarlightReq");
+		structureValid = nbt.getBoolean("MultiblockValid");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
 			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
@@ -450,13 +456,8 @@ public class ConstellationCrafterTile extends BaseTile implements ITickableTileE
 	@Override
 	public CompoundNBT writeSync(CompoundNBT nbt) {
 		super.writeSync(nbt);
-		nbt.putInt("Starlight", starlight);
-		nbt.putBoolean("MultiblockValid", structureValid);
 		nbt.putBoolean("Working", isWorking);
-		nbt.putInt("ProgressReq", progressReq);
-		nbt.putInt("Progress", progress);
-		nbt.putInt("EnergyProgress", remainingProgress);
-		nbt.putInt("StarlightReq", starlightReq);
+		nbt.putBoolean("MultiblockValid", structureValid);
 		if(effectRecipe != null) {
 			nbt.putString("EffectRecipe", effectRecipe.getId().toString());
 		}

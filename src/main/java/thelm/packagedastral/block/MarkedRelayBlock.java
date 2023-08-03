@@ -1,5 +1,6 @@
 package thelm.packagedastral.block;
 
+import hellfirepvp.observerlib.api.block.BlockStructureObserver;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -21,7 +22,7 @@ import thelm.packagedastral.PackagedAstral;
 import thelm.packagedastral.tile.MarkedRelayTile;
 import thelm.packagedauto.block.BaseBlock;
 
-public class MarkedRelayBlock extends BaseBlock {
+public class MarkedRelayBlock extends BaseBlock implements BlockStructureObserver {
 
 	public static final MarkedRelayBlock INSTANCE = new MarkedRelayBlock();
 	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:marked_relay");
@@ -35,6 +36,12 @@ public class MarkedRelayBlock extends BaseBlock {
 	@Override
 	public MarkedRelayTile createTileEntity(BlockState state, IBlockReader world) {
 		return MarkedRelayTile.TYPE_INSTANCE.create();
+	}
+
+	@Override
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onRemove(state, worldIn, pos, newState, isMoving);
+		MarkedRelayTile.updateNearbyProximity(worldIn, pos);
 	}
 
 	@Override

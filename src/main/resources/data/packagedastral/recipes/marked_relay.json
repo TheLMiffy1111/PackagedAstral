@@ -5,7 +5,7 @@
     "starlight": 300,
     "pattern": [
         "_____",
-        "__I__",
+        "__L__",
         "_IRI_",
         "__I__",
         "_____"
@@ -13,6 +13,9 @@
     "key": {
         "R": {
             "item": "astralsorcery:spectral_relay"
+        },
+        "L": {
+            "item": "astralsorcery:glass_lens"
         },
         "I": {
             "item": "astralsorcery:illumination_powder"

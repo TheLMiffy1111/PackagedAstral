@@ -32,6 +32,7 @@ import thelm.packagedastral.recipe.DiscoveryPackageRecipeType;
 import thelm.packagedastral.recipe.TraitPackageRecipeType;
 import thelm.packagedastral.structure.AttunementCrafterPatternStructure;
 import thelm.packagedastral.structure.ConstellationCrafterPatternStructure;
+import thelm.packagedastral.structure.MarkedRelayPatternStructure;
 import thelm.packagedastral.structure.TraitCrafterPatternStructure;
 import thelm.packagedastral.tile.AttunementCrafterTile;
 import thelm.packagedastral.tile.ConstellationCrafterTile;
@@ -67,22 +68,22 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onItemRegister(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
+		registry.register(MarkedRelayBlock.ITEM_INSTANCE);
 		registry.register(DiscoveryCrafterBlock.ITEM_INSTANCE);
 		registry.register(AttunementCrafterBlock.ITEM_INSTANCE);
 		registry.register(ConstellationCrafterBlock.ITEM_INSTANCE);
 		registry.register(TraitCrafterBlock.ITEM_INSTANCE);
-		registry.register(MarkedRelayBlock.ITEM_INSTANCE);
 		registry.register(ConstellationFocusItem.INSTANCE);
 	}
 
 	@SubscribeEvent
 	public void onTileRegister(RegistryEvent.Register<TileEntityType<?>> event) {
 		IForgeRegistry<TileEntityType<?>> registry = event.getRegistry();
+		registry.register(MarkedRelayTile.TYPE_INSTANCE);
 		registry.register(DiscoveryCrafterTile.TYPE_INSTANCE);
 		registry.register(AttunementCrafterTile.TYPE_INSTANCE);
 		registry.register(ConstellationCrafterTile.TYPE_INSTANCE);
 		registry.register(TraitCrafterTile.TYPE_INSTANCE);
-		registry.register(MarkedRelayTile.TYPE_INSTANCE);
 	}
 
 	@SubscribeEvent
@@ -97,6 +98,7 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onStructureTypeRegister(RegistryEvent.Register<StructureType> event) {
 		IForgeRegistry<StructureType> registry = event.getRegistry();
+		registry.register(MarkedRelayPatternStructure.TYPE_INSTANCE);
 		registry.register(AttunementCrafterPatternStructure.TYPE_INSTANCE);
 		registry.register(ConstellationCrafterPatternStructure.TYPE_INSTANCE);
 		registry.register(TraitCrafterPatternStructure.TYPE_INSTANCE);
@@ -105,6 +107,7 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onMatchableStructureRegister(RegistryEvent.Register<MatchableStructure> event) {
 		IForgeRegistry<MatchableStructure> registry = event.getRegistry();
+		registry.register(MarkedRelayPatternStructure.INSTANCE);
 		registry.register(AttunementCrafterPatternStructure.INSTANCE);
 		registry.register(ConstellationCrafterPatternStructure.INSTANCE);
 		registry.register(TraitCrafterPatternStructure.INSTANCE);
