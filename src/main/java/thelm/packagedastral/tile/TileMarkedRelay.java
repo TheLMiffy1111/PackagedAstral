@@ -61,24 +61,7 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 			if(altarPos != null && world.isBlockLoaded(altarPos)) {
 				TileEntity tile = world.getTileEntity(altarPos);
 				if(tile instanceof IAltarCrafter) {
-					if(doesSeeSky) {
-						IAltarCrafter altar = (IAltarCrafter)tile;
-						WorldSkyHandler handle = ConstellationSkyHandler.getInstance().getWorldHandler(world);
-						int yLevel = pos.getY();
-						if(handle != null && yLevel > 40) {
-							float dstr;
-							double coll = 0.3;
-							if(yLevel > 120) {
-								dstr = 1;
-							}
-							else {
-								dstr = (yLevel-40)/80F;
-							}
-							coll *= dstr;
-							coll *= 0.2+0.8*ConstellationSkyHandler.getInstance().getCurrentDaytimeDistribution(world);
-							altar.receiveStarlight(null, coll);
-						}
-					}
+					provideStarlight((IAltarCrafter)tile);
 				}
 				else {
 					updateAltarPos();
@@ -116,6 +99,26 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 				if(world.rand.nextBoolean()) {
 					p.setColor(Color.WHITE);
 				}
+			}
+		}
+	}
+
+	protected void provideStarlight(IAltarCrafter altar) {
+		if(doesSeeSky) {
+			WorldSkyHandler handle = ConstellationSkyHandler.getInstance().getWorldHandler(world);
+			int yLevel = pos.getY();
+			if(handle != null && yLevel > 40) {
+				float dstr;
+				double coll = 0.3;
+				if(yLevel > 120) {
+					dstr = 1;
+				}
+				else {
+					dstr = (yLevel-40)/80F;
+				}
+				coll *= dstr;
+				coll *= 0.2+0.8*ConstellationSkyHandler.getInstance().getCurrentDaytimeDistribution(world);
+				altar.receiveStarlight(null, coll);
 			}
 		}
 	}
