@@ -21,9 +21,6 @@ repositories {
 		url = "https://maven.su5ed.dev/releases/"
 	}
 	maven {
-		url = "https://dvs1.progwml6.com/files/maven/"
-	}
-	maven {
 		url = "https://maven.blamejared.com/"
 	}
 	maven {
@@ -38,6 +35,10 @@ repositories {
 	maven {
 		url = "https://modmaven.dev/"
 	}
+}
+
+sourceSets {
+	main
 }
 
 version = "1.0.2.8"
