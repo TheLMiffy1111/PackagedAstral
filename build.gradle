@@ -41,11 +41,21 @@ sourceSets {
 	main
 }
 
-version = "1.0.2.8"
-group = "thelm.packagedastral"
-archivesBaseName = "PackagedAstral-1.12.2"
+def mcVersion = "1.12.2"
+def modName = "PackagedAstral"
+def modId = "packagedastral"
+def specVersion = "1"
+def vendor = "thelm"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+group = "thelm.packagedastral"
+version = "1.0.2.8"
+
+archivesBaseName = "${modName}-${mcVersion}"
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(8)
+	withSourcesJar()
+}
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
@@ -53,6 +63,7 @@ tasks.withType(JavaCompile).configureEach {
 
 minecraft {
 	mappings channel: "stable", version: "39-1.12"
+	generateRunFolders = true
 	runs {
 		configureEach {
 			workingDirectory project.file("run")
@@ -60,9 +71,9 @@ minecraft {
 			property "forge.logging.console.level", "debug"
 			property "mixin.env.remapRefMap", "true"
 			property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
-			environment "MC_VERSION", "1.12.2"
+			environment "MC_VERSION", mcVersion
 			mods {
-				packagedastral {
+				"${modId}" {
 					source sourceSets.main
 				}
 			}
@@ -102,16 +113,21 @@ configurations.all {
 	}
 }
 
+def manifestAttributes = [
+	"Specification-Title": modName,
+	"Specification-Vendor": vendor,
+	"Specification-Version": specVersion,
+	"Implementation-Title": archivesBaseName,
+	"Implementation-Version": version,
+	"Implementation-Vendor": vendor,
+	"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+]
+
 jar {
-	manifest {
-		attributes([
-			"Specification-Title": "PackagedAstral",
-			"Specification-Vendor": "thelm",
-			"Specification-Version": "1",
-			"Implementation-Title": "${archivesBaseName}",
-			"Implementation-Version": "${version}",
-			"Implementation-Vendor": "thelm",
-			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-		],)
-	}
+	manifest.attributes(manifestAttributes)
+	finalizedBy("reobfJar")
+}
+
+sourcesJar {
+	manifest.attributes(manifestAttributes)
 }
