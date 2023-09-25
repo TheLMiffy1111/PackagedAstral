@@ -48,7 +48,7 @@ def specVersion = "1"
 def vendor = "thelm"
 
 group = "thelm.packagedastral"
-version = "1.0.2.8"
+version = "1.0.2.9"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -90,12 +90,12 @@ dependencies {
 
 	implementation fg.deobf("mezz.jei:jei_1.12.2:4.16.1.302")
 	implementation fg.deobf("codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal")
-	implementation fg.deobf("CraftTweaker2:ZenScript:4.1.20.690")
-	implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:4.1.20.690")
-	implementation fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.690")
+	implementation fg.deobf("CraftTweaker2:ZenScript:4.1.20.693")
+	implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:4.1.20.693")
+	implementation fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.693")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:packagedauto-308380:4678906")
+	implementation fg.deobf("curse.maven:packagedauto-308380:4768232")
 	implementation fg.deobf("curse.maven:applied-energistics-2-223794:2747063")
 	implementation fg.deobf("curse.maven:baubles-227083:2518667")
 	implementation fg.deobf("curse.maven:astral-sorcery-241721:3044416")
