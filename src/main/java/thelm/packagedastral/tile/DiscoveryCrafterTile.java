@@ -301,7 +301,6 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 	}
 
 	protected void chargeEnergy() {
-		int prevStored = energyStorage.getEnergyStored();
 		ItemStack energyStack = itemHandler.getStackInSlot(10);
 		if(energyStack.getCapability(CapabilityEnergy.ENERGY, null).isPresent()) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
@@ -409,7 +408,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 		isWorking = nbt.getBoolean("Working");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
-			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
+			IRecipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
 			if(recipe instanceof SimpleAltarRecipe) {
 				effectRecipe = (SimpleAltarRecipe)recipe;
 			}

@@ -312,7 +312,6 @@ public class AttunementCrafterTile extends BaseTile implements ITickableTileEnti
 	}
 
 	protected void chargeEnergy() {
-		int prevStored = energyStorage.getEnergyStored();
 		ItemStack energyStack = itemHandler.getStackInSlot(14);
 		if(energyStack.getCapability(CapabilityEnergy.ENERGY, null).isPresent()) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
@@ -439,7 +438,7 @@ public class AttunementCrafterTile extends BaseTile implements ITickableTileEnti
 		structureValid = nbt.getBoolean("MultiblockValid");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
-			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
+			IRecipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
 			if(recipe instanceof SimpleAltarRecipe) {
 				effectRecipe = (SimpleAltarRecipe)recipe;
 			}

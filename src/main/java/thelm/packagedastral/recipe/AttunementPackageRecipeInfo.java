@@ -53,7 +53,7 @@ public class AttunementPackageRecipeInfo implements IAltarPackageRecipeInfo {
 	public void read(CompoundNBT nbt) {
 		input.clear();
 		patterns.clear();
-		IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
+		IRecipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("Matrix", 10), matrix);
 		output = ItemStack.of(nbt.getCompound("Output"));
 		if(recipe instanceof SimpleAltarRecipe) {

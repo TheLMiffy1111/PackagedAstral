@@ -374,7 +374,6 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 	}
 
 	protected void chargeEnergy() {
-		int prevStored = energyStorage.getEnergyStored();
 		ItemStack energyStack = itemHandler.getStackInSlot(26);
 		if(energyStack.getCapability(CapabilityEnergy.ENERGY, null).isPresent()) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
@@ -511,7 +510,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		structureValid = nbt.getBoolean("MultiblockValid");
 		effectRecipe = null;
 		if(nbt.contains("EffectRecipe")) {
-			IRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
+			IRecipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("EffectRecipe"))).orElse(null);
 			if(recipe instanceof SimpleAltarRecipe) {
 				effectRecipe = (SimpleAltarRecipe)recipe;
 			}
