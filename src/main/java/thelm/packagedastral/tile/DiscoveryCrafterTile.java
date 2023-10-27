@@ -52,6 +52,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import thelm.packagedastral.block.DiscoveryCrafterBlock;
 import thelm.packagedastral.container.DiscoveryCrafterContainer;
 import thelm.packagedastral.integration.appeng.tile.AEDiscoveryCrafterTile;
@@ -275,26 +276,13 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 			TileEntity tile = level.getBlockEntity(worldPosition.relative(direction));
 			if(tile != null && !(tile instanceof UnpackagerTile) && tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).isPresent()) {
 				IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).resolve().get();
-				boolean flag = true;
 				for(int i = 9; i >= endIndex; --i) {
 					ItemStack stack = this.itemHandler.getStackInSlot(i);
 					if(stack.isEmpty()) {
 						continue;
 					}
-					for(int slot = 0; slot < itemHandler.getSlots(); ++slot) {
-						ItemStack stackRem = itemHandler.insertItem(slot, stack, false);
-						if(stackRem.getCount() < stack.getCount()) {
-							stack = stackRem;
-							flag = false;
-						}
-						if(stack.isEmpty()) {
-							break;
-						}
-					}
-					this.itemHandler.setStackInSlot(i, stack);
-					if(flag) {
-						break;
-					}
+					ItemStack stackRem = ItemHandlerHelper.insertItem(itemHandler, stack, false);
+					this.itemHandler.setStackInSlot(i, stackRem);
 				}
 			}
 		}
