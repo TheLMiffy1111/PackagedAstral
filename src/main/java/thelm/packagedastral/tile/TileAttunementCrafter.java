@@ -48,6 +48,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import thelm.packagedastral.client.gui.GuiAttunementCrafter;
 import thelm.packagedastral.container.ContainerAttunementCrafter;
 import thelm.packagedastral.integration.appeng.networking.HostHelperTileAttunementCrafter;
@@ -281,26 +282,13 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 			TileEntity tile = world.getTileEntity(pos.offset(facing));
 			if(tile != null && !(tile instanceof TileUnpackager) && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
 				IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
-				boolean flag = true;
 				for(int i = 13; i >= endIndex; --i) {
 					ItemStack stack = inventory.getStackInSlot(i);
 					if(stack.isEmpty()) {
 						continue;
 					}
-					for(int slot = 0; slot < itemHandler.getSlots(); ++slot) {
-						ItemStack stackRem = itemHandler.insertItem(slot, stack, false);
-						if(stackRem.getCount() < stack.getCount()) {
-							stack = stackRem;
-							flag = false;
-						}
-						if(stack.isEmpty()) {
-							break;
-						}
-					}
-					inventory.setInventorySlotContents(i, stack);
-					if(flag) {
-						break;
-					}
+					ItemStack stackRem = ItemHandlerHelper.insertItem(itemHandler, stack, false);
+					inventory.setInventorySlotContents(i, stackRem);
 				}
 			}
 		}
