@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "packagedastral:block/marked_relay" }
-    }
+	"variants": {
+		"": { "model": "packagedastral:block/marked_relay" }
+	}
 }

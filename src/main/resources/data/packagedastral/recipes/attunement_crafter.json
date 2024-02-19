@@ -1,56 +1,56 @@
 {
-    "type": "astralsorcery:altar",
-    "altar_type": 1,
-    "duration": 200,
-    "starlight": 1200,
-    "pattern": [
-        "P___P",
-        "_DCD_",
-        "_MAM_",
-        "_BSB_",
-        "P___P"
-    ],
-    "key": {
-        "A": {
-            "item": "packagedastral:discovery_crafter"
-        },
-        "C": {
-            "type": "astralsorcery:crystal",
-            "hasToBeAttuned": false,
-            "hasToBeCelestial": false,
-            "canBeAttuned": true,
-            "canBeCelestialCrystal": true
-        },
-        "S": {
-            "type": "astralsorcery:fluid",
-            "fluid": [
-                {
-                    "fluid": "astralsorcery:liquid_starlight",
-                    "amount": 1000
-                }
-            ]
-        },
-        "M": {
-            "item": "astralsorcery:marble_chiseled"
-        },
-        "D": {
-            "tag": "astralsorcery:stardust"
-        },
-        "B": {
-            "item": "astralsorcery:black_marble_raw"
-        },
-        "P": {
-            "item": "astralsorcery:marble_pillar"
-        }
-    },
-    "output": [
-        {
-            "item": "packagedastral:attunement_crafter",
-            "count": 1
-        }
-    ],
-    "effects": [
-        "astralsorcery:built_in_effect_discovery_central_beam",
-        "astralsorcery:built_in_effect_attunement_sparkle"
-    ]
+	"type": "astralsorcery:altar",
+	"altar_type": 1,
+	"duration": 200,
+	"starlight": 1200,
+	"pattern": [
+		"P___P",
+		"_DCD_",
+		"_MAM_",
+		"_BSB_",
+		"P___P"
+	],
+	"key": {
+		"A": {
+			"item": "packagedastral:discovery_crafter"
+		},
+		"C": {
+			"type": "astralsorcery:crystal",
+			"hasToBeAttuned": false,
+			"hasToBeCelestial": false,
+			"canBeAttuned": true,
+			"canBeCelestialCrystal": true
+		},
+		"S": {
+			"type": "astralsorcery:fluid",
+			"fluid": [
+				{
+					"fluid": "astralsorcery:liquid_starlight",
+					"amount": 1000
+				}
+			]
+		},
+		"M": {
+			"item": "astralsorcery:marble_chiseled"
+		},
+		"D": {
+			"tag": "astralsorcery:stardust"
+		},
+		"B": {
+			"item": "astralsorcery:black_marble_raw"
+		},
+		"P": {
+			"item": "astralsorcery:marble_pillar"
+		}
+	},
+	"output": [
+		{
+			"item": "packagedastral:attunement_crafter",
+			"count": 1
+		}
+	],
+	"effects": [
+		"astralsorcery:built_in_effect_discovery_central_beam",
+		"astralsorcery:built_in_effect_attunement_sparkle"
+	]
 }

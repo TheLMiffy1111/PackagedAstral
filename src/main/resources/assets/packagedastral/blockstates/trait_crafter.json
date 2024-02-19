@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "packagedastral:block/trait_crafter" }
-    }
+	"variants": {
+		"": { "model": "packagedastral:block/trait_crafter" }
+	}
 }

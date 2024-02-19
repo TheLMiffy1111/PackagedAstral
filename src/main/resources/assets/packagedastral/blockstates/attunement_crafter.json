@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "packagedastral:block/attunement_crafter" }
-    }
+	"variants": {
+		"": { "model": "packagedastral:block/attunement_crafter" }
+	}
 }

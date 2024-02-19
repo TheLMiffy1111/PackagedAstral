@@ -21,12 +21,10 @@ public class PackagedAstral {
 			return new ItemStack(TraitCrafterBlock.INSTANCE);
 		}
 	};
-	public static PackagedAstral core;
 
 	public PackagedAstral() {
-		core = this;
 		CommonEventHandler.getInstance().onConstruct();
-		DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 			ClientEventHandler.getInstance().onConstruct();
 		});
 	}

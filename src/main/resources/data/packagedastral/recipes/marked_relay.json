@@ -1,33 +1,33 @@
 {
-    "type": "astralsorcery:altar",
-    "altar_type": 0,
-    "duration": 100,
-    "starlight": 300,
-    "pattern": [
-        "_____",
-        "__L__",
-        "_IRI_",
-        "__I__",
-        "_____"
-    ],
-    "key": {
-        "R": {
-            "item": "astralsorcery:spectral_relay"
-        },
-        "L": {
-            "item": "astralsorcery:glass_lens"
-        },
-        "I": {
-            "item": "astralsorcery:illumination_powder"
-        }
-    },
-    "output": [
-        {
-            "item": "packagedastral:marked_relay",
-            "count": 1
-        }
-    ],
-    "effects": [
-        "astralsorcery:built_in_effect_discovery_central_beam"
-    ]
+	"type": "astralsorcery:altar",
+	"altar_type": 0,
+	"duration": 100,
+	"starlight": 300,
+	"pattern": [
+		"_____",
+		"__L__",
+		"_IRI_",
+		"__I__",
+		"_____"
+	],
+	"key": {
+		"R": {
+			"item": "astralsorcery:spectral_relay"
+		},
+		"L": {
+			"item": "astralsorcery:glass_lens"
+		},
+		"I": {
+			"item": "astralsorcery:illumination_powder"
+		}
+	},
+	"output": [
+		{
+			"item": "packagedastral:marked_relay",
+			"count": 1
+		}
+	],
+	"effects": [
+		"astralsorcery:built_in_effect_discovery_central_beam"
+	]
 }

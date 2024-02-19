@@ -1,65 +1,65 @@
 {
-    "type": "astralsorcery:altar",
-    "altar_type": 2,
-    "duration": 400,
-    "starlight": 2400,
-    "pattern": [
-        "DG_GD",
-        "RQCQR",
-        "_MAM_",
-        "NPSPN",
-        "MB_BM"
-    ],
-    "key": {
-        "A": {
-            "item": "packagedastral:attunement_crafter"
-        },
-        "C": {
-            "type": "astralsorcery:crystal",
-            "hasToBeAttuned": false,
-            "hasToBeCelestial": false,
-            "canBeAttuned": true,
-            "canBeCelestialCrystal": true
-        },
-        "S": {
-            "tag": "astralsorcery:starmetal"
-        },
-        "M": {
-            "item": "astralsorcery:marble_chiseled"
-        },
-        "Q": {
-            "item": "astralsorcery:aquamarine"
-        },
-        "P": {
-            "item": "astralsorcery:marble_pillar"
-        },
-        "D": {
-            "tag": "astralsorcery:stardust"
-        },
-        "G": {
-            "tag": "forge:ingots/gold"
-        },
-        "R": {
-            "tag": "forge:dusts/redstone"
-        },
-        "N": {
-            "item": "astralsorcery:resonating_gem"
-        },
-        "B": {
-            "item": "astralsorcery:black_marble_raw"
-        }
-    },
-    "output": [
-        {
-            "item": "packagedastral:constellation_crafter",
-            "count": 1
-        }
-    ],
-    "effects": [
-        "astralsorcery:built_in_effect_discovery_central_beam",
-        "astralsorcery:built_in_effect_attunement_sparkle",
-        "astralsorcery:built_in_effect_constellation_lines",
-        "astralsorcery:built_in_effect_constellation_finish",
-        "astralsorcery:altar_default_sparkle"
-    ]
+	"type": "astralsorcery:altar",
+	"altar_type": 2,
+	"duration": 400,
+	"starlight": 2400,
+	"pattern": [
+		"DG_GD",
+		"RQCQR",
+		"_MAM_",
+		"NPSPN",
+		"MB_BM"
+	],
+	"key": {
+		"A": {
+			"item": "packagedastral:attunement_crafter"
+		},
+		"C": {
+			"type": "astralsorcery:crystal",
+			"hasToBeAttuned": false,
+			"hasToBeCelestial": false,
+			"canBeAttuned": true,
+			"canBeCelestialCrystal": true
+		},
+		"S": {
+			"tag": "astralsorcery:starmetal"
+		},
+		"M": {
+			"item": "astralsorcery:marble_chiseled"
+		},
+		"Q": {
+			"item": "astralsorcery:aquamarine"
+		},
+		"P": {
+			"item": "astralsorcery:marble_pillar"
+		},
+		"D": {
+			"tag": "astralsorcery:stardust"
+		},
+		"G": {
+			"tag": "forge:ingots/gold"
+		},
+		"R": {
+			"tag": "forge:dusts/redstone"
+		},
+		"N": {
+			"item": "astralsorcery:resonating_gem"
+		},
+		"B": {
+			"item": "astralsorcery:black_marble_raw"
+		}
+	},
+	"output": [
+		{
+			"item": "packagedastral:constellation_crafter",
+			"count": 1
+		}
+	],
+	"effects": [
+		"astralsorcery:built_in_effect_discovery_central_beam",
+		"astralsorcery:built_in_effect_attunement_sparkle",
+		"astralsorcery:built_in_effect_constellation_lines",
+		"astralsorcery:built_in_effect_constellation_finish",
+		"astralsorcery:altar_default_sparkle"
+	]
 }

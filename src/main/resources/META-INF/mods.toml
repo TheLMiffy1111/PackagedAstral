@@ -1,32 +1,28 @@
-modLoader="javafml"
-loaderVersion="[34,)"
-license="MIT"
-issueTrackerURL="https://github.com/TheLMiffy1111/PackagedAstral/issues"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/packagedastral"
-authors="TheLMiffy1111"
+modLoader = "javafml"
+loaderVersion = "[34,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/TheLMiffy1111/PackagedAstral/issues"
+
 [[mods]]
-modId="packagedastral"
-version="${file.jarVersion}"
-displayName="PackagedAstral"
-description="A PackagedAuto addon that adds Astral Sorcery autocrafting."
+	modId = "packagedastral"
+	version = "0@VERSION@"
+	displayName = "PackagedAstral"
+	description = "A PackagedAuto addon that adds Astral Sorcery autocrafting."
+	logoFile = "packagedastral.logo.png"
+	authors = "TheLMiffy1111"
+	displayURL = "https://www.curseforge.com/minecraft/mc-mods/packagedastral"
 
 [[dependencies.packagedastral]]
-    modId="forge"
-    mandatory=true
-    versionRange="[34,)"
-    ordering="NONE"
-    side="BOTH"
+	modId = "forge"
+	versionRange = "[34,)"
+	mandatory = true
 
 [[dependencies.packagedastral]]
-    modId="astralsorcery"
-    mandatory=true
-    versionRange="[1.16,)"
-    ordering="NONE"
-    side="BOTH"
+	modId = "astralsorcery"
+	versionRange = "[1.16,)"
+	mandatory = true
 
 [[dependencies.packagedastral]]
-    modId="packagedauto"
-    mandatory=true
-    versionRange="[2.0.4,)"
-    ordering="NONE"
-    side="BOTH"
+	modId = "packagedauto"
+	versionRange = "[2.0.4,)"
+	mandatory = true

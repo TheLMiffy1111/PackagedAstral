@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "packagedastral:block/discovery_crafter" }
-    }
+	"variants": {
+		"": { "model": "packagedastral:block/discovery_crafter" }
+	}
 }
