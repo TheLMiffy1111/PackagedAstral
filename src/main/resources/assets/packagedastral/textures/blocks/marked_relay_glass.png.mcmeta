@@ -1,9 +1,9 @@
 {
-    "ctm": {
-        "ctm_version": 1,
-        "layer": "TRANSLUCENT",
-        "extra": {
-            "light": 11
-        }
-    }
+	"ctm": {
+		"ctm_version": 1,
+		"layer": "TRANSLUCENT",
+		"extra": {
+			"light": 11
+		}
+	}
 }

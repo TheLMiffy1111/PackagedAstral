@@ -1,0 +1,11 @@
+[
+	{
+		"modid": "packagedastral",
+		"version": "0@VERSION@",
+		"name": "PackagedAstral",
+		"description": "A PackagedAuto addon that adds Astral Sorcery autocrafting.",
+		"logoFile": "packagedastral.logo.png",
+		"authorList": ["TheLMiffy1111"],
+		"url": "https://www.curseforge.com/minecraft/mc-mods/packagedastral"
+	}
+]
