@@ -54,7 +54,10 @@ public class PackagedAstral {
 			return ItemStack.EMPTY;
 		}
 	};
-	@SidedProxy(clientSide = "thelm.packagedastral.proxy.ClientProxy", serverSide = "thelm.packagedastral.proxy.CommonProxy", modId = PackagedAstral.MOD_ID)
+	@SidedProxy(
+			clientSide = "thelm.packagedastral.proxy.ClientProxy",
+			serverSide = "thelm.packagedastral.proxy.CommonProxy",
+			modId = PackagedAstral.MOD_ID)
 	public static CommonProxy proxy;
 
 	@EventHandler
