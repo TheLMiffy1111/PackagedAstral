@@ -9,9 +9,9 @@
 	},
 	"display": {
 		"gui": {
-			"rotation":  [ 30, 225, 0 ],
-			"translation":  [ 0, -1, 0 ],
-			"scale":  [ 0.375, 0.375, 0.375 ]
+			"rotation": [ 30, 225, 0 ],
+			"translation": [ 0, -1, 0 ],
+			"scale": [ 0.375, 0.375, 0.375 ]
 		}
 	},
 	"elements": [
