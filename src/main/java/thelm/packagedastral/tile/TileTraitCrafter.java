@@ -331,7 +331,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 		starlightReq = 0;
 		relays.stream().map(world::getTileEntity).
 		filter(tile->tile instanceof TileMarkedRelay && !tile.isInvalid()).
-		forEach(tile->((TileMarkedRelay)tile).spawnItem());
+		forEach(tile->((TileMarkedRelay)tile).ejectItem());
 		relays.clear();
 		isWorking = false;
 		effectRecipe = null;
@@ -432,14 +432,12 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 	}
 
 	public void onBreak() {
-		if(!world.isRemote) {
-			WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
-			IPrismTransmissionNode node = handler.getTransmissionNode(pos);
-			if(node != null) {
-				StarlightUpdateHandler.getInstance().removeNode(world, node);
-			}
-			handler.removeTransmission(this);
+		WorldNetworkHandler handler = WorldNetworkHandler.getNetworkHandler(world);
+		IPrismTransmissionNode node = handler.getTransmissionNode(pos);
+		if(node != null) {
+			StarlightUpdateHandler.getInstance().removeNode(world, node);
 		}
+		handler.removeTransmission(this);
 		if(isWorking) {
 			endProcess();
 		}

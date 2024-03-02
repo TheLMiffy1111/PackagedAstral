@@ -8,6 +8,11 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
 
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEPartLocation;
 import hellfirepvp.astralsorcery.client.effect.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.fx.EntityFXFacingParticle;
 import hellfirepvp.astralsorcery.common.constellation.distribution.ConstellationSkyHandler;
@@ -30,16 +35,24 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thelm.packagedastral.integration.appeng.networking.HostHelperTileMarkedRelay;
 import thelm.packagedastral.inventory.InventoryMarkedRelay;
 import thelm.packagedastral.structure.StructureMarkedRelay;
 import thelm.packagedauto.tile.TileBase;
 
-public class TileMarkedRelay extends TileBase implements ITickable {
+@Optional.InterfaceList({
+	@Optional.Interface(iface="appeng.api.networking.IGridHost", modid="appliedenergistics2"),
+	@Optional.Interface(iface="appeng.api.networking.security.IActionHost", modid="appliedenergistics2"),
+})
+public class TileMarkedRelay extends TileBase implements ITickable, IGridHost, IActionHost {
 
 	public static final Random RANDOM = new Random();
-	
+
+	public boolean firstTick = true;
 	public boolean doesSeeSky = false;
 	public ChangeSubscriber<StructureMatcherPatternArray> structureMatch = null;
 	public boolean structureValid = false;
@@ -47,6 +60,9 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 
 	public TileMarkedRelay() {
 		setInventory(new InventoryMarkedRelay(this));
+		if(Loader.isModLoaded("appliedenergistics2")) {
+			hostHelper = new HostHelperTileMarkedRelay(this);
+		}
 	}
 
 	@Override
@@ -56,6 +72,12 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 
 	@Override
 	public void update() {
+		if(firstTick) {
+			firstTick = false;
+			if(!world.isRemote && hostHelper != null) {
+				hostHelper.isActive();
+			}
+		}
 		if(world.getTotalWorldTime() % 16 == 0) {
 			doesSeeSky = MiscUtils.canSeeSky(world, pos.up(), true, doesSeeSky);
 		}
@@ -188,10 +210,13 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void spawnItem() {
+	public void ejectItem() {
+		if(hostHelper != null && hostHelper.isActive()) {
+			hostHelper.ejectItem();
+		}
 		ItemStack stack = inventory.getStackInSlot(0);
 		inventory.setInventorySlotContents(0, ItemStack.EMPTY);
-		if(!world.isRemote && !stack.isEmpty()) {
+		if(!stack.isEmpty()) {
 			double dx = world.rand.nextFloat()/2+0.25;
 			double dy = world.rand.nextFloat()/2+0.25;
 			double dz = world.rand.nextFloat()/2+0.25;
@@ -204,6 +229,65 @@ public class TileMarkedRelay extends TileBase implements ITickable {
 	@Override
 	public int getComparatorSignal() {
 		return inventory.getStackInSlot(0).isEmpty() ? 0 : 15;
+	}
+
+	public HostHelperTileMarkedRelay hostHelper;
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		if(hostHelper != null) {
+			hostHelper.invalidate();
+		}
+	}
+
+	@Override
+	public void onChunkUnload() {
+		super.onChunkUnload();
+		if(hostHelper != null) {
+			hostHelper.invalidate();
+		}
+	}
+
+	@Optional.Method(modid="appliedenergistics2")
+	@Override
+	public IGridNode getGridNode(AEPartLocation dir) {
+		return getActionableNode();
+	}
+
+	@Optional.Method(modid="appliedenergistics2")
+	@Override
+	public AECableType getCableConnectionType(AEPartLocation dir) {
+		return AECableType.SMART;
+	}
+
+	@Optional.Method(modid="appliedenergistics2")
+	@Override
+	public void securityBreak() {
+		world.destroyBlock(pos, true);
+	}
+
+	@Optional.Method(modid="appliedenergistics2")
+	@Override
+	public IGridNode getActionableNode() {
+		return hostHelper.getNode();
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		if(hostHelper != null) {
+			hostHelper.writeToNBT(nbt);
+		}
+		return nbt;
 	}
 
 	@Override
