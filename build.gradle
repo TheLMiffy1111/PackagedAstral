@@ -89,7 +89,7 @@ def specVersion = "2"
 def vendor = "thelm"
 
 group = "thelm.packagedastral"
-version = "2.0.2.10"
+version = "2.0.2.11"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -134,7 +134,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.39"
 
 	// Dependencies
-	modImplementation "curse.maven:packagedauto-308380:5118644"
+	modImplementation "curse.maven:packagedauto-308380:5148834"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.0.8.2"
 	modImplementation("hellfirepvp.observerlib:observerlib:1.16.5-1.5.3.v78") {transitive = false}
 	modImplementation("hellfirepvp.astralsorcery:astralsorcery-1.16.5:1.16.4-1.14.1.v106") {transitive = false}

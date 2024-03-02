@@ -18,11 +18,11 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/PackagedAstral/issues"
 	mandatory = true
 
 [[dependencies.packagedastral]]
-	modId = "astralsorcery"
-	versionRange = "[1.16,)"
+	modId = "packagedauto"
+	versionRange = "[2.0.6,)"
 	mandatory = true
 
 [[dependencies.packagedastral]]
-	modId = "packagedauto"
-	versionRange = "[2.0.4,)"
+	modId = "astralsorcery"
+	versionRange = "[1.16,)"
 	mandatory = true

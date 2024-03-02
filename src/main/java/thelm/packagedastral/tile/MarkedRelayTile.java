@@ -37,15 +37,19 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.ModList;
 import thelm.packagedastral.block.MarkedRelayBlock;
+import thelm.packagedastral.integration.appeng.tile.AEMarkedRelayTile;
 import thelm.packagedastral.inventory.MarkedRelayItemHandler;
 import thelm.packagedastral.structure.MarkedRelayPatternStructure;
 import thelm.packagedauto.tile.BaseTile;
+import thelm.packagedauto.util.MiscHelper;
 
 public class MarkedRelayTile extends BaseTile implements ITickableTileEntity, TileRequiresMultiblock {
 
 	public static final TileEntityType<MarkedRelayTile> TYPE_INSTANCE = (TileEntityType<MarkedRelayTile>)TileEntityType.Builder.
-			of(MarkedRelayTile::new, MarkedRelayBlock.INSTANCE).
+			of(MiscHelper.INSTANCE.conditionalSupplier(()->ModList.get().isLoaded("appliedenergistics2"),
+					()->AEMarkedRelayTile::new, ()->MarkedRelayTile::new), MarkedRelayBlock.INSTANCE).
 			build(null).setRegistryName("packagedastral:marked_relay");
 
 	public static final Random RANDOM = new Random();
@@ -246,10 +250,10 @@ public class MarkedRelayTile extends BaseTile implements ITickableTileEntity, Ti
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void spawnItem() {
+	public void ejectItem() {
 		ItemStack stack = itemHandler.getStackInSlot(0);
 		itemHandler.setStackInSlot(0, ItemStack.EMPTY);
-		if(!level.isClientSide && !stack.isEmpty()) {
+		if(!stack.isEmpty()) {
 			double dx = level.random.nextFloat()/2+0.25;
 			double dy = level.random.nextFloat()/2+0.25;
 			double dz = level.random.nextFloat()/2+0.25;

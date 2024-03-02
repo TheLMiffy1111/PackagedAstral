@@ -322,7 +322,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 		starlightReq = 0;
 		relays.stream().map(level::getBlockEntity).
 		filter(tile->tile instanceof MarkedRelayTile && !tile.isRemoved()).
-		forEach(tile->((MarkedRelayTile)tile).spawnItem());
+		forEach(tile->((MarkedRelayTile)tile).ejectItem());
 		relays.clear();
 		isWorking = false;
 		effectRecipe = null;
