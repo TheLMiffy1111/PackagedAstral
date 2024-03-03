@@ -313,6 +313,7 @@ public class TileMarkedRelay extends TileBase implements ITickable, IGridHost, I
 		return nbt;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiContainer getClientGuiElement(EntityPlayer player, Object... args) {
 		return null;
