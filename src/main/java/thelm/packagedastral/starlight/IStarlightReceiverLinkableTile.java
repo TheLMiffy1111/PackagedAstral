@@ -37,9 +37,7 @@ public interface IStarlightReceiverLinkableTile extends IStarlightReceiver, ILin
 	}
 
 	@Override
-	default void onLinkCreate(EntityPlayer player, BlockPos other) {
-
-	}
+	default void onLinkCreate(EntityPlayer player, BlockPos other) {}
 
 	@Override
 	default boolean tryLink(EntityPlayer player, BlockPos other) {
