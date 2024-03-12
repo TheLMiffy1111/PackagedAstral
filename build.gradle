@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-f4853e7a"
+	id "com.crystaelix.loom" version "jitpack-e3412050"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -134,7 +134,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.39"
 
 	// Dependencies
-	modImplementation "curse.maven:packagedauto-308380:5148834"
+	modImplementation "curse.maven:packagedauto-308380:5174883"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.0.8.2"
 	modImplementation("hellfirepvp.observerlib:observerlib:1.16.5-1.5.3.v78") {transitive = false}
 	modImplementation("hellfirepvp.astralsorcery:astralsorcery-1.16.5:1.16.4-1.14.1.v106") {transitive = false}

@@ -28,14 +28,10 @@ public interface IStarlightReceiverLinkableTile extends IStarlightReceiver<ITran
 	}
 
 	@Override
-	default void onBlockLinkCreate(PlayerEntity player, BlockPos other) {
-
-	}
+	default void onBlockLinkCreate(PlayerEntity player, BlockPos other) {}
 
 	@Override
-	default void onEntityLinkCreate(PlayerEntity player, LivingEntity linked) {
-
-	}
+	default void onEntityLinkCreate(PlayerEntity player, LivingEntity linked) {}
 
 	@Override
 	default boolean tryLinkBlock(PlayerEntity player, BlockPos other) {
