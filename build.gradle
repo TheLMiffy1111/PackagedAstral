@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-e3412050"
+	id "com.crystaelix.loom" version "jitpack-19fc18ee"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -134,11 +134,11 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.39"
 
 	// Dependencies
-	modImplementation "curse.maven:packagedauto-308380:5174883"
+	modImplementation "curse.maven:packagedauto-308380:5277686"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.0.8.2"
 	modImplementation("hellfirepvp.observerlib:observerlib:1.16.5-1.5.3.v78") {transitive = false}
 	modImplementation("hellfirepvp.astralsorcery:astralsorcery-1.16.5:1.16.4-1.14.1.v106") {transitive = false}
-	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1009"
+	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1011"
 	modImplementation "appeng:appliedenergistics2:8.4.7"
 	modImplementation "vazkii.patchouli:Patchouli:1.16.4-53.3"
 
@@ -147,7 +147,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:shutup-experimental-settings-407174:3188120"
-	modImplementation "curse.maven:modernfix-790626:5157663"
+	modImplementation "curse.maven:modernfix-790626:5203334"
 	modImplementation "curse.maven:ferritecore-429235:3435176"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3249059"
 }
@@ -199,7 +199,7 @@ publishMods {
 		projectId = "811828"
 		minecraftVersions.add(mcVersion)
 		requires "packagedauto", "astral-sorcery"
-		optional "applied-energistics-2", "thaumic-energistics"
+		optional "applied-energistics-2"
 	}
 
 	modrinth {
