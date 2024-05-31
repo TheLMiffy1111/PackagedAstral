@@ -142,83 +142,81 @@ public class RecipeInfoTrait implements IRecipeInfoAltar {
 		inputRelay.clear();
 		this.input.clear();
 		patterns.clear();
-		if(world != null) {
-			TileAltar fakeAltar = new TileAltar(TileAltar.AltarLevel.TRAIT_CRAFT);
-			TileReceiverBaseInventory.ItemHandlerTile handler = fakeAltar.getInventoryHandler();
-			int[] slotArray = RecipeTypeTrait.SLOTS.toIntArray();
-			for(int i = 0; i < 25; ++i) {
-				ItemStack toSet = input.get(slotArray[i]);
-				toSet.setCount(1);
-				matrix.set(i, toSet.copy());
-				try {
-					handler.setStackInSlot(i, toSet.copy());
-				}
-				catch(NullPointerException e) {}
+		TileAltar fakeAltar = new TileAltar(TileAltar.AltarLevel.TRAIT_CRAFT);
+		TileReceiverBaseInventory.ItemHandlerTile handler = fakeAltar.getInventoryHandler();
+		int[] slotArray = RecipeTypeTrait.SLOTS.toIntArray();
+		for(int i = 0; i < 25; ++i) {
+			ItemStack toSet = input.get(slotArray[i]);
+			toSet.setCount(1);
+			matrix.set(i, toSet.copy());
+			try {
+				handler.setStackInSlot(i, toSet.copy());
 			}
-			for(int i = 25; i < 73; ++i) {
-				ItemStack toSet = input.get(slotArray[i]);
-				if(!toSet.isEmpty()) {
-					toSet.setCount(1);
-					inputRelay.add(toSet.copy());
-				}
-			}
-			fakeAltar.setWorld(world);
-			long prevTime = world.getWorldTime();
-			world.setWorldTime(18000);
-			for(AbstractAltarRecipe recipe : AltarRecipeRegistry.getRecipesForLevel(TileAltar.AltarLevel.TRAIT_CRAFT)) {
-				if(recipe instanceof TraitRecipe && !(recipe instanceof IAltarUpgradeRecipe)) {
-					TraitRecipe trait = (TraitRecipe)recipe;
-					IConstellation prevConst = trait.getRequiredConstellation();
-					trait.setRequiredConstellation(null);
-					if(recipe.matches(fakeAltar, handler, true)) {
-						List<Ingredient> matchers = Lists.transform(trait.getTraitItemHandles(), ItemHandle::getRecipeIngredient);
-						if(RecipeMatcher.findMatches(inputRelay, matchers) != null) {
-							try {
-								this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
-							}
-							catch(NullPointerException e) {
-								trait.setRequiredConstellation(prevConst);
-								continue;
-							}
-							this.recipe = recipe;
-							List<ItemStack> toCondense = new ArrayList<>(matrix);
-							toCondense.addAll(inputRelay);
-							this.input.addAll(MiscUtil.condenseStacks(toCondense));
-							for(int j = 0; j*9 < this.input.size(); ++j) {
-								patterns.add(new PatternHelper(this, j));
-							}
-							world.setWorldTime(prevTime);
-							trait.setRequiredConstellation(prevConst);
-							return;
-						}
-					}
-					trait.setRequiredConstellation(prevConst);
-				}
-			}
-			if(inputRelay.isEmpty()) {
-				for(int i = 2; i >= 0; --i) {
-					TileAltar.AltarLevel level = TileAltar.AltarLevel.values()[i];
-					for(AbstractAltarRecipe recipe : AltarRecipeRegistry.getRecipesForLevel(level)) {
-						if(!(recipe instanceof IAltarUpgradeRecipe) && recipe.matches(fakeAltar, handler, true)) {
-							try {
-								this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
-							}
-							catch(NullPointerException e) {
-								continue;
-							}
-							this.recipe = recipe;
-							this.input.addAll(MiscUtil.condenseStacks(matrix));
-							for(int j = 0; j*9 < this.input.size(); ++j) {
-								patterns.add(new PatternHelper(this, j));
-							}
-							world.setWorldTime(prevTime);
-							return;
-						}
-					}
-				}
-			}
-			world.setWorldTime(prevTime);
+			catch(NullPointerException e) {}
 		}
+		for(int i = 25; i < 73; ++i) {
+			ItemStack toSet = input.get(slotArray[i]);
+			if(!toSet.isEmpty()) {
+				toSet.setCount(1);
+				inputRelay.add(toSet.copy());
+			}
+		}
+		fakeAltar.setWorld(world);
+		long prevTime = world.getWorldTime();
+		world.setWorldTime(18000);
+		for(AbstractAltarRecipe recipe : AltarRecipeRegistry.getRecipesForLevel(TileAltar.AltarLevel.TRAIT_CRAFT)) {
+			if(recipe instanceof TraitRecipe && !(recipe instanceof IAltarUpgradeRecipe)) {
+				TraitRecipe trait = (TraitRecipe)recipe;
+				IConstellation prevConst = trait.getRequiredConstellation();
+				trait.setRequiredConstellation(null);
+				if(recipe.matches(fakeAltar, handler, true)) {
+					List<Ingredient> matchers = Lists.transform(trait.getTraitItemHandles(), ItemHandle::getRecipeIngredient);
+					if(RecipeMatcher.findMatches(inputRelay, matchers) != null) {
+						try {
+							this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
+						}
+						catch(NullPointerException e) {
+							trait.setRequiredConstellation(prevConst);
+							continue;
+						}
+						this.recipe = recipe;
+						List<ItemStack> toCondense = new ArrayList<>(matrix);
+						toCondense.addAll(inputRelay);
+						this.input.addAll(MiscUtil.condenseStacks(toCondense));
+						for(int j = 0; j*9 < this.input.size(); ++j) {
+							patterns.add(new PatternHelper(this, j));
+						}
+						world.setWorldTime(prevTime);
+						trait.setRequiredConstellation(prevConst);
+						return;
+					}
+				}
+				trait.setRequiredConstellation(prevConst);
+			}
+		}
+		if(inputRelay.isEmpty()) {
+			for(int i = 2; i >= 0; --i) {
+				TileAltar.AltarLevel level = TileAltar.AltarLevel.values()[i];
+				for(AbstractAltarRecipe recipe : AltarRecipeRegistry.getRecipesForLevel(level)) {
+					if(!(recipe instanceof IAltarUpgradeRecipe) && recipe.matches(fakeAltar, handler, true)) {
+						try {
+							this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
+						}
+						catch(NullPointerException e) {
+							continue;
+						}
+						this.recipe = recipe;
+						this.input.addAll(MiscUtil.condenseStacks(matrix));
+						for(int j = 0; j*9 < this.input.size(); ++j) {
+							patterns.add(new PatternHelper(this, j));
+						}
+						world.setWorldTime(prevTime);
+						return;
+					}
+				}
+			}
+		}
+		world.setWorldTime(prevTime);
 		matrix.clear();
 	}
 

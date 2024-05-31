@@ -128,44 +128,42 @@ public class RecipeInfoConstellation implements IRecipeInfoAltar {
 		recipe = null;
 		this.input.clear();
 		patterns.clear();
-		if(world != null) {
-			TileAltar fakeAltar = new TileAltar(TileAltar.AltarLevel.CONSTELLATION_CRAFT);
-			TileReceiverBaseInventory.ItemHandlerTile handler = fakeAltar.getInventoryHandler();
-			int[] slotArray = RecipeTypeConstellation.SLOTS.toIntArray();
-			for(int i = 0; i < 21; ++i) {
-				ItemStack toSet = input.get(slotArray[i]);
-				toSet.setCount(1);
-				matrix.set(i, toSet.copy());
-				try {
-					handler.setStackInSlot(i, toSet.copy());
-				}
-				catch(NullPointerException e) {}
+		TileAltar fakeAltar = new TileAltar(TileAltar.AltarLevel.CONSTELLATION_CRAFT);
+		TileReceiverBaseInventory.ItemHandlerTile handler = fakeAltar.getInventoryHandler();
+		int[] slotArray = RecipeTypeConstellation.SLOTS.toIntArray();
+		for(int i = 0; i < 21; ++i) {
+			ItemStack toSet = input.get(slotArray[i]);
+			toSet.setCount(1);
+			matrix.set(i, toSet.copy());
+			try {
+				handler.setStackInSlot(i, toSet.copy());
 			}
-			fakeAltar.setWorld(world);
-			long prevTime = world.getWorldTime();
-			world.setWorldTime(18000);
-			for(int i = 2; i >= 0; --i) {
-				TileAltar.AltarLevel level = TileAltar.AltarLevel.values()[i];
-				for(AbstractAltarRecipe recipe : AltarRecipeRegistry.getRecipesForLevel(level)) {
-					if(!(recipe instanceof IAltarUpgradeRecipe) && recipe.matches(fakeAltar, handler, true)) {
-						try {
-							this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
-						}
-						catch(NullPointerException e) {
-							continue;
-						}
-						this.recipe = recipe;
-						this.input.addAll(MiscUtil.condenseStacks(matrix));
-						for(int j = 0; j*9 < this.input.size(); ++j) {
-							patterns.add(new PatternHelper(this, j));
-						}
-						world.setWorldTime(prevTime);
-						return;
-					}
-				}
-			}
-			world.setWorldTime(prevTime);
+			catch(NullPointerException e) {}
 		}
+		fakeAltar.setWorld(world);
+		long prevTime = world.getWorldTime();
+		world.setWorldTime(18000);
+		for(int i = 2; i >= 0; --i) {
+			TileAltar.AltarLevel level = TileAltar.AltarLevel.values()[i];
+			for(AbstractAltarRecipe recipe : AltarRecipeRegistry.getRecipesForLevel(level)) {
+				if(!(recipe instanceof IAltarUpgradeRecipe) && recipe.matches(fakeAltar, handler, true)) {
+					try {
+						this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
+					}
+					catch(NullPointerException e) {
+						continue;
+					}
+					this.recipe = recipe;
+					this.input.addAll(MiscUtil.condenseStacks(matrix));
+					for(int j = 0; j*9 < this.input.size(); ++j) {
+						patterns.add(new PatternHelper(this, j));
+					}
+					world.setWorldTime(prevTime);
+					return;
+				}
+			}
+		}
+		world.setWorldTime(prevTime);
 		matrix.clear();
 	}
 
