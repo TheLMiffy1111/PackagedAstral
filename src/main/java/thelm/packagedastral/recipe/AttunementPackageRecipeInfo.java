@@ -145,37 +145,35 @@ public class AttunementPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		recipe = null;
 		this.input.clear();
 		patterns.clear();
-		if(world != null) {
-			TileAltar fakeAltar = new TileAltar().updateType(AltarType.ATTUNEMENT, true);
-			ItemStackHandler handler = new ItemStackHandler(25);
-			int[] slotArray = AttunementPackageRecipeType.SLOTS.toIntArray();
-			int[] slotArray1 = SLOTS_MATRIX.toIntArray();
-			for(int i = 0; i < 13; ++i) {
-				ItemStack toSet = input.get(slotArray[i]);
-				toSet.setCount(1);
-				matrix.set(i, toSet.copy());
-				handler.setStackInSlot(slotArray1[i], toSet.copy());
-			}
-			for(SimpleAltarRecipe recipe : MiscHelper.INSTANCE.getRecipeManager().getAllRecipesFor(RecipeTypesAS.TYPE_ALTAR.getType())) {
-				if(recipe.getAltarType().ordinal() <= 1 && recipe.getFocusConstellation() == null &&
-						recipe.getRelayInputs().isEmpty() && recipe.getInputs().containsInputs(handler, true)) {
-					try {
-						List<ItemStack> outputs = recipe.getOutputs(fakeAltar);
-						if(outputs.isEmpty()) {
-							continue;
-						}
-						this.output = outputs.get(0);
-					}
-					catch(NullPointerException e) {
+		TileAltar fakeAltar = new TileAltar().updateType(AltarType.ATTUNEMENT, true);
+		ItemStackHandler handler = new ItemStackHandler(25);
+		int[] slotArray = AttunementPackageRecipeType.SLOTS.toIntArray();
+		int[] slotArray1 = SLOTS_MATRIX.toIntArray();
+		for(int i = 0; i < 13; ++i) {
+			ItemStack toSet = input.get(slotArray[i]);
+			toSet.setCount(1);
+			matrix.set(i, toSet.copy());
+			handler.setStackInSlot(slotArray1[i], toSet.copy());
+		}
+		for(SimpleAltarRecipe recipe : MiscHelper.INSTANCE.getRecipeManager().getAllRecipesFor(RecipeTypesAS.TYPE_ALTAR.getType())) {
+			if(recipe.getAltarType().ordinal() <= 1 && recipe.getFocusConstellation() == null &&
+					recipe.getRelayInputs().isEmpty() && recipe.getInputs().containsInputs(handler, true)) {
+				try {
+					List<ItemStack> outputs = recipe.getOutputs(fakeAltar);
+					if(outputs.isEmpty()) {
 						continue;
 					}
-					this.recipe = recipe;
-					this.input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
-					for(int j = 0; j*9 < this.input.size(); ++j) {
-						patterns.add(new PackagePattern(this, j));
-					}
-					return;
+					this.output = outputs.get(0);
 				}
+				catch(NullPointerException e) {
+					continue;
+				}
+				this.recipe = recipe;
+				this.input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
+				for(int j = 0; j*9 < this.input.size(); ++j) {
+					patterns.add(new PackagePattern(this, j));
+				}
+				return;
 			}
 		}
 		matrix.clear();

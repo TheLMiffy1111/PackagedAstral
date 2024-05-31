@@ -140,44 +140,42 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		inputRelay.clear();
 		this.input.clear();
 		patterns.clear();
-		if(world != null) {
-			TileAltar fakeAltar = new TileAltar().updateType(AltarType.RADIANCE, true);
-			ItemStackHandler handler = new ItemStackHandler(25);
-			int[] slotArray = TraitPackageRecipeType.SLOTS.toIntArray();
-			for(int i = 0; i < 25; ++i) {
-				ItemStack toSet = input.get(slotArray[i]);
+		TileAltar fakeAltar = new TileAltar().updateType(AltarType.RADIANCE, true);
+		ItemStackHandler handler = new ItemStackHandler(25);
+		int[] slotArray = TraitPackageRecipeType.SLOTS.toIntArray();
+		for(int i = 0; i < 25; ++i) {
+			ItemStack toSet = input.get(slotArray[i]);
+			toSet.setCount(1);
+			matrix.set(i, toSet.copy());
+			handler.setStackInSlot(i, toSet.copy());
+		}
+		for(int i = 25; i < 73; ++i) {
+			ItemStack toSet = input.get(slotArray[i]);
+			if(!toSet.isEmpty()) {
 				toSet.setCount(1);
-				matrix.set(i, toSet.copy());
-				handler.setStackInSlot(i, toSet.copy());
+				inputRelay.add(toSet.copy());
 			}
-			for(int i = 25; i < 73; ++i) {
-				ItemStack toSet = input.get(slotArray[i]);
-				if(!toSet.isEmpty()) {
-					toSet.setCount(1);
-					inputRelay.add(toSet.copy());
-				}
-			}
-			for(SimpleAltarRecipe recipe : MiscHelper.INSTANCE.getRecipeManager().getAllRecipesFor(RecipeTypesAS.TYPE_ALTAR.getType())) {
-				if(recipe.getInputs().containsInputs(handler, true)) {
-					List<Ingredient> matchers = Lists.transform(recipe.getRelayInputs(), WrappedIngredient::getIngredient);
-					if(inputRelay.isEmpty() && matchers.isEmpty() || RecipeMatcher.findMatches(inputRelay, matchers) != null) {
-						try {
-							List<ItemStack> outputs = recipe.getOutputs(fakeAltar);
-							if(outputs.isEmpty()) {
-								continue;
-							}
-							this.output = outputs.get(0);
-						}
-						catch(NullPointerException e) {
+		}
+		for(SimpleAltarRecipe recipe : MiscHelper.INSTANCE.getRecipeManager().getAllRecipesFor(RecipeTypesAS.TYPE_ALTAR.getType())) {
+			if(recipe.getInputs().containsInputs(handler, true)) {
+				List<Ingredient> matchers = Lists.transform(recipe.getRelayInputs(), WrappedIngredient::getIngredient);
+				if(inputRelay.isEmpty() && matchers.isEmpty() || RecipeMatcher.findMatches(inputRelay, matchers) != null) {
+					try {
+						List<ItemStack> outputs = recipe.getOutputs(fakeAltar);
+						if(outputs.isEmpty()) {
 							continue;
 						}
-						this.recipe = recipe;
-						this.input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
-						for(int j = 0; j*9 < this.input.size(); ++j) {
-							patterns.add(new PackagePattern(this, j));
-						}
-						return;
+						this.output = outputs.get(0);
 					}
+					catch(NullPointerException e) {
+						continue;
+					}
+					this.recipe = recipe;
+					this.input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
+					for(int j = 0; j*9 < this.input.size(); ++j) {
+						patterns.add(new PackagePattern(this, j));
+					}
+					return;
 				}
 			}
 		}
