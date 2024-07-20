@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-39f2e017"
+	id "com.crystaelix.loom" version "jitpack-6453f0f4"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -131,11 +131,11 @@ dependencies {
 		}
 		parchment "org.parchmentmc.data:parchment-1.16.5:2022.03.06@zip"
 	}
-	forge "net.minecraftforge:forge:1.16.5-36.2.39"
+	forge "net.minecraftforge:forge:1.16.5-36.2.42"
 
 	// Dependencies
-	modImplementation "curse.maven:packagedauto-308380:5385580"
-	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.0.8.2"
+	modImplementation "curse.maven:packagedauto-308380:5505102"
+	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.0"
 	modImplementation("hellfirepvp.observerlib:observerlib:1.16.5-1.5.3.v78") {transitive = false}
 	modImplementation("hellfirepvp.astralsorcery:astralsorcery-1.16.5:1.16.4-1.14.1.v106") {transitive = false}
 	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1011"
@@ -147,7 +147,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:shutup-experimental-settings-407174:3188120"
-	modImplementation "curse.maven:modernfix-790626:5203334"
+	modImplementation "curse.maven:modernfix-790626:5399356"
 	modImplementation "curse.maven:ferritecore-429235:3435176"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3249059"
 }
