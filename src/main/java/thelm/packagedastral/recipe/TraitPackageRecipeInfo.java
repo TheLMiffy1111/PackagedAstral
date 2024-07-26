@@ -34,7 +34,7 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 	List<ItemStack> input = new ArrayList<>();
 	List<ItemStack> matrix = NonNullList.withSize(25, ItemStack.EMPTY);
 	List<ItemStack> inputRelay = new ArrayList<>();
-	ItemStack output;
+	ItemStack output = ItemStack.EMPTY;
 	List<IPackagePattern> patterns = new ArrayList<>();
 
 	@Override
@@ -45,14 +45,14 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("Matrix", 10), matrix);
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("InputRelay", 10), inputRelay);
 		output = ItemStack.of(nbt.getCompound("Output"));
+		List<ItemStack> toCondense = new ArrayList<>(matrix);
+		toCondense.addAll(inputRelay);
+		input.addAll(MiscHelper.INSTANCE.condenseStacks(toCondense));
+		for(int i = 0; i*9 < input.size(); ++i) {
+			patterns.add(new PackagePattern(this, i));
+		}
 		if(recipe instanceof SimpleAltarRecipe) {
 			this.recipe = (SimpleAltarRecipe)recipe;
-			List<ItemStack> toCondense = new ArrayList<>(matrix);
-			toCondense.addAll(inputRelay);
-			input.addAll(MiscHelper.INSTANCE.condenseStacks(toCondense));
-			for(int i = 0; i*9 < input.size(); ++i) {
-				patterns.add(new PackagePattern(this, i));
-			}
 		}
 	}
 

@@ -205,7 +205,7 @@ public class AttunementCrafterTile extends BaseTile implements ITickableTileEnti
 
 	@Override
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
-		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
 			if(recipe.getLevel() == 1 && structureValid) {
 				ItemStack slotStack = itemHandler.getStackInSlot(13);

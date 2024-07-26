@@ -196,7 +196,7 @@ public class DiscoveryCrafterTile extends BaseTile implements ITickableTileEntit
 
 	@Override
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
-		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
 			if(recipe.getLevel() == 0) {
 				ItemStack slotStack = itemHandler.getStackInSlot(9);

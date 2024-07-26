@@ -41,7 +41,7 @@ public class DiscoveryPackageRecipeInfo implements IAltarPackageRecipeInfo {
 	SimpleAltarRecipe recipe;
 	List<ItemStack> input = new ArrayList<>();
 	List<ItemStack> matrix = NonNullList.withSize(9, ItemStack.EMPTY);
-	ItemStack output;
+	ItemStack output = ItemStack.EMPTY;
 	List<IPackagePattern> patterns = new ArrayList<>();
 
 	@Override
@@ -51,12 +51,12 @@ public class DiscoveryPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		IRecipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("Matrix", 10), matrix);
 		output = ItemStack.of(nbt.getCompound("Output"));
+		input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
+		for(int i = 0; i*9 < input.size(); ++i) {
+			patterns.add(new PackagePattern(this, i));
+		}
 		if(recipe instanceof SimpleAltarRecipe) {
 			this.recipe = (SimpleAltarRecipe)recipe;
-			input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
-			for(int i = 0; i*9 < input.size(); ++i) {
-				patterns.add(new PackagePattern(this, i));
-			}
 		}
 	}
 

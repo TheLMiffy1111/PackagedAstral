@@ -229,7 +229,7 @@ public class TraitCrafterTile extends BaseTile implements ITickableTileEntity, I
 
 	@Override
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
-		if(!isBusy() && recipeInfo instanceof IAltarPackageRecipeInfo) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IAltarPackageRecipeInfo) {
 			IAltarPackageRecipeInfo recipe = (IAltarPackageRecipeInfo)recipeInfo;
 			if(recipe.getLevel() == 3 && structureValid) {
 				List<ItemStack> relayInputs = recipe.getRelayInputs();

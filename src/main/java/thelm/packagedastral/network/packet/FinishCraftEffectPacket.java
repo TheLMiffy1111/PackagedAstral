@@ -39,31 +39,31 @@ public class FinishCraftEffectPacket {
 		this.doEffect = doEffect;
 	}
 
-	public static void encode(FinishCraftEffectPacket pkt, PacketBuffer buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeResourceLocation(pkt.recipe.getId());
-		buf.writeBoolean(pkt.doEffect);
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeResourceLocation(recipe.getId());
+		buf.writeBoolean(doEffect);
 	}
 
 	public static FinishCraftEffectPacket decode(PacketBuffer buf) {
 		return new FinishCraftEffectPacket(buf.readBlockPos(), buf.readResourceLocation(), buf.readBoolean());
 	}
 
-	public static void handle(FinishCraftEffectPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientWorld world = Minecraft.getInstance().level;
-			if(world.isLoaded(pkt.pos)) {
-				TileEntity te = world.getBlockEntity(pkt.pos);
+			if(world.isLoaded(pos)) {
+				TileEntity te = world.getBlockEntity(pos);
 				if(te instanceof IHasFakeAltar) {
 					TileAltar fakeAltar = ((IHasFakeAltar)te).getFakeAltar();
-					pkt.recipe.getCraftingEffects().forEach(effect->{
+					recipe.getCraftingEffects().forEach(effect->{
 						try {
 							effect.onCraftingFinish(fakeAltar, false);
 						}
 						catch(Exception e) {}
 					});
 				}
-				SoundHelper.playSoundClientWorld(SoundsAS.ALTAR_CRAFT_FINISH, pkt.pos, 0.6F, 1F);
+				SoundHelper.playSoundClientWorld(SoundsAS.ALTAR_CRAFT_FINISH, pos, 0.6F, 1F);
 			}
 		});
 		ctx.get().setPacketHandled(true);
