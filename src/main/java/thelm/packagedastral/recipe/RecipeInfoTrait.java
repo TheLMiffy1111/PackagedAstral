@@ -36,25 +36,22 @@ public class RecipeInfoTrait implements IRecipeInfoAltar {
 	List<ItemStack> input = new ArrayList<>();
 	List<ItemStack> matrix = NonNullList.withSize(25, ItemStack.EMPTY);
 	List<ItemStack> inputRelay = new ArrayList<>();
-	ItemStack output;
+	ItemStack output = ItemStack.EMPTY;
 	List<IPackagePattern> patterns = new ArrayList<>();
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		input.clear();
-		output = ItemStack.EMPTY;
 		patterns.clear();
 		recipe = AltarRecipeRegistry.getRecipeSlow(new ResourceLocation(nbt.getString("Recipe")));
 		MiscUtil.loadAllItems(nbt.getTagList("Matrix", 10), matrix);
 		MiscUtil.loadAllItems(nbt.getTagList("InputRelay", 10), inputRelay);
 		output = new ItemStack(nbt.getCompoundTag("Output"));
-		if(recipe != null) {
-			List<ItemStack> toCondense = new ArrayList<>(matrix);
-			toCondense.addAll(inputRelay);
-			input.addAll(MiscUtil.condenseStacks(toCondense));
-			for(int i = 0; i*9 < input.size(); ++i) {
-				patterns.add(new PatternHelper(this, i));
-			}
+		List<ItemStack> toCondense = new ArrayList<>(matrix);
+		toCondense.addAll(inputRelay);
+		input.addAll(MiscUtil.condenseStacks(toCondense));
+		for(int i = 0; i*9 < input.size(); ++i) {
+			patterns.add(new PatternHelper(this, i));
 		}
 	}
 

@@ -18,7 +18,7 @@ public interface IRecipeInfoAltar extends IRecipeInfo {
 	List<ItemStack> getMatrix();
 
 	List<ItemStack> getRelayInputs();
-	
+
 	boolean requiresNight();
 
 	int getLevelRequired();
@@ -29,6 +29,7 @@ public interface IRecipeInfoAltar extends IRecipeInfo {
 
 	@Override
 	default List<ItemStack> getOutputs() {
-		return Collections.singletonList(getOutput());
+		ItemStack output = getOutput();
+		return output.isEmpty() ? Collections.emptyList() : Collections.singletonList(output);
 	}
 }

@@ -203,7 +203,7 @@ public class TileConstellationCrafter extends TileBase implements ITickable, IPa
 
 	@Override
 	public boolean acceptPackage(IRecipeInfo recipeInfo, List<ItemStack> stacks, EnumFacing facing) {
-		if(!isBusy() && recipeInfo instanceof IRecipeInfoAltar) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IRecipeInfoAltar) {
 			IRecipeInfoAltar recipe = (IRecipeInfoAltar)recipeInfo;
 			if(recipe.getLevel() == 2 && structureValid && (!requiresNight || !recipe.requiresNight() || ConstellationSkyHandler.getInstance().isNight(world))) {
 				ItemStack slotStack = inventory.getStackInSlot(21);

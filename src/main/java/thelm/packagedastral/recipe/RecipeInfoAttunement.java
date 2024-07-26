@@ -28,22 +28,19 @@ public class RecipeInfoAttunement implements IRecipeInfoAltar {
 	AbstractAltarRecipe recipe;
 	List<ItemStack> input = new ArrayList<>();
 	List<ItemStack> matrix = NonNullList.withSize(13, ItemStack.EMPTY);
-	ItemStack output;
+	ItemStack output = ItemStack.EMPTY;
 	List<IPackagePattern> patterns = new ArrayList<>();
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		input.clear();
-		output = ItemStack.EMPTY;
 		patterns.clear();
 		recipe = AltarRecipeRegistry.getRecipeSlow(new ResourceLocation(nbt.getString("Recipe")));
 		MiscUtil.loadAllItems(nbt.getTagList("Matrix", 10), matrix);
 		output = new ItemStack(nbt.getCompoundTag("Output"));
-		if(recipe != null) {
-			input.addAll(MiscUtil.condenseStacks(matrix));
-			for(int i = 0; i*9 < input.size(); ++i) {
-				patterns.add(new PatternHelper(this, i));
-			}
+		input.addAll(MiscUtil.condenseStacks(matrix));
+		for(int i = 0; i*9 < input.size(); ++i) {
+			patterns.add(new PatternHelper(this, i));
 		}
 	}
 

@@ -192,7 +192,7 @@ public class TileDiscoveryCrafter extends TileBase implements ITickable, IPackag
 
 	@Override
 	public boolean acceptPackage(IRecipeInfo recipeInfo, List<ItemStack> stacks, EnumFacing facing) {
-		if(!isBusy() && recipeInfo instanceof IRecipeInfoAltar) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IRecipeInfoAltar) {
 			IRecipeInfoAltar recipe = (IRecipeInfoAltar)recipeInfo;
 			if(recipe.getLevel() == 0 && (!requiresNight || !recipe.requiresNight() || ConstellationSkyHandler.getInstance().isNight(world))) {
 				ItemStack slotStack = inventory.getStackInSlot(9);

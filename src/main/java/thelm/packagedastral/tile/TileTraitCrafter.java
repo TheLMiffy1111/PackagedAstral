@@ -235,7 +235,7 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 
 	@Override
 	public boolean acceptPackage(IRecipeInfo recipeInfo, List<ItemStack> stacks, EnumFacing facing) {
-		if(!isBusy() && recipeInfo instanceof IRecipeInfoAltar) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IRecipeInfoAltar) {
 			IRecipeInfoAltar recipe = (IRecipeInfoAltar)recipeInfo;
 			if(recipe.getLevel() == 3 && structureValid) {
 				List<ItemStack> relayInputs = recipe.getRelayInputs();
