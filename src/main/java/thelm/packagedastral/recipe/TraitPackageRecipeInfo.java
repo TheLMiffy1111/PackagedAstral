@@ -47,12 +47,12 @@ public class TraitPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		output = ItemStack.of(nbt.getCompound("Output"));
 		List<ItemStack> toCondense = new ArrayList<>(matrix);
 		toCondense.addAll(inputRelay);
+		if(recipe instanceof SimpleAltarRecipe) {
+			this.recipe = (SimpleAltarRecipe)recipe;
+		}
 		input.addAll(MiscHelper.INSTANCE.condenseStacks(toCondense));
 		for(int i = 0; i*9 < input.size(); ++i) {
 			patterns.add(new PackagePattern(this, i));
-		}
-		if(recipe instanceof SimpleAltarRecipe) {
-			this.recipe = (SimpleAltarRecipe)recipe;
 		}
 	}
 

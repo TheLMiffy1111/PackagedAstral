@@ -55,12 +55,12 @@ public class AttunementPackageRecipeInfo implements IAltarPackageRecipeInfo {
 		IRecipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("Matrix", 10), matrix);
 		output = ItemStack.of(nbt.getCompound("Output"));
+		if(recipe instanceof SimpleAltarRecipe) {
+			this.recipe = (SimpleAltarRecipe)recipe;
+		}
 		input.addAll(MiscHelper.INSTANCE.condenseStacks(matrix));
 		for(int i = 0; i*9 < input.size(); ++i) {
 			patterns.add(new PackagePattern(this, i));
-		}
-		if(recipe instanceof SimpleAltarRecipe) {
-			this.recipe = (SimpleAltarRecipe)recipe;
 		}
 	}
 

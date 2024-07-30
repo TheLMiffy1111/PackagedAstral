@@ -1,1 +1,1 @@
-Allow loading of invalid recipes and add validity checks  
+Make pattern calculation last when reading recipe from nbt  
