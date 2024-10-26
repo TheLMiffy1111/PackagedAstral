@@ -498,6 +498,9 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
 		super.readFromNBT(nbt);
 		starlight = nbt.getInteger("Starlight");
 		progressReq = nbt.getInteger("ProgressReq");
@@ -518,9 +521,6 @@ public class TileTraitCrafter extends TileBase implements ITickable, IPackageCra
 				BlockPos pos = new BlockPos(posArray[0], posArray[1], posArray[2]);
 				relays.add(pos);
 			}
-		}
-		if(hostHelper != null) {
-			hostHelper.readFromNBT(nbt);
 		}
 	}
 

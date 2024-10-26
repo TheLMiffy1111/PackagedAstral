@@ -422,6 +422,9 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
 		super.readFromNBT(nbt);
 		starlight = nbt.getInteger("Starlight");
 		isWorking = nbt.getBoolean("Working");
@@ -436,9 +439,6 @@ public class TileAttunementCrafter extends TileBase implements ITickable, IPacka
 			if(recipe instanceof IRecipeInfoAltar && ((IRecipeInfoAltar)recipe).getLevel() == 1) {
 				currentRecipe = (IRecipeInfoAltar)recipe;
 			}
-		}
-		if(hostHelper != null) {
-			hostHelper.readFromNBT(nbt);
 		}
 	}
 

@@ -275,10 +275,10 @@ public class TileMarkedRelay extends TileBase implements ITickable, IGridHost, I
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
 		if(hostHelper != null) {
 			hostHelper.readFromNBT(nbt);
 		}
+		super.readFromNBT(nbt);
 	}
 
 	@Override

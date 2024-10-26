@@ -396,6 +396,9 @@ public class TileDiscoveryCrafter extends TileBase implements ITickable, IPackag
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
 		super.readFromNBT(nbt);
 		starlight = nbt.getInteger("Starlight");
 		progressReq = nbt.getInteger("ProgressReq");
@@ -409,9 +412,6 @@ public class TileDiscoveryCrafter extends TileBase implements ITickable, IPackag
 			if(recipe instanceof IRecipeInfoAltar && ((IRecipeInfoAltar)recipe).getLevel() == 0) {
 				currentRecipe = (IRecipeInfoAltar)recipe;
 			}
-		}
-		if(hostHelper != null) {
-			hostHelper.readFromNBT(nbt);
 		}
 	}
 

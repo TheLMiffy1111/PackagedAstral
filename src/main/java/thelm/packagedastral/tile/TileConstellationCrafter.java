@@ -428,6 +428,9 @@ public class TileConstellationCrafter extends TileBase implements ITickable, IPa
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
 		super.readFromNBT(nbt);
 		starlight = nbt.getInteger("Starlight");
 		progressReq = nbt.getInteger("ProgressReq");
@@ -441,9 +444,6 @@ public class TileConstellationCrafter extends TileBase implements ITickable, IPa
 			if(recipe instanceof IRecipeInfoAltar && ((IRecipeInfoAltar)recipe).getLevel() == 2) {
 				currentRecipe = (IRecipeInfoAltar)recipe;
 			}
-		}
-		if(hostHelper != null) {
-			hostHelper.readFromNBT(nbt);
 		}
 	}
 
