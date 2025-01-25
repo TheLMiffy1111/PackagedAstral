@@ -1,0 +1,20 @@
+itemGroup.packagedastral=PackagedAstral
+
+tile.packagedastral.discovery_crafter.name=光明梱包クラフター
+tile.packagedastral.attunement_crafter.name=星明かりの梱包クラフト祭壇
+tile.packagedastral.constellation_crafter.name=天界の梱包クラフト祭壇
+tile.packagedastral.trait_crafter.name=七色の梱包クラフト祭壇
+tile.packagedastral.trait_crafter.relays.usable=現在使用可能なマーク付き分光中継器: %s
+tile.packagedastral.trait_crafter.relays.required=最低限必要なマーク付き分光中継器: %s
+tile.packagedastral.marked_relay.name=マーク付き分光中継器
+
+item.packagedastral.constellation_focus.name=星座フォーカス
+
+recipe.packagedastral.discovery=光明の作業台
+recipe.packagedastral.discovery.short=光明
+recipe.packagedastral.attunement=星明かりの祭壇
+recipe.packagedastral.attunement.short=星明かり
+recipe.packagedastral.constellation=天空の祭壇
+recipe.packagedastral.constellation.short=天空
+recipe.packagedastral.trait=七色の祭壇
+recipe.packagedastral.trait.short=七色
