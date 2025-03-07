@@ -1,0 +1,14 @@
+{
+	"name": "PackagedAstral",
+	"category": "packagedauto:recipe",
+	"icon": "packagedastral:trait_crafter",
+	"pages": [
+		{
+			"type": "patchouli:text",
+			"text": "$(#822)PackagedAstral/$ adds recipe types for $(#822)Astral Sorcery/$ recipes to $(#822)PackagedAuto/$."
+		}
+	],
+	"read_by_default": true,
+	"sortnum": 1000,
+	"entry_color": "882222"
+}

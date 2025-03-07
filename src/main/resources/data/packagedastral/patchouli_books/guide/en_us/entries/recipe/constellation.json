@@ -1,0 +1,41 @@
+{
+	"name": "Celestial Altar",
+	"category": "packagedauto:recipe",
+	"icon": "packagedastral:constellation_crafter",
+	"pages": [
+		{
+			"type": "patchouli:text",
+			"text": "$(thing)Celestial Altar/$ is a crafting recipe type that uses the $(item)Celestial Package Crafting Altar/$ to craft recipes craftable in a Celestial Altar."
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "packagedastral:constellation_crafter",
+			"link_recipe": true,
+			"title": "Usage",
+			"text": "To use the $(item)Celestial Package Crafting Altar/$, you must build the Celestial Altar structure around it, shown on the next page.$(p)The crafter requires power and starlight."
+		},
+		{
+			"type": "patchouli:multiblock",
+			"multiblock_id": "packagedastral:constellation_crafter_pattern",
+			"name": "Structure"
+		},
+		{
+			"type": "patchouli:text",
+			"title": "Usage (cont.)",
+			"text": "Items crafted by the $(item)Celestial Package Crafting Altar/$ will be ejected into adjacent inventories."
+		},
+		{
+			"type": "patchouli:text",
+			"flag": "mod:appliedenergistics2",
+			"title": "AE2 Integration",
+			"text": "The $(item)Celestial Package Crafting Altar/$ can be connected to an $(thing)ME Network/$.$(p)It will extract power to use, and instead eject crafted items into the network."
+		},
+		{
+			"type": "packagedastral:altar_recipe_2",
+			"recipe": "packagedastral:constellation_crafter",
+			"title": "Celestial Altar"
+		}
+	],
+	"read_by_default": true,
+	"sortnum": 1004
+}

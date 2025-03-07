@@ -19,7 +19,7 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/PackagedAstral/issues"
 
 [[dependencies.packagedastral]]
 	modId = "packagedauto"
-	versionRange = "[2.0.8.36,)"
+	versionRange = "[2.0.11,)"
 	mandatory = true
 
 [[dependencies.packagedastral]]

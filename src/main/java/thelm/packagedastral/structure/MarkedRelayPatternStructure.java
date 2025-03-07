@@ -3,7 +3,7 @@ package thelm.packagedastral.structure;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
 import hellfirepvp.observerlib.api.util.PatternBlockArray;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import thelm.packagedastral.block.MarkedRelayBlock;
 
@@ -18,10 +18,10 @@ public class MarkedRelayPatternStructure extends PatternBlockArray {
 	}
 
 	private void load() {
-		addBlock(MarkedRelayBlock.INSTANCE.defaultBlockState(), 0, 0, 0);
-		BlockState chiseled = BlocksAS.MARBLE_CHISELED.defaultBlockState();
-		BlockState arch = BlocksAS.MARBLE_ARCH.defaultBlockState();
-		BlockState sootyRaw = BlocksAS.BLACK_MARBLE_RAW.defaultBlockState();
+		addBlock(MarkedRelayBlock.INSTANCE, 0, 0, 0);
+		Block chiseled = BlocksAS.MARBLE_CHISELED;
+		Block arch = BlocksAS.MARBLE_ARCH;
+		Block sootyRaw = BlocksAS.BLACK_MARBLE_RAW;
 		addBlock(sootyRaw, 0, -1, 0);
 		addBlock(chiseled, -1, -1, -1);
 		addBlock(chiseled, 1, -1, -1);

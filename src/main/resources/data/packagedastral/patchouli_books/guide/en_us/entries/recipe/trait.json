@@ -1,0 +1,46 @@
+{
+	"name": "Iridescent Altar",
+	"category": "packagedauto:recipe",
+	"icon": "packagedastral:trait_crafter",
+	"pages": [
+		{
+			"type": "patchouli:text",
+			"text": "$(thing)Iridescent Altar/$ is a crafting recipe type that uses the $(item)Iridescent Package Crafting Altar/$ to craft recipes craftable in a Iridescent Altar."
+		},
+		{
+			"type": "packagedauto:spotlight2",
+			"item1": "packagedastral:trait_crafter",
+			"item2": "packagedastral:marked_relay",
+			"title": "Usage",
+			"text": "To use the $(item)Iridescent Package Crafting Altar/$, you must build the Iridescent Altar structure around it, shown on the next page.$(p)You must also put enough $(item)Marked Spectral Relays/$ in a 7x7 area around the crafter.$(p)The crafter requires power and starlight."
+		},
+		{
+			"type": "patchouli:multiblock",
+			"multiblock_id": "packagedastral:trait_crafter_pattern",
+			"name": "Structure"
+		},
+		{
+			"type": "patchouli:text",
+			"title": "Usage (cont.)",
+			"text": "You can $(thing)$(k:sneak) + $(k:use)/$ with an empty hand on an idle $(item)Iridescent Package Crafting Altar/$ check its currently usable and required amount of $(item)Marked Spectral Relays/$.$(p)Items crafted by the $(item)Iridescent Package Crafting Altar/$ will be ejected into adjacent inventories."
+		},
+		{
+			"type": "patchouli:text",
+			"flag": "mod:appliedenergistics2",
+			"title": "AE2 Integration",
+			"text": "The $(item)Iridescent Package Crafting Altar/$ can be connected to an $(thing)ME Network/$.$(p)It will extract power to use, and instead eject crafted items into the network."
+		},
+		{
+			"type": "packagedastral:altar_recipe_2",
+			"recipe": "packagedastral:constellation_focus",
+			"title": "Iridescent Altar"
+		},
+		{
+			"type": "packagedastral:altar_recipe_2",
+			"recipe": "packagedastral:trait_crafter",
+			"title": "Iridescent Altar"
+		}
+	],
+	"read_by_default": true,
+	"sortnum": 1005
+}

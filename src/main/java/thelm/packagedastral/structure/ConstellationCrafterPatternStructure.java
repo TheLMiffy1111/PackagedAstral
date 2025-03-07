@@ -6,8 +6,10 @@ import hellfirepvp.astralsorcery.common.structure.types.StructureType;
 import hellfirepvp.observerlib.api.block.MatchableState;
 import hellfirepvp.observerlib.api.block.SimpleMatchableBlock;
 import hellfirepvp.observerlib.api.util.PatternBlockArray;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
+import thelm.packagedastral.block.ConstellationCrafterBlock;
 
 public class ConstellationCrafterPatternStructure extends PatternBlockArray {
 
@@ -20,12 +22,12 @@ public class ConstellationCrafterPatternStructure extends PatternBlockArray {
 	}
 
 	private void load() {
-		BlockState raw = BlocksAS.MARBLE_RAW.defaultBlockState();
-		BlockState chiseled = BlocksAS.MARBLE_CHISELED.defaultBlockState();
-		BlockState runed = BlocksAS.MARBLE_RUNED.defaultBlockState();
-		BlockState bricks = BlocksAS.MARBLE_BRICKS.defaultBlockState();
-		BlockState sootyRaw = BlocksAS.BLACK_MARBLE_RAW.defaultBlockState();
-		addBlock(BlocksAS.ALTAR_CONSTELLATION.defaultBlockState(), 0, 0, 0);
+		Block raw = BlocksAS.MARBLE_RAW;
+		Block chiseled = BlocksAS.MARBLE_CHISELED;
+		Block runed = BlocksAS.MARBLE_RUNED;
+		Block bricks = BlocksAS.MARBLE_BRICKS;
+		Block sootyRaw = BlocksAS.BLACK_MARBLE_RAW;
+		addBlock(ConstellationCrafterBlock.INSTANCE, 0, 0, 0);
 		for(int i = -2; i <= 2; ++i) {
 			for(int j = -2; j <= 2; ++j) {
 				if(i != 0 || j != 0) {

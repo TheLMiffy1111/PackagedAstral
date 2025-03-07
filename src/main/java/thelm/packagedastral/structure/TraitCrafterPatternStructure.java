@@ -3,7 +3,7 @@ package thelm.packagedastral.structure;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
 import hellfirepvp.observerlib.api.util.PatternBlockArray;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import thelm.packagedastral.block.TraitCrafterBlock;
 
@@ -18,9 +18,9 @@ public class TraitCrafterPatternStructure extends PatternBlockArray {
 	}
 
 	private void load() {
-		BlockState bricks = BlocksAS.MARBLE_BRICKS.defaultBlockState();
+		Block bricks = BlocksAS.MARBLE_BRICKS;
 		addAll(ConstellationCrafterPatternStructure.INSTANCE);
-		addBlock(TraitCrafterBlock.INSTANCE.defaultBlockState(), 0, 0, 0);
+		addBlock(TraitCrafterBlock.INSTANCE, 0, 0, 0);
 		addBlock(bricks, 4, 3, 3);
 		addBlock(bricks, 4, 3, -3);
 		addBlock(bricks, -4, 3, 3);

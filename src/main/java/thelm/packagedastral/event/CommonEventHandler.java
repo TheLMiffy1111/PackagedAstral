@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -24,6 +25,7 @@ import thelm.packagedastral.container.ConstellationCrafterContainer;
 import thelm.packagedastral.container.DiscoveryCrafterContainer;
 import thelm.packagedastral.container.TraitCrafterContainer;
 import thelm.packagedastral.ingredient.AttunedCrystalIngredient;
+import thelm.packagedastral.integration.patchouli.PackagedAstralPatchouliHandler;
 import thelm.packagedastral.item.ConstellationFocusItem;
 import thelm.packagedastral.network.PacketHandler;
 import thelm.packagedastral.recipe.AttunementPackageRecipeType;
@@ -40,6 +42,7 @@ import thelm.packagedastral.tile.DiscoveryCrafterTile;
 import thelm.packagedastral.tile.MarkedRelayTile;
 import thelm.packagedastral.tile.TraitCrafterTile;
 import thelm.packagedauto.util.ApiImpl;
+import thelm.packagedauto.util.MiscHelper;
 
 public class CommonEventHandler {
 
@@ -120,6 +123,9 @@ public class CommonEventHandler {
 		ApiImpl.INSTANCE.registerRecipeType(ConstellationPackageRecipeType.INSTANCE);
 		ApiImpl.INSTANCE.registerRecipeType(TraitPackageRecipeType.INSTANCE);
 		PacketHandler.registerPackets();
+		MiscHelper.INSTANCE.conditionalRunnable(()->ModList.get().isLoaded("patchouli"), ()->()->{
+			PackagedAstralPatchouliHandler.init();
+		}, ()->()->{}).run();
 	}
 
 	@SubscribeEvent

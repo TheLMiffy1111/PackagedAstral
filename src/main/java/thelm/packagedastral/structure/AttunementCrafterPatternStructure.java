@@ -6,6 +6,7 @@ import hellfirepvp.astralsorcery.common.structure.types.StructureType;
 import hellfirepvp.observerlib.api.block.MatchableState;
 import hellfirepvp.observerlib.api.block.SimpleMatchableBlock;
 import hellfirepvp.observerlib.api.util.PatternBlockArray;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import thelm.packagedastral.block.AttunementCrafterBlock;
@@ -21,11 +22,11 @@ public class AttunementCrafterPatternStructure extends PatternBlockArray {
 	}
 
 	private void load() {
-		BlockState chiseled = BlocksAS.MARBLE_CHISELED.defaultBlockState();
-		BlockState bricks = BlocksAS.MARBLE_BRICKS.defaultBlockState();
-		BlockState arch = BlocksAS.MARBLE_ARCH.defaultBlockState();
-		BlockState sootyRaw = BlocksAS.BLACK_MARBLE_RAW.defaultBlockState();
-		addBlock(AttunementCrafterBlock.INSTANCE.defaultBlockState(), 0, 0, 0);
+		Block chiseled = BlocksAS.MARBLE_CHISELED;
+		Block bricks = BlocksAS.MARBLE_BRICKS;
+		Block arch = BlocksAS.MARBLE_ARCH;
+		Block sootyRaw = BlocksAS.BLACK_MARBLE_RAW;
+		addBlock(AttunementCrafterBlock.INSTANCE, 0, 0, 0);
 		for(int i = -3; i <= 3; ++i) {
 			for(int j = -3; j <= 3; ++j) {
 				if(i != 0 || j != 0) {
