@@ -1,0 +1,27 @@
+{
+	"name": "Luminous Crafting Table",
+	"category": "packagedauto:recipe",
+	"icon": "packagedastral:discovery_crafter",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)Luminous Crafting Table/$ is a crafting recipe type that uses the $(item)Luminous Package Crafter/$ to craft recipes craftable in a Luminous Crafting Table.$(p)Items crafted by the $(item)Luminous Package Crafter/$ will be ejected into adjacent inventories.$(p)The $(item)Luminous Package Crafter/$ requires power and starlight."
+		},
+		{
+			"type": "spotlight",
+			"flag": "mod:appliedenergistics2",
+			"item": "packagedastral:discovery_crafter",
+			"link_recipe": true,
+			"title": "AE2 Integration",
+			"text": "The $(item)Luminous Package Crafter/$ can be connected to an $(thing)ME Network/$.$(p)It will extract power to use, and instead eject crafted items into the network."
+		},
+		{
+			"type": "packagedastral:altar_recipe_1",
+			"recipe": "packagedastral/discovery_crafter",
+			"title": "Luminous Crafting Table"
+		}
+	],
+	"flag": "packagedastral:discovery",
+	"read_by_default": true,
+	"sortnum": 1002
+}

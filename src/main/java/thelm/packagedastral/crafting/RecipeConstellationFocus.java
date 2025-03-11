@@ -1,4 +1,4 @@
-package thelm.packagedastral.recipe;
+package thelm.packagedastral.crafting;
 
 import java.util.Random;
 

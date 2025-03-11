@@ -1,0 +1,37 @@
+{
+	"name": "Marked Spectral Relay",
+	"category": "packagedauto:recipe",
+	"icon": "packagedastral:marked_relay",
+	"pages": [
+		{
+			"type": "text",
+			"text": "The $(item)Marked Spectral Relay/$ is used to collect starlight for $(#822)PackagedAstral/$ machines, and is also used in packaged $(l:recipe/trait)Iridescent Altar/$ crafting."
+		},
+		{
+			"type": "spotlight",
+			"item": "packagedastral:marked_relay",
+			"link_recipe": true,
+			"title": "Usage",
+			"text": "To use the $(item)Marked Spectral Relay/$ to collect starlight, you must build the Spectral Relay structure around it, shown on the next page.$(p)When used in package crafting, the relay will eject remaining items on top of itself."
+		},
+		{
+			"type": "multiblock",
+			"multiblock_id": "packagedastral:pattern_marked_relay",
+			"name": "Structure"
+		},
+		{
+			"type": "text",
+			"flag": "mod:appliedenergistics2",
+			"title": "AE2 Integration",
+			"text": "The $(item)Marked Spectral Relay/$ can be connected to an $(thing)ME Network/$.$(p)It will instead eject remaining items into the network."
+		},
+		{
+			"type": "packagedastral:altar_recipe_1",
+			"recipe": "packagedastral/marked_relay",
+			"title": "Luminous Crafting Table"
+		}
+	],
+	"flag": "packagedastral:discovery",
+	"read_by_default": true,
+	"sortnum": 1001
+}

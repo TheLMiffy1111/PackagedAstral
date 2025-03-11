@@ -1,4 +1,4 @@
-package thelm.packagedastral.recipe;
+package thelm.packagedastral.crafting;
 
 import hellfirepvp.astralsorcery.common.block.BlockBlackMarble;
 import hellfirepvp.astralsorcery.common.block.BlockMarble;

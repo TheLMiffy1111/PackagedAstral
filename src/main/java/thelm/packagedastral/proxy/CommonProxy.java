@@ -28,11 +28,12 @@ import thelm.packagedastral.block.BlockDiscoveryCrafter;
 import thelm.packagedastral.block.BlockMarkedRelay;
 import thelm.packagedastral.block.BlockTraitCrafter;
 import thelm.packagedastral.config.PackagedAstralConfig;
+import thelm.packagedastral.crafting.RecipeAttunementCrafter;
+import thelm.packagedastral.crafting.RecipeConstellationCrafter;
+import thelm.packagedastral.crafting.RecipeConstellationFocus;
+import thelm.packagedastral.crafting.RecipeTraitCrafter;
+import thelm.packagedastral.integration.patchouli.PackagedAstralPatchouliHandler;
 import thelm.packagedastral.item.ItemConstellationFocus;
-import thelm.packagedastral.recipe.RecipeAttunementCrafter;
-import thelm.packagedastral.recipe.RecipeConstellationCrafter;
-import thelm.packagedastral.recipe.RecipeConstellationFocus;
-import thelm.packagedastral.recipe.RecipeTraitCrafter;
 import thelm.packagedastral.recipe.RecipeTypeAttunement;
 import thelm.packagedastral.recipe.RecipeTypeConstellation;
 import thelm.packagedastral.recipe.RecipeTypeDiscovery;
@@ -46,6 +47,7 @@ import thelm.packagedastral.tile.TileConstellationCrafter;
 import thelm.packagedastral.tile.TileDiscoveryCrafter;
 import thelm.packagedastral.tile.TileMarkedRelay;
 import thelm.packagedastral.tile.TileTraitCrafter;
+import thelm.packagedauto.api.MiscUtil;
 import thelm.packagedauto.api.RecipeTypeRegistry;
 import thelm.packagedauto.item.ItemMisc;
 
@@ -76,6 +78,9 @@ public class CommonProxy {
 	public void register(FMLInitializationEvent event) {
 		registerStructures();
 		registerRecipes();
+		MiscUtil.conditionalRunnable(()->Loader.isModLoaded("patchouli"), ()->()->{
+			PackagedAstralPatchouliHandler.init();
+		}, ()->()->{}).run();
 	}
 
 	protected void registerConfig(FMLPreInitializationEvent event) {
