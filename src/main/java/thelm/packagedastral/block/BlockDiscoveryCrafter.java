@@ -58,7 +58,7 @@ public class BlockDiscoveryCrafter extends BlockBase implements BlockStructureOb
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModels() {

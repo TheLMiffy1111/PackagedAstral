@@ -29,7 +29,7 @@ import vazkii.patchouli.api.VariableHolder;
 import vazkii.patchouli.client.book.gui.GuiBook;
 
 public class ComponentAltarRecipeGrid implements ICustomComponent {
-	
+
 	public static final ResourceLocation DISCOVERY_GRID = new ResourceLocation("packagedastral:textures/gui/patchouli/discovery_grid.png");
 	public static final ResourceLocation ATTUNEMENT_GRID = new ResourceLocation("packagedastral:textures/gui/patchouli/attunement_grid.png");
 	public static final ResourceLocation CONSTELLATION_GRID = new ResourceLocation("packagedastral:textures/gui/patchouli/constellation_grid.png");
