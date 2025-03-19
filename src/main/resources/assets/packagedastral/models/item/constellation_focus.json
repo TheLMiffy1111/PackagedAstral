@@ -1,6 +1,6 @@
 {
 	"loader": "forge:obj",
-	"flip-v": true, 
+	"flip-v": true,
 	"model": "packagedastral:models/item/constellation_focus.obj",
 	"textures": {
 		"particle": "packagedastral:items/constellation_focus"
