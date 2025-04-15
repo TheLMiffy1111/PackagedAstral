@@ -22,7 +22,7 @@
 		{
 			"type": "text",
 			"title": "Usage (cont.)",
-			"text": "You can $(thing)$(k:sneak) + $(k:use)/$ with an empty hand on an idle $(item)Iridescent Package Crafting Altar/$ check its currently usable and required amount of $(item)Marked Spectral Relays/$.$(p)Items crafted by the $(item)Iridescent Package Crafting Altar/$ will be ejected into adjacent inventories."
+			"text": "You can $(thing)$(k:sneak) + $(k:use)/$ with an empty hand on an idle $(item)Iridescent Package Crafting Altar/$ to check its currently usable and required amount of $(item)Marked Spectral Relays/$.$(p)Items crafted by the $(item)Iridescent Package Crafting Altar/$ will be ejected into adjacent inventories."
 		},
 		{
 			"type": "text",

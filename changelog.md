@@ -1,2 +1,1 @@
-Added entries to PackagedAuto Patchouli guide  
-Optimized images with oxipng  
+Fix typo in Iridescent Package Crafting Altar Patchouli entry  
