@@ -27,7 +27,7 @@ public class BlockConstellationCrafter extends BlockBase implements BlockStructu
 
 	public BlockConstellationCrafter() {
 		super(Material.ROCK, MapColor.GRAY);
-		setHardness(15F);
+		setHardness(10F);
 		setResistance(25F);
 		setSoundType(SoundType.STONE);
 		setTranslationKey("packagedastral.constellation_crafter");

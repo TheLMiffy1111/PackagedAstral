@@ -33,7 +33,7 @@ public class BlockMarkedRelay extends BlockBase implements BlockStructureObserve
 
 	public BlockMarkedRelay() {
 		super(Material.GLASS, MapColor.QUARTZ);
-		setHardness(15F);
+		setHardness(10F);
 		setResistance(5F);
 		setSoundType(SoundType.GLASS);
 		setTranslationKey("packagedastral.marked_relay");

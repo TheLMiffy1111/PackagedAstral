@@ -27,7 +27,7 @@ public class BlockDiscoveryCrafter extends BlockBase implements BlockStructureOb
 
 	public BlockDiscoveryCrafter() {
 		super(Material.ROCK, MapColor.GRAY);
-		setHardness(15F);
+		setHardness(10F);
 		setResistance(25F);
 		setSoundType(SoundType.STONE);
 		setTranslationKey("packagedastral.discovery_crafter");

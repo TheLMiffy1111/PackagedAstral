@@ -31,7 +31,7 @@ public class BlockTraitCrafter extends BlockBase implements BlockStructureObserv
 
 	public BlockTraitCrafter() {
 		super(Material.ROCK, MapColor.GRAY);
-		setHardness(15F);
+		setHardness(10F);
 		setResistance(25F);
 		setSoundType(SoundType.STONE);
 		setTranslationKey("packagedastral.trait_crafter");
