@@ -18,7 +18,7 @@ public class AttunementCrafterBlock extends BaseBlock implements BlockStructureO
 	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:attunement_crafter");
 
 	public AttunementCrafterBlock() {
-		super(AbstractBlock.Properties.of(Material.STONE).strength(15F, 25F).noOcclusion().sound(SoundType.STONE));
+		super(AbstractBlock.Properties.of(Material.STONE).strength(10F, 15F).noOcclusion().sound(SoundType.STONE));
 		setRegistryName("packagedastral:attunement_crafter");
 	}
 

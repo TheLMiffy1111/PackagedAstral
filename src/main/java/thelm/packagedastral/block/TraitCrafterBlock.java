@@ -27,7 +27,7 @@ public class TraitCrafterBlock extends BaseBlock implements BlockStructureObserv
 	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedAstral.ITEM_GROUP)).setRegistryName("packagedastral:trait_crafter");
 
 	public TraitCrafterBlock() {
-		super(AbstractBlock.Properties.of(Material.STONE).strength(15F, 25F).noOcclusion().sound(SoundType.STONE));
+		super(AbstractBlock.Properties.of(Material.STONE).strength(10F, 15F).noOcclusion().sound(SoundType.STONE));
 		setRegistryName("packagedastral:trait_crafter");
 	}
 

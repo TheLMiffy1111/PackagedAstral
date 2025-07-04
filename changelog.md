@@ -1,1 +1,1 @@
-Fix typo in Iridescent Package Crafting Altar Patchouli entry  
+Adjust block strength values  

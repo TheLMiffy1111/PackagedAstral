@@ -29,7 +29,7 @@ public class MarkedRelayBlock extends BaseBlock implements BlockStructureObserve
 	public static final VoxelShape SHAPE = box(2, 0, 2, 14, 2, 14);
 
 	public MarkedRelayBlock() {
-		super(AbstractBlock.Properties.of(Material.GLASS, MaterialColor.QUARTZ).strength(15F, 5F).lightLevel(state->4).noOcclusion().sound(SoundType.GLASS));
+		super(AbstractBlock.Properties.of(Material.GLASS, MaterialColor.QUARTZ).strength(10F, 3F).lightLevel(state->4).noOcclusion().sound(SoundType.GLASS));
 		setRegistryName("packagedastral:marked_relay");
 	}
 
