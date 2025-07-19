@@ -1,1 +1,1 @@
-Adjust block strength values  
+Adjust textures  
