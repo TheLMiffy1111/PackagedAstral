@@ -24,5 +24,5 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/PackagedAstral/issues"
 
 [[dependencies.packagedastral]]
 	modId = "astralsorcery"
-	versionRange = "[1.16,)"
+	versionRange = "*"
 	mandatory = true
