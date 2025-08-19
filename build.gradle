@@ -146,7 +146,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.42"
 
 	// Dependencies
-	modImplementation "thelm.packagedauto:PackagedAuto-1.16.5:2.0.13.54"
+	modImplementation "thelm.packagedauto:PackagedAuto-1.16.5:2.0.13.56"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.0"
 	modImplementation("hellfirepvp.observerlib:observerlib:1.16.5-1.5.3.v78") {transitive = false}
 	modImplementation("hellfirepvp.astralsorcery:astralsorcery-1.16.5:1.16.4-1.14.1.v106") {transitive = false}
