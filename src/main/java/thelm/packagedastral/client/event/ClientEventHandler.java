@@ -1,4 +1,4 @@
-package thelm.packagedastral.proxy;
+package thelm.packagedastral.client.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import thelm.packagedastral.client.renderer.RendererMarkedRelay;
 import thelm.packagedastral.client.renderer.RendererTraitCrafter;
+import thelm.packagedastral.event.CommonEventHandler;
 import thelm.packagedastral.tile.TileMarkedRelay;
 import thelm.packagedastral.tile.TileTraitCrafter;
 import thelm.packagedauto.client.IModelRegister;
 
-public class ClientProxy extends CommonProxy {
+public class ClientEventHandler extends CommonEventHandler {
 
 	private static List<IModelRegister> modelRegisterList = new ArrayList<>();
 
@@ -35,16 +36,10 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void register(FMLPreInitializationEvent event) {
-		super.register(event);
+	public void onPreInit(FMLPreInitializationEvent event) {
+		super.onPreInit(event);
 		OBJLoader.INSTANCE.addDomain("packagedastral");
-	}
-
-	@Override
-	protected void registerModels() {
-		for(IModelRegister model : modelRegisterList) {
-			model.registerModels();
-		}
+		registerModels();
 	}
 
 	@Override
@@ -53,6 +48,12 @@ public class ClientProxy extends CommonProxy {
 		if(TileTraitCrafter.enabled) {
 			ClientRegistry.bindTileEntitySpecialRenderer(TileTraitCrafter.class, new RendererTraitCrafter());
 			ClientRegistry.bindTileEntitySpecialRenderer(TileMarkedRelay.class, new RendererMarkedRelay());
+		}
+	}
+
+	protected void registerModels() {
+		for(IModelRegister model : modelRegisterList) {
+			model.registerModels();
 		}
 	}
 }

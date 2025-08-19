@@ -1,4 +1,4 @@
-package thelm.packagedastral.proxy;
+package thelm.packagedastral.event;
 
 import hellfirepvp.astralsorcery.common.block.BlockInfusedWood;
 import hellfirepvp.astralsorcery.common.block.BlockMarble;
@@ -51,7 +51,7 @@ import thelm.packagedauto.api.MiscUtil;
 import thelm.packagedauto.api.RecipeTypeRegistry;
 import thelm.packagedauto.item.ItemMisc;
 
-public class CommonProxy {
+public class CommonEventHandler {
 
 	public void registerBlock(Block block) {
 		ForgeRegistries.BLOCKS.register(block);
@@ -66,16 +66,15 @@ public class CommonProxy {
 		StructureMatcherRegistry.INSTANCE.register(()->new StructureMatcherPatternArray(structure.getRegistryName()));
 	}
 
-	public void register(FMLPreInitializationEvent event) {
+	public void onPreInit(FMLPreInitializationEvent event) {
 		registerConfig(event);
 		registerBlocks();
 		registerItems();
-		registerModels();
 		registerTileEntities();
 		registerRecipeTypes();
 	}
 
-	public void register(FMLInitializationEvent event) {
+	public void onInit(FMLInitializationEvent event) {
 		registerStructures();
 		registerRecipes();
 		MiscUtil.conditionalRunnable(()->Loader.isModLoaded("patchouli"), ()->()->{
@@ -119,8 +118,6 @@ public class CommonProxy {
 			registerItem(ItemConstellationFocus.INSTANCE);
 		}
 	}
-
-	protected void registerModels() {}
 
 	protected void registerTileEntities() {
 		if(TileDiscoveryCrafter.enabled) {

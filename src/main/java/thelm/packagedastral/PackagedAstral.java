@@ -13,7 +13,7 @@ import thelm.packagedastral.block.BlockAttunementCrafter;
 import thelm.packagedastral.block.BlockConstellationCrafter;
 import thelm.packagedastral.block.BlockDiscoveryCrafter;
 import thelm.packagedastral.block.BlockTraitCrafter;
-import thelm.packagedastral.proxy.CommonProxy;
+import thelm.packagedastral.event.CommonEventHandler;
 import thelm.packagedastral.tile.TileAttunementCrafter;
 import thelm.packagedastral.tile.TileConstellationCrafter;
 import thelm.packagedastral.tile.TileDiscoveryCrafter;
@@ -53,18 +53,18 @@ public class PackagedAstral {
 		}
 	};
 	@SidedProxy(
-			clientSide = "thelm.packagedastral.proxy.ClientProxy",
-			serverSide = "thelm.packagedastral.proxy.CommonProxy",
-			modId = PackagedAstral.MOD_ID)
-	public static CommonProxy proxy;
+			clientSide = "thelm.packagedastral.client.event.ClientEventHandler",
+			serverSide = "thelm.packagedastral.event.CommonEventHandler",
+			modId = MOD_ID)
+	public static CommonEventHandler proxy;
 
 	@EventHandler
-	public void firstMovement(FMLPreInitializationEvent event) {
-		proxy.register(event);
+	public void onPreInit(FMLPreInitializationEvent event) {
+		proxy.onPreInit(event);
 	}
 
 	@EventHandler
-	public void secondMovement(FMLInitializationEvent event) {
-		proxy.register(event);
+	public void onInit(FMLInitializationEvent event) {
+		proxy.onInit(event);
 	}
 }
