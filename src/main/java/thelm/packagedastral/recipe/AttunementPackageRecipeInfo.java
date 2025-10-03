@@ -165,7 +165,7 @@ public class AttunementPackageRecipeInfo implements IAltarPackageRecipeInfo {
 					}
 					this.output = outputs.get(0);
 				}
-				catch(NullPointerException e) {
+				catch(Exception e) {
 					continue;
 				}
 				this.recipe = recipe;
