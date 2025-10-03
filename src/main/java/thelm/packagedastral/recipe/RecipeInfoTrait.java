@@ -172,7 +172,7 @@ public class RecipeInfoTrait implements IRecipeInfoAltar {
 						try {
 							this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
 						}
-						catch(NullPointerException e) {
+						catch(Exception e) {
 							trait.setRequiredConstellation(prevConst);
 							continue;
 						}

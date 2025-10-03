@@ -147,7 +147,7 @@ public class RecipeInfoConstellation implements IRecipeInfoAltar {
 					try {
 						this.output = recipe.getOutput(fakeAltar.copyGetCurrentCraftingGrid(), fakeAltar).copy();
 					}
-					catch(NullPointerException e) {
+					catch(Exception e) {
 						continue;
 					}
 					this.recipe = recipe;

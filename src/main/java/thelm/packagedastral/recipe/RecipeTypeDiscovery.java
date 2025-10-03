@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import hellfirepvp.astralsorcery.common.item.crystal.CrystalProperties;
+import hellfirepvp.astralsorcery.common.item.crystal.CrystalPropertyItem;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -83,6 +85,12 @@ public class RecipeTypeDiscovery implements IRecipeType {
 			if(ingredient.isInput()) {
 				ItemStack displayed = entry.getValue().getDisplayedIngredient();
 				if(displayed != null && !displayed.isEmpty()) {
+					if(displayed.getItem() instanceof CrystalPropertyItem) {
+						displayed = displayed.copy();
+						CrystalPropertyItem crystal = (CrystalPropertyItem)displayed.getItem();
+						CrystalProperties properties = new CrystalProperties(crystal.getMaxSize(displayed), 100, 100, 0, -1);
+						CrystalProperties.applyCrystalProperties(displayed, properties);
+					}
 					map.put(slotArray[index], displayed);
 				}
 				++index;
