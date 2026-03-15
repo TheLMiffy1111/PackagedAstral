@@ -72,7 +72,7 @@ def specVersion = "1"
 def vendor = "thelm"
 
 group = "thelm.packagedastral"
-version = "1.0.4.23"
+version = "1.0.5.24"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName

@@ -16,10 +16,14 @@ import hellfirepvp.astralsorcery.common.structure.match.StructureMatcherPatternA
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thelm.packagedastral.block.BlockAttunementCrafter;
@@ -67,6 +71,7 @@ public class CommonEventHandler {
 	}
 
 	public void onPreInit(FMLPreInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(this);
 		registerConfig(event);
 		registerBlocks();
 		registerItems();
@@ -76,7 +81,6 @@ public class CommonEventHandler {
 
 	public void onInit(FMLInitializationEvent event) {
 		registerStructures();
-		registerRecipes();
 		MiscUtil.conditionalRunnable(()->Loader.isModLoaded("patchouli"), ()->()->{
 			PackagedAstralPatchouliHandler.init();
 		}, ()->()->{}).run();
@@ -87,8 +91,8 @@ public class CommonEventHandler {
 	}
 
 	protected void registerBlocks() {
+		registerBlock(BlockMarkedRelay.INSTANCE);
 		if(TileDiscoveryCrafter.enabled) {
-			registerBlock(BlockMarkedRelay.INSTANCE);
 			registerBlock(BlockDiscoveryCrafter.INSTANCE);
 		}
 		if(TileAttunementCrafter.enabled) {
@@ -103,8 +107,8 @@ public class CommonEventHandler {
 	}
 
 	protected void registerItems() {
+		registerItem(BlockMarkedRelay.ITEM_INSTANCE);
 		if(TileDiscoveryCrafter.enabled) {
-			registerItem(BlockMarkedRelay.ITEM_INSTANCE);
 			registerItem(BlockDiscoveryCrafter.ITEM_INSTANCE);
 		}
 		if(TileAttunementCrafter.enabled) {
@@ -115,13 +119,14 @@ public class CommonEventHandler {
 		}
 		if(TileTraitCrafter.enabled) {
 			registerItem(BlockTraitCrafter.ITEM_INSTANCE);
-			registerItem(ItemConstellationFocus.INSTANCE);
 		}
+
+		registerItem(ItemConstellationFocus.INSTANCE);
 	}
 
 	protected void registerTileEntities() {
+		GameRegistry.registerTileEntity(TileMarkedRelay.class, new ResourceLocation("packagedastral:marked_relay"));
 		if(TileDiscoveryCrafter.enabled) {
-			GameRegistry.registerTileEntity(TileMarkedRelay.class, new ResourceLocation("packagedastral:marked_relay"));
 			GameRegistry.registerTileEntity(TileDiscoveryCrafter.class, new ResourceLocation("packagedastral:discovery_crafter"));
 		}
 		if(TileAttunementCrafter.enabled) {
@@ -150,6 +155,37 @@ public class CommonEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	protected void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+		AltarRecipeRegistry.registerAltarRecipe(RecipeConstellationFocus.INSTANCE);
+		AltarRecipeRegistry.registerDiscoveryRecipe(
+				ShapedRecipe.Builder.newShapedRecipe("packagedastral/marked_relay", BlockMarkedRelay.ITEM_INSTANCE).
+				addPart(BlocksAS.attunementRelay, ShapedRecipeSlot.CENTER).
+				addPart(ItemCraftingComponent.MetaType.GLASS_LENS.asStack(), ShapedRecipeSlot.UPPER_CENTER).
+				addPart(ItemUsableDust.DustType.ILLUMINATION.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT, ShapedRecipeSlot.LOWER_CENTER).
+				unregisteredAccessibleShapedRecipe());
+		if(TileDiscoveryCrafter.enabled) {
+			Item component = Loader.isModLoaded("appliedenergistics2") ? ItemMisc.ME_PACKAGE_COMPONENT : ItemMisc.PACKAGE_COMPONENT;
+			AltarRecipeRegistry.registerDiscoveryRecipe(
+					ShapedRecipe.Builder.newShapedRecipe("packagedastral/discovery_crafter", BlockDiscoveryCrafter.INSTANCE).
+					addPart(new ItemStack(BlocksAS.blockAltar, 1, 0), ShapedRecipeSlot.CENTER).
+					addPart(ItemsAS.wand, ShapedRecipeSlot.UPPER_CENTER).
+					addPart(component, ShapedRecipeSlot.LOWER_CENTER).
+					addPart(BlockInfusedWood.WoodType.RAW.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT).
+					addPart(BlockMarble.MarbleBlockType.CHISELED.asStack(), ShapedRecipeSlot.UPPER_LEFT, ShapedRecipeSlot.UPPER_RIGHT, ShapedRecipeSlot.LOWER_LEFT, ShapedRecipeSlot.LOWER_RIGHT).
+					unregisteredAccessibleShapedRecipe());
+		}
+		if(TileAttunementCrafter.enabled && TileDiscoveryCrafter.enabled) {
+			AltarRecipeRegistry.registerAltarRecipe(RecipeAttunementCrafter.INSTANCE);
+		}
+		if(TileConstellationCrafter.enabled && TileAttunementCrafter.enabled) {
+			AltarRecipeRegistry.registerAltarRecipe(RecipeConstellationCrafter.INSTANCE);
+		}
+		if(TileTraitCrafter.enabled && TileConstellationCrafter.enabled) {
+			AltarRecipeRegistry.registerAltarRecipe(RecipeTraitCrafter.INSTANCE);
+		}
+	}
+
 	protected void registerStructures() {
 		if(TileDiscoveryCrafter.enabled) {
 			registerStructure(StructureMarkedRelay.INSTANCE);
@@ -162,36 +198,6 @@ public class CommonEventHandler {
 		}
 		if(TileTraitCrafter.enabled) {
 			registerStructure(StructureTraitCrafter.INSTANCE);
-		}
-	}
-
-	protected void registerRecipes() {
-		if(TileDiscoveryCrafter.enabled) {
-			AltarRecipeRegistry.registerDiscoveryRecipe(
-					ShapedRecipe.Builder.newShapedRecipe("packagedastral/marked_relay", BlockMarkedRelay.ITEM_INSTANCE).
-					addPart(BlocksAS.attunementRelay, ShapedRecipeSlot.CENTER).
-					addPart(ItemCraftingComponent.MetaType.GLASS_LENS.asStack(), ShapedRecipeSlot.UPPER_CENTER).
-					addPart(ItemUsableDust.DustType.ILLUMINATION.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT, ShapedRecipeSlot.LOWER_CENTER).
-					unregisteredAccessibleShapedRecipe());
-			Item component = Loader.isModLoaded("appliedenergistics2") ? ItemMisc.ME_PACKAGE_COMPONENT : ItemMisc.PACKAGE_COMPONENT;
-			AltarRecipeRegistry.registerDiscoveryRecipe(
-					ShapedRecipe.Builder.newShapedRecipe("packagedastral/discovery_crafter", BlockDiscoveryCrafter.INSTANCE).
-					addPart(new ItemStack(BlocksAS.blockAltar, 1, 0), ShapedRecipeSlot.CENTER).
-					addPart(ItemsAS.wand, ShapedRecipeSlot.UPPER_CENTER).
-					addPart(component, ShapedRecipeSlot.LOWER_CENTER).
-					addPart(BlockInfusedWood.WoodType.RAW.asStack(), ShapedRecipeSlot.LEFT, ShapedRecipeSlot.RIGHT).
-					addPart(BlockMarble.MarbleBlockType.CHISELED.asStack(), ShapedRecipeSlot.UPPER_LEFT, ShapedRecipeSlot.UPPER_RIGHT, ShapedRecipeSlot.LOWER_LEFT, ShapedRecipeSlot.LOWER_RIGHT).
-					unregisteredAccessibleShapedRecipe());
-		}
-		if(TileAttunementCrafter.enabled) {
-			AltarRecipeRegistry.registerAltarRecipe(RecipeAttunementCrafter.INSTANCE);
-		}
-		if(TileConstellationCrafter.enabled) {
-			AltarRecipeRegistry.registerAltarRecipe(RecipeConstellationCrafter.INSTANCE);
-		}
-		if(TileTraitCrafter.enabled) {
-			AltarRecipeRegistry.registerAltarRecipe(RecipeTraitCrafter.INSTANCE);
-			AltarRecipeRegistry.registerAltarRecipe(RecipeConstellationFocus.INSTANCE);
 		}
 	}
 }

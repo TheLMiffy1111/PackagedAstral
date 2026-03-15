@@ -36,7 +36,7 @@ public class PackagedAstralConfig {
 		TileDiscoveryCrafter.requiresNight = config.get(category, "requires_night", TileDiscoveryCrafter.requiresNight, "Should the Luminous Package Crafter require night to start nighttime recipes.").getBoolean();
 		TileDiscoveryCrafter.drawMEEnergy = config.get(category, "draw_me_energy", TileDiscoveryCrafter.drawMEEnergy, "Should the Luminous Package Crafter draw energy from ME systems.").getBoolean();
 		category = "blocks.attunement_crafter";
-		TileAttunementCrafter.enabled = TileDiscoveryCrafter.enabled && config.get(category, "enabled", TileAttunementCrafter.enabled, "Should the Starlight Package Crafting Altar be enabled (requires previous tiers).").setRequiresMcRestart(true).getBoolean();
+		TileAttunementCrafter.enabled = config.get(category, "enabled", TileAttunementCrafter.enabled, "Should the Starlight Package Crafting Altar be enabled (requires Luminous Package Crafter for recipe).").setRequiresMcRestart(true).getBoolean();
 		TileAttunementCrafter.energyCapacity = config.get(category, "energy_capacity", TileAttunementCrafter.energyCapacity, "How much FE the Starlight Package Crafting Altar should hold.", 0, Integer.MAX_VALUE).getInt();
 		TileAttunementCrafter.energyReq = config.get(category, "energy_req", TileAttunementCrafter.energyReq, "How much FE the Starlight Package Crafting Altar should use.", 0, Integer.MAX_VALUE).getInt();
 		TileAttunementCrafter.energyUsage = config.get(category, "energy_usage", TileAttunementCrafter.energyUsage, "How much FE/t maximum the Starlight Package Crafting Altar should use.", 0, Integer.MAX_VALUE).getInt();
@@ -45,7 +45,7 @@ public class PackagedAstralConfig {
 		TileAttunementCrafter.requiresNight = config.get(category, "requires_night", TileAttunementCrafter.requiresNight, "Should the Starlight Package Crafting Altar require night to start nighttime recipes.").getBoolean();
 		TileAttunementCrafter.drawMEEnergy = config.get(category, "draw_me_energy", TileAttunementCrafter.drawMEEnergy, "Should the Starlight Package Crafting Altar draw energy from ME systems.").getBoolean();
 		category = "blocks.constellation_crafter";
-		TileConstellationCrafter.enabled = TileAttunementCrafter.enabled && config.get(category, "enabled", TileConstellationCrafter.enabled, "Should the Celestial Package Crafting Altar be enabled (requires previous tiers).").setRequiresMcRestart(true).getBoolean();
+		TileConstellationCrafter.enabled = config.get(category, "enabled", TileConstellationCrafter.enabled, "Should the Celestial Package Crafting Altar be enabled (requires Starlight Package Crafting Altar for recipe).").setRequiresMcRestart(true).getBoolean();
 		TileConstellationCrafter.energyCapacity = config.get(category, "energy_capacity", TileConstellationCrafter.energyCapacity, "How much FE the Celestial Package Crafting Altar should hold.", 0, Integer.MAX_VALUE).getInt();
 		TileConstellationCrafter.energyReq = config.get(category, "energy_req", TileConstellationCrafter.energyReq, "How much FE the Celestial Package Crafting Altar should use.", 0, Integer.MAX_VALUE).getInt();
 		TileConstellationCrafter.energyUsage = config.get(category, "energy_usage", TileConstellationCrafter.energyUsage, "How much FE/t maximum the Celestial Package Crafting Altar should use.", 0, Integer.MAX_VALUE).getInt();
@@ -54,7 +54,7 @@ public class PackagedAstralConfig {
 		TileConstellationCrafter.requiresNight = config.get(category, "requires_night", TileConstellationCrafter.requiresNight, "Should the Celestial Package Crafting Altar require night to start nighttime recipes.").getBoolean();
 		TileConstellationCrafter.drawMEEnergy = config.get(category, "draw_me_energy", TileConstellationCrafter.drawMEEnergy, "Should the Celestial Package Crafting Altar draw energy from ME systems.").getBoolean();
 		category = "blocks.trait_crafter";
-		TileTraitCrafter.enabled = TileConstellationCrafter.enabled && config.get(category, "enabled", TileTraitCrafter.enabled, "Should the Iridescent Package Crafting Altar be enabled (requires previous tiers).").setRequiresMcRestart(true).getBoolean();
+		TileTraitCrafter.enabled = config.get(category, "enabled", TileTraitCrafter.enabled, "Should the Iridescent Package Crafting Altar be enabled (requires Iridescent Package Crafting Altar for recipe).").setRequiresMcRestart(true).getBoolean();
 		TileTraitCrafter.energyCapacity = config.get(category, "energy_capacity", TileTraitCrafter.energyCapacity, "How much FE the Iridescent Package Crafting Altar should hold.", 0, Integer.MAX_VALUE).getInt();
 		TileTraitCrafter.energyReq = config.get(category, "energy_req", TileTraitCrafter.energyReq, "How much FE the Iridescent Package Crafting Altar should use.", 0, Integer.MAX_VALUE).getInt();
 		TileTraitCrafter.energyUsage = config.get(category, "energy_usage", TileTraitCrafter.energyUsage, "How much FE/t maximum the Iridescent Package Crafting Altar should use.", 0, Integer.MAX_VALUE).getInt();
